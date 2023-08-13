@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "30.0.3"
+
 
     defaultConfig {
         applicationId "com.droi_joy"
+        compileSdk 31
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled = true
@@ -50,6 +50,7 @@ android {
             useJUnitPlatform()
         }
     }
+    namespace 'com.droi'
 }
 
 dependencies {
