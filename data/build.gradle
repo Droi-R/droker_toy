@@ -20,13 +20,11 @@ android {
             buildConfigField "String", SERVER_URL, '"https://api.github.com/search/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable false
         }
         debug {
             buildConfigField "String", SERVER_URL, '"https://api.github.com/search/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable true
         }
     }
     compileOptions {
