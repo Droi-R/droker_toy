@@ -19,9 +19,6 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-//            androidLogger()
-            // 위의 메서드 2개는 없어도 작동하긴 한다
-            /* modules() : 컨테이너에 로드할 Koin 모듈 목록 설정. listOf()로 appModule을 구성한 예제가 있었다 */
             modules(appModule)
         }
     }
@@ -33,6 +30,7 @@ class App : Application() {
         var instance: com.droi.App? = null
         var dialog: Dialog? = null
         lateinit var gMapTmpChunk: HashMap<String, Any>
+
 //        lateinit var cookieJar: CookieJar
         fun disProgress() {
             Handler(Looper.getMainLooper()).postDelayed(
@@ -47,11 +45,8 @@ class App : Application() {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                }, 0
-            )
+                },0,)
         }
-
-
     }
 
     override fun onTerminate() {
@@ -63,7 +58,4 @@ class App : Application() {
         checkNotNull(com.droi.App.Companion.instance) { "this application does not inherit com.kakao.GlobalApplication" }
         return com.droi.App.Companion.instance!!
     }
-
-
-
 }

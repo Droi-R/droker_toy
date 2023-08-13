@@ -10,22 +10,19 @@ import com.droi.domain.model.YoEntity
 import com.droi.domain.usecase.GetUserUseCase
 import com.google.gson.Gson
 
-
-//class MainViewModel(application: Application, private val repo: RetrofitService) : BaseViewModel(application) {
 class MainViewModel(application: Application, private val getUserUseCase: GetUserUseCase) : BaseViewModel(application) {
 
     var gson = Gson()
     var liveData_Res: MutableLiveData<YoEntity.Res> = MutableLiveData<YoEntity.Res>()
-    var change: Int  = -1;
+    var change: Int = -1
     val context = application
 
     init {
-
     }
 
     fun requsetUsers() {
 //        liveData_Res = getUserUseCase.invoke("shop",)
-        getUserUseCase("shop",viewModelScope){
+        getUserUseCase("shop", viewModelScope) {
             liveData_Res.postValue(it)
         }
 //        CoroutineScope(Dispatchers.IO).launch {
@@ -57,9 +54,9 @@ class MainViewModel(application: Application, private val getUserUseCase: GetUse
         val item = res?.items?.get(position)
         if (item != null) {
             val result = db?.contactsDao()?.findByResult(item.id)
-            Logger.loge("result   ${result}")
+            Logger.loge("result   $result")
             if (result == null) {
-                db?.contactsDao()?.insert(Contacts(0,item.id))
+                db?.contactsDao()?.insert(Contacts(0, item.id))
                 item.like = true
             } else {
                 db.contactsDao().delete(result)
