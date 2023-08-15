@@ -4,8 +4,8 @@ import java.io.Serializable
 
 class YoEntity {
     data class Res(
-        var total_count : Int = 0,
-        var incomplete_results : Boolean = false,
+        var total_count: Int = 0,
+        var incomplete_results: Boolean = false,
         var items: ArrayList<Items> = ArrayList(),
     ) : Serializable
 
@@ -17,5 +17,3 @@ class YoEntity {
         var like: Boolean = false,
     ) : Serializable
 }
-
-

@@ -12,9 +12,4 @@ object Mapper {
             items = yoResponse.items,
         )
     }
-
-//    @SerializedName("total_count") val total_count: Int,
-//    @SerializedName("incomplete_results") val incomplete_results: Boolean,
-//    @SerializedName("items") val items: ArrayList<YoEntity.Items>,
-
 }

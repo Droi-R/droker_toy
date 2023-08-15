@@ -3,11 +3,12 @@ package com.droi
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-
 import com.droi.callback.OnItemClick
 import com.google.gson.Gson
 
-abstract class BaseFragment : Fragment(), View.OnClickListener,
+abstract class BaseFragment :
+    Fragment(),
+    View.OnClickListener,
     OnItemClick {
 
     var gson = Gson()
@@ -23,5 +24,4 @@ abstract class BaseFragment : Fragment(), View.OnClickListener,
 
     override fun onClick(v: View) {
     }
-
 }

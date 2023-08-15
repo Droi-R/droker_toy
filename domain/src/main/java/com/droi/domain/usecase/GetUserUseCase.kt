@@ -7,22 +7,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class GetUserUseCase (private val repository: YoRepository) {
+class GetUserUseCase(private val repository: YoRepository) {
 
-//    suspend fun invoke(q:String): YoEntity.Res {
-//        return repository.getUsers(q)
-//    }
     operator fun invoke(
-        q:String,
+        q: String,
         scope: CoroutineScope,
-        onResult : (YoEntity.Res)-> Unit ={},
-    ){
-        scope.launch (Dispatchers.Main){
-            val deferred = async (Dispatchers.IO){
+        onResult: (YoEntity.Res) -> Unit = {},
+    ) {
+        scope.launch(Dispatchers.Main) {
+            val deferred = async(Dispatchers.IO) {
                 repository.getUsers(q)
             }
             onResult(deferred.await())
         }
-
     }
 }
