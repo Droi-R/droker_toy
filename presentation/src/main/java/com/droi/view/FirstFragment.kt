@@ -16,8 +16,11 @@ import com.droi.databinding.FragmentFirstBinding
 import com.droi.domain.model.YoEntity
 import com.droi.viewmodel.MainViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class FirstFragment : BaseFragment() {
+@AndroidEntryPoint
+class FirstFragment @Inject constructor() : BaseFragment() {
     lateinit var binding: FragmentFirstBinding
 
     lateinit var firstAdapter: FirstAdapter
@@ -51,7 +54,6 @@ class FirstFragment : BaseFragment() {
                 stopShimmer(binding.sfRecruit)
             }
         model.liveData_Res.observe(this, adapterobseverRecruit)
-//        binding.rvRecruit.addItemDecoration(CustomRecyclerDecoration_Ho(12))
         binding.rvRecruit.addItemDecoration(com.droi.ui.CustomRecyclerDecoration_Ve(20))
     }
 

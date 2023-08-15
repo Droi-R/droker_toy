@@ -8,15 +8,10 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class App : Application() {
-    init {
-        instance = this
-    }
-
     override fun onCreate() {
         super.onCreate()
         instance = this
         gMapTmpChunk = HashMap()
-
 //        startKoin {
 //            androidContext(this@App)
 //            modules(appModule)
@@ -25,20 +20,20 @@ class App : Application() {
 
     companion object {
         @JvmField
-        var isQr: Boolean = false
-        var move_tap: String = ""
-        var instance: com.droi.App? = null
         var dialog: Dialog? = null
         lateinit var gMapTmpChunk: HashMap<String, Any>
+        lateinit var instance: App
+        fun getInstance(): App = instance
+
 //        lateinit var cookieJar: CookieJar
         fun disProgress() {
             Handler(Looper.getMainLooper()).postDelayed(
                 {
                     try {
-                        if (com.droi.App.Companion.dialog != null) {
-                            if (com.droi.App.Companion.dialog!!.isShowing) {
-                                com.droi.App.Companion.dialog!!.dismiss()
-                                com.droi.App.Companion.dialog = null
+                        if (dialog != null) {
+                            if (dialog!!.isShowing) {
+                                dialog!!.dismiss()
+                                dialog = null
                             }
                         }
                     } catch (e: Exception) {
@@ -52,11 +47,5 @@ class App : Application() {
 
     override fun onTerminate() {
         super.onTerminate()
-        com.droi.App.Companion.instance = null
-    }
-
-    fun getGlobalApplicationContext(): App {
-        checkNotNull(instance) { "this application does not inherit com.kakao.GlobalApplication" }
-        return instance!!
     }
 }

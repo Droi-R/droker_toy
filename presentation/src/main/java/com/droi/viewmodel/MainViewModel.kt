@@ -1,25 +1,23 @@
 package com.droi.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.droi.App
 import com.droi.data.util.Logger
 import com.droi.db.AppDatabase
 import com.droi.db.Contacts
 import com.droi.domain.model.YoEntity
 import com.droi.domain.usecase.GetUserUseCase
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel(application: Application, private val getUserUseCase: GetUserUseCase) : BaseViewModel(application) {
-
-    var gson = Gson()
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getUserUseCase: GetUserUseCase,
+) : BaseViewModel() {
     var liveData_Res: MutableLiveData<YoEntity.Res> = MutableLiveData<YoEntity.Res>()
     var change: Int = -1
-    val context = application
-
-    init {
-    }
-
     fun requsetUsers() {
 //        liveData_Res = getUserUseCase.invoke("shop",)
         getUserUseCase("shop", viewModelScope) {
@@ -37,7 +35,7 @@ class MainViewModel(application: Application, private val getUserUseCase: GetUse
     }
 
     fun setLike(body: YoEntity.Res) {
-        val db = AppDatabase.getInstance(context)
+        val db = AppDatabase.getInstance(App.getInstance())
         for ((i, b) in body.items.withIndex()) {
             val result = db?.contactsDao()?.findByResult(b.id)
             if (result != null) {
@@ -49,7 +47,7 @@ class MainViewModel(application: Application, private val getUserUseCase: GetUse
     }
 
     fun isLike(position: Int) {
-        val db = AppDatabase.getInstance(context)
+        val db = AppDatabase.getInstance(App.getInstance())
         val res = liveData_Res.value
         val item = res?.items?.get(position)
         if (item != null) {
@@ -67,6 +65,4 @@ class MainViewModel(application: Application, private val getUserUseCase: GetUse
             liveData_Res.postValue(res!!)
         }
     }
-
-//    https://api.github.com/search/users?q=shop
 }

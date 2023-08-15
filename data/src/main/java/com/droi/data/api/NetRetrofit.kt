@@ -1,32 +1,34 @@
 package com.droi.data.api
 
 import android.app.Application
-import android.content.SharedPreferences
+import android.content.Context
 import com.droi.data.Const
 import com.droi.data.util.Logger
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.google.gson.GsonBuilder
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class NetRetrofit(application: Application) {
+class NetRetrofit @Inject constructor(@ApplicationContext private val context: Context) {
     var slog: String? = null
     val gson = GsonBuilder().setLenient().create()
-    val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(application))
+    val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
     var interceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
         override fun log(s: String) {
 //            Logger.loge("slog :   $s");
-            if (s.contains("FAILED")
-                || s.contains("Failed")
-                || s.contains("failed")
-                || s.contains("error")
-                || s.contains("Error")
-                || s.contains("Not Found")
+            if (s.contains("FAILED") ||
+                s.contains("Failed") ||
+                s.contains("failed") ||
+                s.contains("error") ||
+                s.contains("Error") ||
+                s.contains("Not Found")
             ) {
                 slog = slog + s + "\n"
                 Logger.loge("RESULT!!!!   :   " + slog)
@@ -34,8 +36,7 @@ class NetRetrofit(application: Application) {
         }
     }).setLevel(HttpLoggingInterceptor.Level.BODY)
 
-
-    var defaultHttpClient = OkHttpClient.Builder() //.connectionPool(cPool)
+    var defaultHttpClient = OkHttpClient.Builder() // .connectionPool(cPool)
         //            .connectTimeout(1, TimeUnit.SECONDS)
         //            .readTimeout(5, TimeUnit.SECONDS)
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -43,14 +44,13 @@ class NetRetrofit(application: Application) {
         .cookieJar(cookieJar)
         .addInterceptor(interceptor)
         .build()
-    var defaultHttpClient_check = OkHttpClient.Builder() //.connectionPool(cPool)
+    var defaultHttpClient_check = OkHttpClient.Builder() // .connectionPool(cPool)
         //            .connectTimeout(1, TimeUnit.SECONDS)
         //            .readTimeout(5, TimeUnit.SECONDS)
         .connectTimeout(5, TimeUnit.SECONDS)
         .readTimeout(5, TimeUnit.SECONDS)
         .addInterceptor(interceptor)
         .build()
-
 
     var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(Const.BASE_URL)
@@ -72,5 +72,4 @@ class NetRetrofit(application: Application) {
 //        }
 //        return service
 //    }
-
 }
