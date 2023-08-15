@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.droi.BaseFragment
@@ -15,19 +16,17 @@ import com.droi.databinding.FragmentFirstBinding
 import com.droi.domain.model.YoEntity
 import com.droi.viewmodel.MainViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
-import org.koin.android.ext.android.inject
-
 
 class FirstFragment : BaseFragment() {
     lateinit var binding: FragmentFirstBinding
 
     lateinit var firstAdapter: FirstAdapter
-    private val model: MainViewModel by inject()
+    private val model: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_first, container, false)
 //        return super.onCreateView(inflater, container, savedInstanceState)
@@ -40,15 +39,14 @@ class FirstFragment : BaseFragment() {
         model.requsetUsers()
     }
     private fun initRecyclerView() {
-
         binding.rvRecruit.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
 //        binding.rvRecruit.layoutManager = GridLayoutManager(requireActivity(),2)
         firstAdapter = FirstAdapter(this, requireActivity())
         binding.rvRecruit.adapter = firstAdapter
         val adapterobseverRecruit: Observer<YoEntity.Res> =
             Observer {
-                Logger.loge("liveData_Res   ${it}")
-                firstAdapter.diff(it.items, "",model.change)
+                Logger.loge("liveData_Res   $it")
+                firstAdapter.diff(it.items, "", model.change)
                 model.change = -1
                 stopShimmer(binding.sfRecruit)
             }
@@ -69,13 +67,13 @@ class FirstFragment : BaseFragment() {
 
     override fun oneClick(v: View, position: Int) {
         when (v.id) {
-            R.id.cl_first ->{
-                val intent = Intent(requireActivity(),DetailActivity::class.java)
+            R.id.cl_first -> {
+                val intent = Intent(requireActivity(), DetailActivity::class.java)
 //                intent.putExtra("item",model.liveData_Res.value?.items?.get(position))
-                intent.putExtra("position",position)
+                intent.putExtra("position", position)
                 startActivity(intent)
             }
-            R.id.iv_like ->{
+            R.id.iv_like -> {
                 model.isLike(position)
             }
         }
@@ -85,7 +83,6 @@ class FirstFragment : BaseFragment() {
         super.onClick(v)
         when (v.id) {
             else -> {
-
             }
         }
     }

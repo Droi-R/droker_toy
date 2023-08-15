@@ -6,13 +6,12 @@ import androidx.fragment.app.FragmentManager
 import com.droi.BaseActivity
 import com.droi.R
 import com.droi.databinding.ActivityMainBinding
-import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     var fragmentManager: FragmentManager? = null
-    val firstFragment: FirstFragment by inject()
+    var firstFragment: FirstFragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -20,15 +19,15 @@ class MainActivity : BaseActivity() {
     }
 
     override fun _init() {
-//        initTap()
+        initTap()
     }
 
     private fun initTap() {
         fragmentManager = supportFragmentManager
-//        if (firstFragment == null) {
-//            firstFragment = FirstFragment()
-        fragmentManager!!.beginTransaction().add(R.id.fl_main, firstFragment!!)
-            .commitAllowingStateLoss()
-//        }
+        if (firstFragment == null) {
+            firstFragment = FirstFragment()
+            fragmentManager!!.beginTransaction().add(R.id.fl_main, firstFragment!!)
+                .commitAllowingStateLoss()
+        }
     }
 }

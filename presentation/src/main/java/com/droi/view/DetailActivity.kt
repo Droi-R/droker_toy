@@ -1,18 +1,18 @@
 package com.droi.view
 
 import android.view.View
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.droi.BaseActivity
 import com.droi.R
 import com.droi.databinding.ActivityDetailBinding
 import com.droi.viewmodel.MainViewModel
-import org.koin.android.ext.android.inject
 
 class DetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private val model: MainViewModel by inject()
+    private val model: MainViewModel by viewModels()
     var position = 0
 
     override fun _init() {

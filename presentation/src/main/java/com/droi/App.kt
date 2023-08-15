@@ -4,9 +4,9 @@ import android.app.Application
 import android.app.Dialog
 import android.os.Handler
 import android.os.Looper
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.GlobalContext.startKoin
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class App : Application() {
     init {
         instance = this
@@ -17,10 +17,10 @@ class App : Application() {
         instance = this
         gMapTmpChunk = HashMap()
 
-        startKoin {
-            androidContext(this@App)
-            modules(appModule)
-        }
+//        startKoin {
+//            androidContext(this@App)
+//            modules(appModule)
+//        }
     }
 
     companion object {
@@ -30,7 +30,6 @@ class App : Application() {
         var instance: com.droi.App? = null
         var dialog: Dialog? = null
         lateinit var gMapTmpChunk: HashMap<String, Any>
-
 //        lateinit var cookieJar: CookieJar
         fun disProgress() {
             Handler(Looper.getMainLooper()).postDelayed(
@@ -45,7 +44,9 @@ class App : Application() {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                },0,)
+                },
+                0,
+            )
         }
     }
 
@@ -54,8 +55,8 @@ class App : Application() {
         com.droi.App.Companion.instance = null
     }
 
-    fun getGlobalApplicationContext(): com.droi.App {
-        checkNotNull(com.droi.App.Companion.instance) { "this application does not inherit com.kakao.GlobalApplication" }
-        return com.droi.App.Companion.instance!!
+    fun getGlobalApplicationContext(): App {
+        checkNotNull(instance) { "this application does not inherit com.kakao.GlobalApplication" }
+        return instance!!
     }
 }
