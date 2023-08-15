@@ -19,7 +19,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun _init() {
-        initTap()
+//        initTap()
     }
 
     private fun initTap() {
