@@ -1,12 +1,8 @@
-import Versions.NAV_VERSION
-
-object Versions {
-    const val NAV_VERSION = "2.4.0-alpha10"
-
-}
-
 object Kotlin {
-    const val SDK = "org.jetbrains.java:java-stdlib-jdk8:1.5.21"
+    const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
+}
+object KTX {
+    const val CORE = "androidx.core:core-ktx:1.9.0"
 }
 
 object AndroidX {
@@ -19,10 +15,6 @@ object AndroidX {
     const val ACTIVITY = "androidx.activity:activity-ktx:1.3.1"
     const val FRAGMENT = "androidx.fragment:fragment-ktx:1.3.6"
     const val DATASTORE = "androidx.datastore:datastore-preferences:1.0.0"
-}
-
-object KTX {
-    const val CORE = "androidx.core:core-ktx:1.6.0"
 }
 
 object Google {

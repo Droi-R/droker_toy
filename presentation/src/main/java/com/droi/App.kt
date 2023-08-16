@@ -19,10 +19,9 @@ class App : Application() {
     }
 
     companion object {
-        @JvmField
+        private lateinit var instance: App
         var dialog: Dialog? = null
         lateinit var gMapTmpChunk: HashMap<String, Any>
-        lateinit var instance: App
         fun getInstance(): App = instance
 
 //        lateinit var cookieJar: CookieJar

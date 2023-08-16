@@ -1,8 +1,8 @@
 package com.droi.di
 
-import com.droi.data.api.RetrofitService
-import com.droi.data.datasource.YoRemoteDataSource
 import com.droi.data.datasource.YoRemoteDataSourceImpl
+import com.droi.data.repository.YoRepositoryImpl
+import com.droi.domain.repository.YoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,14 +11,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
+class RepositoryModule {
     @Provides
     @Singleton
-    fun provideMainDataSource(
-        retrofitService: RetrofitService,
-    ): YoRemoteDataSource {
-        return YoRemoteDataSourceImpl(
-            retrofitService,
+    fun provideMainRepository(
+        yoRemoteDataSourceImpl: YoRemoteDataSourceImpl,
+    ): YoRepository {
+        return YoRepositoryImpl(
+            yoRemoteDataSourceImpl,
         )
     }
 }

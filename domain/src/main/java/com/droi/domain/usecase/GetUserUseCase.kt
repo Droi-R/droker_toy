@@ -8,8 +8,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GetUserUseCase @Inject constructor(private val repository: YoRepository) {
-
+class GetUserUseCase @Inject constructor(
+    private val repository: YoRepository,
+) {
     operator fun invoke(
         q: String,
         scope: CoroutineScope,

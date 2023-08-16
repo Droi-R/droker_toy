@@ -8,7 +8,6 @@ import com.droi.db.AppDatabase
 import com.droi.db.Contacts
 import com.droi.domain.model.YoEntity
 import com.droi.domain.usecase.GetUserUseCase
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
