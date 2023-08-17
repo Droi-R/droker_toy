@@ -21,16 +21,16 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FirstFragment @Inject constructor() : BaseFragment() {
-    lateinit var binding: FragmentFirstBinding
+    private lateinit var binding: FragmentFirstBinding
 
-    lateinit var firstAdapter: FirstAdapter
+    private lateinit var firstAdapter: FirstAdapter
     private val model: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_first, container, false)
 //        return super.onCreateView(inflater, container, savedInstanceState)
         return binding.root
