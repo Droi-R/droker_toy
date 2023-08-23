@@ -8,4 +8,6 @@
 .cxx
 local.properties
 buildSrc
-.idea
+buildSrc/build
+*.idea/*
+buildSrc/*

@@ -9,14 +9,28 @@ import com.droi.db.Contacts
 import com.droi.domain.model.YoEntity
 import com.droi.domain.usecase.GetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
 ) : BaseViewModel() {
+
+    companion object {
+        const val MIllIS_IN_FUTURE = 30000L
+        const val TICK_INTERVAL = 1000L
+    }
+
     var liveData_Res: MutableLiveData<YoEntity.Res> = MutableLiveData<YoEntity.Res>()
     var change: Int = -1
+    val customTimerDuration: MutableLiveData<Long> = MutableLiveData(MIllIS_IN_FUTURE)
+    var oldTimeMills: Long = 0
+
     fun requsetUsers() {
 //        liveData_Res = getUserUseCase.invoke("shop",)
         getUserUseCase("shop", viewModelScope) {
@@ -31,6 +45,19 @@ class MainViewModel @Inject constructor(
 //                com.droi.util.Util.showToast("${response.code()} ${response.message()}")
 //            }
 //        }
+    }
+
+    val timerJob: Job = viewModelScope.launch(start = CoroutineStart.LAZY) {
+        withContext(Dispatchers.IO) {
+            oldTimeMills = System.currentTimeMillis()
+            while (customTimerDuration.value!! > 0L) {
+                val delayMills = System.currentTimeMillis() - oldTimeMills
+                if (delayMills == TICK_INTERVAL) {
+                    customTimerDuration.postValue(customTimerDuration.value!! - delayMills)
+                    oldTimeMills = System.currentTimeMillis()
+                }
+            }
+        }
     }
 
     fun setLike(body: YoEntity.Res) {
