@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.FragmentManager
@@ -36,6 +38,12 @@ class MainActivity : BaseActivity() {
         model.requsetUsers()
         model.timerJob.start()
         setContent {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background,
+            ) {
+                mainPreview()
+            }
 //            MaterialTheme {
 //                Surface(color = Color.White) {
 //                    Column {
@@ -44,7 +52,6 @@ class MainActivity : BaseActivity() {
 //                    }
 //                }
 //            }
-            mainPreview()
         }
     }
 
@@ -54,7 +61,8 @@ class MainActivity : BaseActivity() {
         MaterialTheme {
             Surface(color = Color.White) {
                 Column {
-                    BaseCompose().demoScreen(this@MainActivity, model)
+                    BaseCompose().DefaultPreview2()
+//                    BaseCompose().DemoScreen(this@MainActivity, model)
 //                    BaseCompose().funtionA()
                 }
             }

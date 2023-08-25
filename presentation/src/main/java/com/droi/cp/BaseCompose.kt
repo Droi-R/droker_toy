@@ -1,10 +1,14 @@
 package com.droi.cp
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,10 +26,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.droi.R
 import com.droi.view.MainActivity
 import com.droi.viewmodel.MainViewModel
 
@@ -36,22 +43,42 @@ class BaseCompose {
 
     val localColor = compositionLocalOf { Color.Red }
 
-    @Preview(showBackground = true)
+    @Preview(showSystemUi = true)
     @Composable
-    fun defaultPreview2() {
+    fun DefaultPreview2() {
+        val modifier = Modifier
+            .padding(all = 10.dp)
+            .border(width = 2.dp, color = Color.Black)
+            .clip(shape = RoundedCornerShape(30.dp))
+
+        val modifier2 = Modifier
+            .padding(all = 10.dp)
+            .border(width = 2.dp, color = Color.Black)
+            .clip(shape = RoundedCornerShape(30.dp))
+
+        val combinedModifier = modifier.then(modifier2)
+
         MaterialTheme {
             Column(
+                modifier = combinedModifier,
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.jp_jobplanet),
+                    contentDescription = "title Image",
+                    modifier = modifier
+                )
                 CustomSwitch()
                 CustomText(
                     text = "go hell",
                     fontWeight = FontWeight.Bold,
                     color = Color.Unspecified,
+                    modifier = modifier,
                 )
                 CustomList(items = listOf("100", "2", "3", "4"))
                 Row(
+                    modifier = modifier,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.Bottom,
                 ) {
@@ -106,7 +133,11 @@ class BaseCompose {
             textstate = text
         }
         CompositionLocalProvider(localColor provides color) {
-            Column {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween,
+            ) {
                 MyTextFiled(textstate, onTextChanged)
                 MyTextView(text = text)
                 MyTextView(text = text2)
@@ -130,8 +161,14 @@ class BaseCompose {
     }
 
     @Composable
-    fun CustomText(text: String, fontWeight: FontWeight, color: Color) {
+    fun CustomText(
+        text: String,
+        fontWeight: FontWeight,
+        color: Color,
+        modifier: Modifier = Modifier,
+    ) {
         Text(
+            modifier = modifier,
             text = text,
             fontWeight = fontWeight,
             color = color,
