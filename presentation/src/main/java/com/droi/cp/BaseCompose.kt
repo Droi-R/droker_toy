@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFrom
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
@@ -28,10 +30,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.droi.R
 import com.droi.view.MainActivity
 import com.droi.viewmodel.MainViewModel
@@ -46,6 +51,108 @@ class BaseCompose {
     @Preview(showSystemUi = true)
     @Composable
     fun DefaultPreview2() {
+        runRowCol()
+    }
+
+    @Composable
+    fun runRowCol() {
+        Column {
+            Row(
+//            horizontalArrangement = Arrangement.SpaceEvenly
+//            horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceAround,
+            ) {
+                TextCell(
+                    text = "1",
+                    modifier = Modifier.align(Alignment.Top),
+                )
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                ) {
+                    TextCell(text = "2")
+                    TextCell(text = "3")
+                }
+                TextCell(
+                    text = "3",
+                    modifier = Modifier.align(Alignment.Bottom),
+                )
+            }
+            Row {
+                Text(
+                    text = "large",
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.alignByBaseline(),
+                )
+                Text(
+                    text = "small",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.alignByBaseline(),
+                )
+            }
+            Row {
+                Text(
+                    text = "large",
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.alignBy(FirstBaseline),
+                )
+                Text(
+                    text = "small",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.alignBy(FirstBaseline),
+                )
+            }
+            Row {
+                Text(
+                    text = "large",
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.alignBy(FirstBaseline).weight(weight = 0.2f, fill = true),
+                )
+                Text(
+                    text = "small",
+                    fontSize = 32.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.paddingFrom(
+                        alignmentLine = FirstBaseline,
+                        before = 0.dp,
+                        after = 80.dp,
+                    ).weight(weight = 0.4f, fill = true),
+                )
+
+                Text(
+                    text = "small",
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.CenterVertically).weight(weight = 0.3f, fill = true),
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun TextCell(text: String, modifier: Modifier = Modifier) {
+        val cellModifier = Modifier
+            .padding(4.dp)
+            .size(100.dp, 100.dp)
+            .border(width = 4.dp, color = Color.Black)
+
+        Text(
+            text = text,
+            cellModifier.then(modifier),
+            fontSize = 70.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+        )
+    }
+
+    @Composable
+    fun runModifier() {
         val modifier = Modifier
             .padding(all = 10.dp)
             .border(width = 2.dp, color = Color.Black)
@@ -67,7 +174,7 @@ class BaseCompose {
                 Image(
                     painter = painterResource(id = R.drawable.jp_jobplanet),
                     contentDescription = "title Image",
-                    modifier = modifier
+                    modifier = modifier,
                 )
                 CustomSwitch()
                 CustomText(
