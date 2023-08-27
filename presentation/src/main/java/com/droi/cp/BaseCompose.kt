@@ -4,18 +4,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFrom
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -51,7 +55,51 @@ class BaseCompose {
     @Preview(showSystemUi = true)
     @Composable
     fun DefaultPreview2() {
-        runRowCol()
+        BoxLayOut()
+    }
+
+    @Composable
+    fun BoxLayOut() {
+        Box(
+            contentAlignment = Alignment.CenterEnd,
+//            modifier = Modifier.size(width = 400.dp, height = 400.dp).clip(CircleShape).background(Color.Blue),
+//            modifier = Modifier.size(width = 400.dp, height = 400.dp).clip(RoundedCornerShape(30.dp)).background(Color.Blue),
+            modifier = Modifier.size(width = 400.dp, height = 400.dp).clip(CutCornerShape(30.dp)).background(Color.Blue),
+        ) {
+            val height = 200.dp
+            val width = 200.dp
+            Text(text = "top s", modifier = Modifier.align(Alignment.TopStart))
+            Text(text = "center", modifier = Modifier.align(Alignment.Center))
+            Text(text = "bot e", modifier = Modifier.align(Alignment.BottomEnd))
+            BoxTextCell(
+                text = "1",
+                Modifier.size(width = width, height = height),
+            )
+            BoxTextCell(
+                text = "2",
+                Modifier.size(width = width, height = height),
+            )
+            BoxTextCell(
+                text = "3",
+                Modifier.size(width = width, height = height),
+            )
+        }
+    }
+
+    @Composable
+    fun BoxTextCell(text: String, modifier: Modifier = Modifier, fontSize: Int = 150) {
+        val cellModifier = Modifier
+            .padding(4.dp)
+            .border(width = 5.dp, color = Color.Black)
+        Surface {
+            Text(
+                text = text,
+                cellModifier.then(modifier),
+                fontSize = fontSize.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 
     @Composable
@@ -129,7 +177,8 @@ class BaseCompose {
                     text = "small",
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterVertically).weight(weight = 0.3f, fill = true),
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                        .weight(weight = 0.3f, fill = true),
                 )
             }
         }
