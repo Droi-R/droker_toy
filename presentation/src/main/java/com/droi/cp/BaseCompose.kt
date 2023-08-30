@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import com.droi.R
 import com.droi.view.MainActivity
 import com.droi.viewmodel.MainViewModel
+import kotlin.math.roundToInt
 
 class BaseCompose {
     companion object {
@@ -55,6 +57,63 @@ class BaseCompose {
     @Preview(showSystemUi = true)
     @Composable
     fun DefaultPreview2() {
+        CustomLayout()
+    }
+
+    fun Modifier.exLayouFraction(
+        fraction: Float,
+    ) = layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        val x = -(placeable.width * fraction).roundToInt()
+        layout(placeable.width, placeable.height) {
+            placeable.placeRelative(x = x, y = 0)
+        }
+    }
+
+    fun Modifier.exLayout(
+        x: Int,
+        y: Int,
+    ) = layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        layout(placeable.width, placeable.height) {
+            placeable.placeRelative(x, y)
+        }
+    }
+
+    @Composable
+    fun CustomLayout() {
+        Box(
+            modifier = Modifier.size(width = 520.dp, height = 80.dp),
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                ColorBox(
+                    modifier = Modifier.exLayouFraction(0f)
+                        .background(Color.Blue),
+                )
+                ColorBox(
+                    modifier = Modifier.exLayouFraction(0.25f)
+                        .background(Color.Blue),
+                )
+                ColorBox(
+                    modifier = Modifier.exLayouFraction(0.5f)
+                        .background(Color.Blue),
+                )
+                ColorBox(
+                    modifier = Modifier.exLayouFraction(0.7f)
+                        .background(Color.Blue),
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun ColorBox(modifier: Modifier) {
+        Box(
+            modifier = Modifier
+                .padding(1.dp)
+                .size(width = 50.dp, height = 50.dp)
+                .then(modifier),
+        )
         BoxLayOut()
     }
 
@@ -159,25 +218,30 @@ class BaseCompose {
                     text = "large",
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.alignBy(FirstBaseline).weight(weight = 0.2f, fill = true),
+                    modifier = Modifier
+                        .alignBy(FirstBaseline)
+                        .weight(weight = 0.2f, fill = true),
                 )
                 Text(
                     text = "small",
                     fontSize = 32.sp,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.paddingFrom(
-                        alignmentLine = FirstBaseline,
-                        before = 0.dp,
-                        after = 80.dp,
-                    ).weight(weight = 0.4f, fill = true),
+                    modifier = Modifier
+                        .paddingFrom(
+                            alignmentLine = FirstBaseline,
+                            before = 0.dp,
+                            after = 80.dp,
+                        )
+                        .weight(weight = 0.4f, fill = true),
                 )
 
                 Text(
                     text = "small",
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
                         .weight(weight = 0.3f, fill = true),
                 )
             }
@@ -221,6 +285,7 @@ class BaseCompose {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
+//                    https://developer.android.com/jetpack/compose/resources?hl=ko 리소스 종류
                     painter = painterResource(id = R.drawable.jp_jobplanet),
                     contentDescription = "title Image",
                     modifier = modifier,
