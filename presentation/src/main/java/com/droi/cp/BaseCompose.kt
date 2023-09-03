@@ -6,14 +6,27 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFrom
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,16 +38,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +62,9 @@ import androidx.compose.ui.unit.sp
 import com.droi.R
 import com.droi.view.MainActivity
 import com.droi.viewmodel.MainViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class BaseCompose {
@@ -53,11 +73,153 @@ class BaseCompose {
     }
 
     val localColor = compositionLocalOf { Color.Red }
+    val channel = Channel<Int>()
 
     @Preview(showSystemUi = true)
     @Composable
-    fun DefaultPreview2() {
-        CustomLayout()
+    fun DefaultPreview() {
+    }
+
+    @Composable
+    fun lazyRC() {
+        val scrollState = rememberScrollState()
+
+        Column(modifier = Modifier.verticalScroll(scrollState)) {
+            repeat(100) {
+                TextCell(text = "1")
+            }
+        }
+        Row {
+            repeat(100) {
+                TextCell(text = "2")
+            }
+        }
+
+        LazyRow {
+            item {
+                TextCell(text = "3")
+            }
+        }
+        LazyColumn {
+            items(1000) { index ->
+                Text(text = "index $index")
+            }
+        }
+
+        val listState = rememberLazyListState()
+
+        val colorNameList = listOf("red", "grr", "bleu", "indogp")
+        LazyColumn(
+            state = listState,
+        ) {
+            itemsIndexed(colorNameList) { index, item ->
+                Text(text = "index $index  $item")
+            }
+        }
+
+        val coroutineScope = rememberCoroutineScope()
+        SideEffect {
+            coroutineScope.launch {
+                listState.animateScrollToItem(0)
+                listState.scrollToItem(0)
+            }
+        }
+        LaunchedEffect(key1 = Unit) {
+            coroutineScope.launch {
+                listState.animateScrollToItem(0)
+                listState.scrollToItem(0)
+            }
+        }
+
+        val firstVisible = listState.firstVisibleItemIndex
+        if (firstVisible > 8) {
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 60.dp), // 책에선 cells
+            state = rememberLazyGridState(), // 책에서는 rememberLazyListState()
+            contentPadding = PaddingValues(10.dp),
+        ) {
+            items(30) { index ->
+                TextCell(text = "grid")
+            }
+        }
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            state = rememberLazyGridState(), // 책에서는 rememberLazyListState()
+            contentPadding = PaddingValues(10.dp),
+        ) {
+            items(30) { index ->
+                TextCell(text = "grid")
+            }
+        }
+    }
+
+    @Composable
+    fun composeCorroutine() {
+        val coroutineScope = rememberCoroutineScope()
+
+        LaunchedEffect(key1 = Unit) {
+            coroutineScope.launch {
+                performSlowTask()
+            }
+        }
+        Button(onClick = {
+            coroutineScope.launch {
+                performSlowTask()
+            }
+        }) {
+            Text(text = "click")
+        }
+    }
+
+    suspend fun performSlowTask() {
+        println("slow")
+        delay(5000)
+        println("after")
+    }
+
+    @Composable
+    fun IntrinsicSizeLayout() {
+        var textState by remember {
+            mutableStateOf("")
+        }
+        val onTextChanged = { text: String ->
+            textState = text
+        }
+
+        Column(Modifier.width(200.dp).padding(5.dp)) {
+//            Column(Modifier.width(IntrinsicSize.Max)) {
+            Column(Modifier.width(IntrinsicSize.Min)) {
+                Text(
+                    text = textState,
+                    modifier = Modifier.padding(start = 4.dp),
+                )
+                Box(modifier = Modifier.height(10.dp).fillMaxWidth().background(Color.Blue))
+            }
+            MyTextFiled(textstate = textState, onTextChanged = onTextChanged)
+        }
+    }
+
+    @Composable
+    fun DoNotLayout(
+        modifier: Modifier = Modifier,
+        content: @Composable () -> Unit,
+    ) {
+        Layout(
+            modifier = modifier,
+            content = content,
+        ) { measurables, constraints ->
+            val placeables = measurables.map { measurable ->
+                measurable.measure(constraints)
+            }
+            layout(constraints.maxWidth, constraints.maxHeight) {
+                placeables.forEach {
+                    it.placeRelative(x = 0, y = 0)
+                }
+            }
+        }
     }
 
     fun Modifier.exLayouFraction(
@@ -115,6 +277,7 @@ class BaseCompose {
                 .then(modifier),
         )
         BoxLayOut()
+        IntrinsicSizeLayout()
     }
 
     @Composable
@@ -123,7 +286,10 @@ class BaseCompose {
             contentAlignment = Alignment.CenterEnd,
 //            modifier = Modifier.size(width = 400.dp, height = 400.dp).clip(CircleShape).background(Color.Blue),
 //            modifier = Modifier.size(width = 400.dp, height = 400.dp).clip(RoundedCornerShape(30.dp)).background(Color.Blue),
-            modifier = Modifier.size(width = 400.dp, height = 400.dp).clip(CutCornerShape(30.dp)).background(Color.Blue),
+            modifier = Modifier
+                .size(width = 400.dp, height = 400.dp)
+                .clip(CutCornerShape(30.dp))
+                .background(Color.Blue),
         ) {
             val height = 200.dp
             val width = 200.dp

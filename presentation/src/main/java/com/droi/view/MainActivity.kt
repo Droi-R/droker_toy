@@ -42,7 +42,7 @@ class MainActivity : BaseActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-                mainPreview()
+
             }
 //            MaterialTheme {
 //                Surface(color = Color.White) {
@@ -54,21 +54,6 @@ class MainActivity : BaseActivity() {
 //            }
         }
     }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun mainPreview() {
-        MaterialTheme {
-            Surface(color = Color.White) {
-                Column {
-                    BaseCompose().DefaultPreview2()
-//                    BaseCompose().DemoScreen(this@MainActivity, model)
-//                    BaseCompose().funtionA()
-                }
-            }
-        }
-    }
-
     private fun initTap() {
         fragmentManager = supportFragmentManager
 //        if (firstFragment == null) {
