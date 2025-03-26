@@ -1,14 +1,21 @@
-object Kotlin {
-    const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
+object Versions {
+    const val HILT_VERSION = "2.50"
+    const val COMPOSE_VERSION = "1.5.3"
+    const val COMPOSE_COMPILER_VERSION = "1.5.12"
+    const val KOTLIN_VERSION = "1.9.10"
 }
-object KTX {
-    const val CORE = "androidx.core:core-ktx:1.9.0"
+
+
+object Kotlin {
+    const val SDK = "org.jetbrains.java:java-stdlib-jdk8:1.5.21"
+    const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN_VERSION}"
+
 }
 
 object AndroidX {
     const val MATERIAL = "androidx.compose.material:material:1.0.0-rc02"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:2.1.0"
-    const val APP_COMPAT = "androidx.appcompat:appcompat:1.3.1"
+    const val APP_COMPAT = "androidx.appcompat:appcompat:1.7.0"
     const val LEGACY = "androidx.legacy:legacy-support-v4:1.0.0"
     const val LIFECYCLE_VIEW_MODEL = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     const val LIFECYCLE_LIVEDATA = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
@@ -17,8 +24,12 @@ object AndroidX {
     const val DATASTORE = "androidx.datastore:datastore-preferences:1.0.0"
 }
 
+object KTX {
+    const val CORE = "androidx.core:core-ktx:1.12.0"
+}
+
 object Google {
-    const val MATERIAL = "com.google.android.material:material:1.4.0"
+    const val MATERIAL = "com.google.android.material:material:1.12.0"
 }
 
 object Test {
@@ -33,10 +44,9 @@ object AndroidTest {
 }
 
 object DaggerHilt {
-    const val DAGGER_HILT = "com.google.dagger:hilt-android:2.38.1"
-    const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-android-compiler:2.38.1"
-    const val DAGGER_HILT_VIEW_MODEL = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
-    const val DAGGER_HILT_ANDROIDX_COMPILER = "androidx.hilt:hilt-compiler:1.0.0"
+    const val DAGGER_HILT = "com.google.dagger:hilt-android:${Versions.HILT_VERSION}"
+    const val DAGGER_HILT_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT_VERSION}"
+    const val DAGGER_HILT_COMPOSE = "androidx.hilt:hilt-navigation-compose:1.1.0"
 }
 
 object Retrofit {
@@ -52,4 +62,29 @@ object OkHttp {
 
 object Coroutines {
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+}
+
+object CameraX {
+    const val CAMERA_CORE = "androidx.camera:camera-core:1.0.2"
+    const val CAMERA_CAMERA2 = "androidx.camera:camera-camera2:1.0.2"
+    const val CAMERA_LIFECYCLE = "androidx.camera:camera-lifecycle:1.0.2"
+    const val CAMERA_VIEW = "androidx.camera:camera-view:1.0.0-alpha29"
+    const val CAMERA_EXTENSIONS = "androidx.camera:camera-extensions:1.0.0-alpha29"
+}
+
+object Compose {
+    const val MATERIAL3 = "androidx.compose.material3:material3:1.1.0"
+    const val ACTIVITY = "androidx.activity:activity-compose:1.7.2"
+    const val UI = "androidx.compose.ui:ui:${Versions.COMPOSE_VERSION}"
+    const val TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE_VERSION}"
+    const val FOUNDATION = "androidx.compose.foundation:foundation:${Versions.COMPOSE_VERSION}"
+    const val EMBEDDABLE = "org.jetbrains.kotlin:kotlin-compose-compiler-plugin-embeddable:${Versions.KOTLIN_VERSION}"
+}
+
+object Room {
+    const val RUNTIME = "androidx.room:room-runtime:2.4.3"
+    const val COMPILER = "androidx.room:room-compiler:2.4.3"
+    const val KTX = "androidx.room:room-ktx:2.4.3"
+    const val GUAVA = "androidx.room:room-guava:2.4.3"
+    const val TESTING = "androidx.room:room-testing:2.4.3"
 }

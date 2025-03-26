@@ -1,4 +1,4 @@
-rootProject.name = "droi_joy"
-include ':presentation'
+rootProject.name = "bvc_android"
+include ':ordering'
 include ':domain'
 include ':data'

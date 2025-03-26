@@ -1,0 +1,218 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "com.bvc.ordering"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled = true
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.debug
+            debuggable false
+        }
+    }
+    buildFeatures {
+        dataBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "${Versions.COMPOSE_VERSION}"
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        if (name.contains("Test")) {
+            enabled = false
+        }
+    }
+    namespace 'com.bvc.ordering'
+}
+
+dependencies {
+
+    implementation project(path: ':domain')
+    implementation project(path: ':data')
+
+//    testImplementation 'io.kotest:kotest-runner-junit5:4.3.2'
+//    testImplementation 'junit:junit:4.+'
+//
+//    //    // Koin Unit Test
+////    testImplementation "io.insert-koin:koin-test:3.1.6"$kotlin_version
+////    testImplementation "io.insert-koin:koin-test-junit4:3.1.6"
+////    testImplementation "io.kotest.extensions:kotest-extensions-koin:1.1.0"
+//
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation (KTX.CORE)
+//    implementation 'androidx.appcompat:appcompat:1.5.1'
+//    implementation 'com.google.android.material:material:1.6.0'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+//    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+//
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+//    implementation "androidx.recyclerview:recyclerview:1.2.1"
+//
+
+//
+//
+//    def lifecycle_version = "2.5.1"
+//    // ViewModel
+//    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+//    // LiveData
+//    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+//    implementation "androidx.activity:activity-ktx:1.6.1"
+//
+//    //coroutine
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+//
+//    //gson
+//    implementation 'com.google.code.gson:gson:2.8.9'
+//    //glide
+//    implementation 'com.github.bumptech.glide:glide:4.11.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+//    kapt "android.arch.lifecycle:compiler:1.1.1"
+//    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+//
+////    스켈레톤
+//    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+//
+//
+//
+////    // Koin
+////    implementation "io.insert-koin:koin-core:3.1.6"
+////// Koin main features for Android
+////    implementation "io.insert-koin:koin-android:3.1.6"
+////// No more koin-android-viewmodel, koin-android-scope, koin-android-fragment
+////
+////// Java Compatibility
+////    implementation "io.insert-koin:koin-android-compat:3.1.6"
+////// Jetpack WorkManager
+////    implementation "io.insert-koin:koin-androidx-workmanager:3.1.6"
+////// Navigation Graph
+////    implementation "io.insert-koin:koin-androidx-navigation:3.1.6"
+//
+//
+//    //retrofit2
+//    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+//    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+//    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+//    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
+//    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+//
+//
+//
+//// Jetpack Compose
+//    def composeBom = platform("androidx.compose:compose-bom:2023.01.00")
+//    implementation composeBom
+//    androidTestImplementation composeBom
+//
+//    // Choose one of the following:
+//    // Material Design 3
+//    implementation("androidx.compose.material3:material3")
+//    // or Material Design 2
+////    implementation("androidx.compose.material:material")
+//    // or skip Material Design and build directly on top of foundational components
+//    implementation("androidx.compose.foundation:foundation")
+//    // or only import the main APIs for the underlying toolkit systems,
+//    // such as input and measurement/layout
+//    implementation("androidx.compose.ui:ui")
+//
+//    // Android Studio Preview support
+//    implementation("androidx.compose.ui:ui-tooling-preview")
+//    debugImplementation("androidx.compose.ui:ui-tooling")
+//
+//    // UI Tests
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+//    debugImplementation("androidx.compose.ui:ui-test-manifest")
+//
+//    // Optional - Included automatically by material, only add when you need
+//    // the icons but not the material library (e.g. when using Material3 or a
+//    // custom design system based on Foundation)
+//    implementation("androidx.compose.material:material-icons-core")
+//    // Optional - Add full set of material icons
+//    implementation("androidx.compose.material:material-icons-extended")
+//    // Optional - Add window size utils
+//    implementation("androidx.compose.material3:material3-window-size-class")
+//
+//    // Optional - Integration with activities
+//    implementation("androidx.activity:activity-compose:1.6.1")
+//    // Optional - Integration with ViewModels
+//    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+//    // Optional - Integration with LiveData
+//    implementation("androidx.compose.runtime:runtime-livedata")
+//    // Optional - Integration with RxJava
+//    implementation("androidx.compose.runtime:runtime-rxjava2")
+//
+//
+//    implementation "com.google.dagger:hilt-android:2.38.1"
+//    kapt "com.google.dagger:hilt-android-compiler:2.38.1"
+    implementation(Kotlin.STDLIB)
+
+
+
+    implementation(KTX.CORE)
+    implementation(AndroidX.APP_COMPAT)
+    implementation(Google.MATERIAL)
+
+    // Jetpack Compose
+    implementation(Compose.MATERIAL3)
+    implementation(Compose.ACTIVITY)
+    implementation(Compose.UI)
+    implementation(Compose.TOOLING)
+    implementation(Compose.FOUNDATION)
+
+    //Room
+    implementation (Room.RUNTIME)
+    kapt(Room.COMPILER)
+    implementation (Room.KTX)
+    implementation(Room.GUAVA)
+
+
+
+    // dagger hilt
+    implementation (DaggerHilt.DAGGER_HILT)
+    kapt (DaggerHilt.DAGGER_HILT_COMPILER)
+    implementation (DaggerHilt.DAGGER_HILT_COMPOSE)
+
+
+    // Retrofit
+    implementation (Retrofit.RETROFIT)
+    implementation (Retrofit.CONVERTER_GSON)
+    implementation (Retrofit.CONVERTER_JAXB)
+
+    //okHttp
+    implementation (OkHttp.OKHTTP)
+    implementation (OkHttp.LOGGING_INTERCEPTOR)
+
+}
