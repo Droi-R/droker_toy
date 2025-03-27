@@ -1,4 +1,4 @@
-package com.bvc.ordering.view
+package com.bvc.ordering.view.main
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -8,11 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentManager
-import com.bvc.ordering.BaseActivity
-import com.bvc.ordering.R
-import com.bvc.ordering.viewmodel.MainViewModel
+import com.bvc.ordering.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {

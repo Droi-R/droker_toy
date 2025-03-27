@@ -4,10 +4,10 @@
 //import androidx.activity.viewModels
 //import androidx.databinding.DataBindingUtil
 //import com.bumptech.glide.Glide
-//import com.bvc.ordering.BaseActivity
+//import com.bvc.ordering.base.BaseActivity
 //import com.bvc.R
 //import com.bvc.databinding.ActivityDetailBinding
-//import com.bvc.ordering.viewmodel.MainViewModel
+//import com.bvc.ordering.view.main.MainViewModel
 //
 //class DetailActivity : BaseActivity() {
 //

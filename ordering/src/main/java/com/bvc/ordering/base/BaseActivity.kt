@@ -1,4 +1,4 @@
-package com.bvc.ordering
+package com.bvc.ordering.base
 
 import android.os.Bundle
 import android.view.View

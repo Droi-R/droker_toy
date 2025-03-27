@@ -14,8 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Droi_mvvm">
         <activity
-            android:name=".view.MainActivity"
-            android:theme="@style/Theme.Droi_mvvm.NoActionBar"
+            android:name=".view.splash.SplashActivity"
+            android:theme="@style/Theme.Custom.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-<!--        <activity android:name=".view.DetailActivity"/>-->
+        <activity android:name=".view.main.MainActivity"/>
     </application>
 
 </manifest>

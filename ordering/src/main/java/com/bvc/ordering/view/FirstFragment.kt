@@ -9,13 +9,13 @@
 //import androidx.fragment.app.viewModels
 //import androidx.lifecycle.Observer
 //import androidx.recyclerview.widget.LinearLayoutManager
-//import com.bvc.ordering.BaseFragment
+//import com.bvc.ordering.base.BaseFragment
 //import com.bvc.R
 //import com.bvc.data.util.Logger
 //import com.bvc.databinding.FragmentFirstBinding
 //import com.bvc.domain.model.YoEntity
 //import com.bvc.ordering.ui.CustomRecyclerDecoration_Ve
-//import com.bvc.ordering.viewmodel.MainViewModel
+//import com.bvc.ordering.view.main.MainViewModel
 //import com.facebook.shimmer.ShimmerFrameLayout
 //import dagger.hilt.android.AndroidEntryPoint
 //import javax.inject.Inject

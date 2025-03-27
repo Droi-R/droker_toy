@@ -1,4 +1,4 @@
-package com.bvc.ordering.viewmodel
+package com.bvc.ordering.base
 
 import androidx.lifecycle.ViewModel
 

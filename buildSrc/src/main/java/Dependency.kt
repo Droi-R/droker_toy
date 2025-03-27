@@ -88,3 +88,9 @@ object Room {
     const val GUAVA = "androidx.room:room-guava:2.4.3"
     const val TESTING = "androidx.room:room-testing:2.4.3"
 }
+
+object ThirdParty{
+    const val SPLASHSCREEN  = "androidx.core:core-splashscreen:1.0.1"
+    const val GLIDE = "com.github.bumptech.glide:glide:4.15.1"
+    const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler:4.15.1"
+}

@@ -1,4 +1,4 @@
-package com.bvc.ordering.viewmodel
+package com.bvc.ordering.view.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,6 +8,7 @@ import com.bvc.ordering.db.AppDatabase
 import com.bvc.ordering.db.Contacts
 import com.bvc.domain.model.YoEntity
 import com.bvc.domain.usecase.GetUserUseCase
+import com.bvc.ordering.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
