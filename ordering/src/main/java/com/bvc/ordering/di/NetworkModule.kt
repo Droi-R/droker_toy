@@ -1,7 +1,7 @@
 package com.bvc.ordering.di
 
-import com.bvc.data.Const
-import com.bvc.data.api.RetrofitService
+import com.bvc.data.remote.api.GithubApi
+import com.bvc.domain.utils.Constant
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,43 +16,38 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
     @Provides
     @Singleton
-    fun provideHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
+    fun provideHttpClient(): OkHttpClient =
+        OkHttpClient
+            .Builder()
             .readTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
             .addInterceptor(getLoggingInterceptor())
             .build()
-    }
 
     @Singleton
     @Provides
     fun provideRetrofitInstance(
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory,
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(Const.BASE_URL)
+    ): Retrofit =
+        Retrofit
+            .Builder()
+            .baseUrl(Constant.BASE_URL)
             .client(okHttpClient)
             .client(provideHttpClient())
             .addConverterFactory(gsonConverterFactory)
             .build()
-    }
 
     @Provides
     @Singleton
-    fun provideConverterFactory(): GsonConverterFactory {
-        return GsonConverterFactory.create()
-    }
+    fun provideConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
     @Singleton
-    fun provideGithubApiService(retrofit: Retrofit): RetrofitService {
-        return retrofit.create(RetrofitService::class.java)
-    }
+    fun provideGithubApiService(retrofit: Retrofit): GithubApi = retrofit.create(GithubApi::class.java)
 
     private fun getLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }

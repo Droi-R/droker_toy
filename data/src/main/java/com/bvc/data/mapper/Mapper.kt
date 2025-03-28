@@ -1,15 +1,23 @@
 package com.bvc.data.mapper
 
-import com.bvc.data.model.YoReponse
-import com.bvc.domain.model.YoEntity
+import com.bvc.data.remote.model.GithubResponse
+import com.bvc.domain.model.GithubEntity
 
 object Mapper {
+    fun mapperGithub(response: List<GithubResponse>?): List<GithubEntity>? =
+        if (response != null) {
+            response.toDomain()
+        } else {
+            null
+        }
 
-    fun mapperToRes(yoResponse: YoReponse.ResData): YoEntity.Res {
-        return YoEntity.Res(
-            total_count = yoResponse.total_count,
-            incomplete_results = yoResponse.incomplete_results,
-            items = yoResponse.items,
-        )
-    }
+    fun List<GithubResponse>.toDomain(): List<GithubEntity> =
+        this.map {
+            GithubEntity(
+                it.name,
+                it.id,
+                it.date,
+                it.url,
+            )
+        }
 }

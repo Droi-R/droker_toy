@@ -13,8 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
-
-//    private lateinit var binding: ActivityMainBinding
+    //    private lateinit var binding: ActivityMainBinding
     var fragmentManager: FragmentManager? = null
 
 //    @Inject lateinit var firstFragment: FirstFragment
@@ -28,13 +27,12 @@ class MainActivity : BaseActivity() {
 
     override fun _init() {
         model.requsetUsers()
-        model.timerJob.start()
+//        model.timerJob.start()
         setContent {
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background,
             ) {
-
             }
 //            MaterialTheme {
 //                Surface(color = Color.White) {
@@ -46,6 +44,7 @@ class MainActivity : BaseActivity() {
 //            }
         }
     }
+
     private fun initTap() {
         fragmentManager = supportFragmentManager
 //        if (firstFragment == null) {

@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bvc.domain.log;
 import com.bvc.ordering.App;
-import com.bvc.data.util.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +17,7 @@ import java.util.TimeZone;
 
 public class Util extends AppCompatActivity {
     public static String getDateFormatTime(String str) {
-        Logger.loge("str  :  "   +  str);
+        log.e("str  :  "   +  str);
         String time = null;
         SimpleDateFormat ori = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         ori.setTimeZone(TimeZone.getTimeZone("UTC"));

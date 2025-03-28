@@ -6,9 +6,9 @@
 
     <data>
 
-        <variable
-            name="item"
-            type="com.bvc.domain.model.YoEntity.Items" />
+<!--        <variable-->
+<!--            name="item"-->
+<!--            type="com.bvc.domain.model.YoEntity.Items" />-->
     </data>
 
     <LinearLayout
@@ -35,25 +35,25 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{item.login}"
-            android:textColor="@color/gray01" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_login"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="1"-->
+<!--            android:text="@{item.login}"-->
+<!--            android:textColor="@color/gray01" />-->
 
-        <TextView
-            android:linksClickable="true"
-            android:autoLink="web"
-            android:id="@+id/tv_html_url"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:text="@{item.html_url}"
-            android:textColor="@color/gray01" />
+<!--        <TextView-->
+<!--            android:linksClickable="true"-->
+<!--            android:autoLink="web"-->
+<!--            android:id="@+id/tv_html_url"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="3"-->
+<!--            android:text="@{item.html_url}"-->
+<!--            android:textColor="@color/gray01" />-->
 
 
     </LinearLayout>
