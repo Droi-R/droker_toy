@@ -1,5 +1,6 @@
 package com.bvc.ordering.view.splash
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.ordering.App
@@ -9,6 +10,9 @@ import com.bvc.ordering.db.Contacts
 import com.bvc.domain.model.YoEntity
 import com.bvc.domain.usecase.GetUserUseCase
 import com.bvc.ordering.base.BaseViewModel
+import com.bvc.ordering.base.SingleLiveEvent
+import com.bvc.ordering.ksnet.KsnetUtil
+import com.bvc.ordering.ksnet.Telegram
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +35,23 @@ class SplashViewModel @Inject constructor(
     var change: Int = -1
     val customTimerDuration: MutableLiveData<Long> = MutableLiveData(MIllIS_IN_FUTURE)
     var oldTimeMills: Long = 0
+
+    private val _requestTelegram = SingleLiveEvent<ByteArray>()
+    val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
+
+
+
+    fun onSplashClick(){
+
+        _requestTelegram.value = Telegram.makeTelegramIC(
+            apprCode = "1",
+            mDeviceNo = "DPT0TEST03",
+            quota = "00",
+            totAmt = "1004",
+            orgApprNo = "123456789012",
+            orgDate = "201020"
+        )
+    }
 
     fun requsetUsers() {
 //        liveData_Res = getUserUseCase.invoke("shop",)

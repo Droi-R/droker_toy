@@ -9,52 +9,27 @@
         <variable
             name="item"
             type="com.bvc.domain.model.YoEntity.Items" />
+        <variable
+            name="model"
+            type="com.bvc.ordering.view.splash.SplashViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="150dp">
-
-            <ImageView
-                android:id="@+id/iv_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ImageView
-                android:src="@drawable/circle_empty"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/iv_detail_like"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/tv_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{item.login}"
-            android:textColor="@color/gray01" />
-
-        <TextView
-            android:linksClickable="true"
-            android:autoLink="web"
-            android:id="@+id/tv_html_url"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:text="@{item.html_url}"
-            android:textColor="@color/gray01" />
+        <ImageView
+            android:background="@color/ad_tag_bg_color"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="@{() -> model.onSplashClick()}"
+            />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
