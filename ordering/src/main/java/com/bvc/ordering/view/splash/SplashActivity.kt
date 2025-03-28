@@ -25,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class SplashActivity : BaseActivity() {
     private lateinit var binding: ActivitySplashBinding
     private val viewModel: SplashViewModel by viewModels()
-    var position = 0
 
     override fun _init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)

@@ -66,6 +66,12 @@
 
     <color name="round_color_black">#343434</color>
 
+    <!--bvc-->
+    <color name="bvc_main_color">#17C2C9</color>
+    <color name="bvc_f6f6f6">#f6f6f6</color>
+    <color name="bvc_666E89">#666E89</color>
+
+
     <!--    1~10번   #fcc43d-->
     <!--    11~20번  #8cc6e7-->
     <!--    21~30번 #f18d80-->

@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">droi joy</string>
+    <string name="app_name">ordering</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
 
+    <!--intro-->
+    <string name="intro_affiliate">가맹점</string>
+    <string name="intro_login">로그인</string>
+    <string name="intro_join">회원가입</string>
 </resources>

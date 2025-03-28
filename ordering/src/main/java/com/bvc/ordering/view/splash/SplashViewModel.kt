@@ -3,46 +3,44 @@ package com.bvc.ordering.view.splash
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.bvc.ordering.App
-import com.bvc.data.util.Logger
-import com.bvc.ordering.db.AppDatabase
-import com.bvc.ordering.db.Contacts
 import com.bvc.domain.model.YoEntity
 import com.bvc.domain.usecase.GetUserUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
-import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.Telegram
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
 ) : BaseViewModel() {
-
-    companion object {
-        const val MIllIS_IN_FUTURE = 30000L
-        const val TICK_INTERVAL = 1000L
-    }
-
     var liveData_Res: MutableLiveData<YoEntity.Res> = MutableLiveData<YoEntity.Res>()
-    var change: Int = -1
-    val customTimerDuration: MutableLiveData<Long> = MutableLiveData(MIllIS_IN_FUTURE)
-    var oldTimeMills: Long = 0
 
     private val _requestTelegram = SingleLiveEvent<ByteArray>()
     val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
 
+    private val _affiliate = SingleLiveEvent<String>().apply {
+        value = ""
+    }
+    val affiliate: LiveData<String> get() = _affiliate
+
+    private val _affiliateName = SingleLiveEvent<String>().apply {
+        value = "로그인"
+    }
+    val affiliateName: LiveData<String> get() = _affiliateName
+
+    private val _startVisible = SingleLiveEvent<Boolean>().apply {
+        value = false
+    }
+    val startVisible: LiveData<Boolean> get() = _startVisible
+
+    init {
+
+    }
 
 
-    fun onSplashClick(){
-
+    fun onSplashClick() {
         _requestTelegram.value = Telegram.makeTelegramIC(
             apprCode = "1",
             mDeviceNo = "DPT0TEST03",
@@ -67,50 +65,5 @@ class SplashViewModel @Inject constructor(
 //                com.droi.util.Util.showToast("${response.code()} ${response.message()}")
 //            }
 //        }
-    }
-
-    val timerJob: Job = viewModelScope.launch(start = CoroutineStart.LAZY) {
-        withContext(Dispatchers.IO) {
-            oldTimeMills = System.currentTimeMillis()
-            while (customTimerDuration.value!! > 0L) {
-                val delayMills = System.currentTimeMillis() - oldTimeMills
-                if (delayMills == TICK_INTERVAL) {
-                    customTimerDuration.postValue(customTimerDuration.value!! - delayMills)
-                    oldTimeMills = System.currentTimeMillis()
-                }
-            }
-        }
-    }
-
-    fun setLike(body: YoEntity.Res) {
-        val db = AppDatabase.getInstance(App.getInstance())
-        for ((i, b) in body.items.withIndex()) {
-            val result = db?.contactsDao()?.findByResult(b.id)
-            if (result != null) {
-                b.like = true
-                body.items[i] = b
-            }
-        }
-        liveData_Res.postValue(body)
-    }
-
-    fun isLike(position: Int) {
-        val db = AppDatabase.getInstance(App.getInstance())
-        val res = liveData_Res.value
-        val item = res?.items?.get(position)
-        if (item != null) {
-            val result = db?.contactsDao()?.findByResult(item.id)
-            Logger.loge("result   $result")
-            if (result == null) {
-                db?.contactsDao()?.insert(Contacts(0, item.id))
-                item.like = true
-            } else {
-                db.contactsDao().delete(result)
-                item.like = false
-            }
-            res.items[position] = item
-            change = position
-            liveData_Res.postValue(res!!)
-        }
     }
 }

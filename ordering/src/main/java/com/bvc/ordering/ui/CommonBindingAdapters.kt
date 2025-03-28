@@ -1,0 +1,19 @@
+package com.bvc.ordering.ui
+
+import android.view.View
+import android.webkit.WebView
+import android.widget.EditText
+import androidx.core.view.isVisible
+import androidx.databinding.BindingAdapter
+
+object CommonBindingAdapters {
+    @BindingAdapter(value = ["app:gone_visibility"], requireAll = true)
+    @JvmStatic
+    fun setViewVisibilityGone(view: View, visible: Boolean?) {
+        visible?.let {
+            view.isVisible = it
+        } ?: run {
+            view.isVisible = false
+        }
+    }
+}
