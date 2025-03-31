@@ -1,14 +1,14 @@
 package com.bvc.ordering.view.splash.login
 
+import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.bvc.domain.model.GithubEntity
+import com.bvc.domain.log
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.GetUserRepoUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
-import com.bvc.ordering.ksnet.Telegram
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,63 +20,62 @@ class LoginViewModel
         private val getUserRepoUseCase: GetUserRepoUseCase,
         private val preferenceUseCase: PreferenceUseCase,
     ) : BaseViewModel() {
-        val eventUserRepo: LiveData<List<GithubEntity>> get() = _eventUserRepo
-        private val _eventUserRepo = SingleLiveEvent<List<GithubEntity>>()
-
-        private val _requestTelegram = SingleLiveEvent<ByteArray>()
-        val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
-
-        private val _affiliate =
+        private val _phoneNum =
             SingleLiveEvent<String>().apply {
                 value = ""
             }
-        val affiliate: LiveData<String> get() = _affiliate
+        val phoneNum: LiveData<String> get() = _phoneNum
 
-        private val _affiliateName =
+        private val _verification =
             SingleLiveEvent<String>().apply {
-                value = "로그인"
+                value = ""
             }
-        val affiliateName: LiveData<String> get() = _affiliateName
+        val verification: LiveData<String> get() = _verification
 
-        private val _startVisible =
-            SingleLiveEvent<Boolean>().apply {
-                value = false
+        private val _action = SingleLiveEvent<Boolean>()
+        val action: LiveData<Boolean> get() = _action
+
+        fun loginPhoneAfterTextChanged(editable: Editable?) {
+            if (editable == null) {
+                return
             }
-        val startVisible: LiveData<Boolean> get() = _startVisible
 
-        init {
-            viewModelScope.launch {
-                val token = preferenceUseCase.getToken()
-                if (token.isNotEmpty()) {
-                    getAffiliate()
-                }
+            try {
+                _phoneNum.value = editable.toString().replace("-", "")
+            } catch (e: Exception) {
+                log.e(e)
             }
         }
 
-        fun onSplashClick() {
-            _requestTelegram.value =
-                Telegram.makeTelegramIC(
-                    apprCode = "1",
-                    mDeviceNo = "DPT0TEST03",
-                    quota = "00",
-                    totAmt = "1004",
-                    orgApprNo = "123456789012",
-                    orgDate = "201020",
-                )
+        fun loginVerificationAfterTextChanged(editable: Editable?) {
+            if (editable == null) {
+                return
+            }
+
+            try {
+                _verification.value = editable.toString().replace("-", "")
+            } catch (e: Exception) {
+                log.e(e)
+            }
         }
 
-        private fun getAffiliate() {
+        fun onClickVerification() {
             viewModelScope.launch {
-                val response = getUserRepoUseCase.execute(this@LoginViewModel, preferenceUseCase.getToken())
+//                val response = getUserRepoUseCase.getGithub(this@LoginViewModel, preferenceUseCase.getToken())
+                val response = getUserRepoUseCase.getGithub(this@LoginViewModel, "sam")
+                log.e("response : $response")
                 if (response == null) {
                     mutableScreenState.postValue(ScreenState.ERROR)
                 } else {
                     mutableScreenState.postValue(ScreenState.RENDER)
-//                    _eventUserRepo.postValue(response)
-                    _affiliateName.value = response.first().name
-                    _affiliate.value = "가맹점"
-                    _startVisible.value = true
                 }
+//                _action.value = true
             }
+        }
+
+        fun onClickSend() {
+        }
+
+        fun onClickResend() {
         }
     }

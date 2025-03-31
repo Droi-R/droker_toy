@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d_24100"
-            android:src="@drawable/logo_big"
+            android:src="@drawable/ic_logo_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,7 @@
             android:id="@+id/cl_intro_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:onClick="@{(v) -> vm.onClickLogin(v)}"
+            android:onClick="@{() -> vm.onClickLogin()}"
             android:layout_marginHorizontal="@dimen/d_3000"
             android:layout_marginTop="@dimen/d_6500"
             android:background="@drawable/r23_bvc_main"

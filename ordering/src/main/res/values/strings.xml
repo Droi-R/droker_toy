@@ -1,10 +1,27 @@
 <resources>
     <string name="app_name">ordering</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
+
+    <!--commen-->
+    <string name="send">발송</string>
+    <string name="resend">재발송</string>
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+    <string name="verification">인증</string>
 
     <!--intro-->
     <string name="intro_affiliate">가맹점</string>
     <string name="intro_login">로그인</string>
     <string name="intro_join">회원가입</string>
+
+    <!--login-->
+    <string name="login_title">오더링은 매장을 위해\n열일할 준비가 되었습니다.</string>
+    <string name="login_subtitle">열일을 위해서 전화번호 인증을 한번 부탁드릴게요.</string>
+    <string name="login_phone_number">휴대폰 번호 입력</string>
+    <string name="login_phone_number_desc">입력하신 번호로 인증문자가 발송됩니다.</string>
+    <string name="login_phone_number_hint">번호를 입력해 주세요.</string>
+
+    <string name="login_verification_number">인증번호 입력</string>
+    <string name="login_verification_number_desc">인증번호가 도착하지 않을 경우 <font color="#FF0000"><u>재발송</u></font> 버튼을 눌러주세요.</string>
+
 </resources>

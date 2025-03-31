@@ -22,12 +22,15 @@ abstract class BaseFragment<T : ViewDataBinding> :
 
     abstract fun init(savedInstanceState: Bundle?)
 
+    abstract fun handleViewModel()
+
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
         init(savedInstanceState)
+        handleViewModel()
     }
 
     override fun onCreateView(

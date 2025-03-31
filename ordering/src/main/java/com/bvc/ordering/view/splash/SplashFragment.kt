@@ -18,13 +18,12 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     private val viewModel: SplashViewModel by viewModels()
 
     override fun init(savedInstanceState: Bundle?) {
-        handleViewModel()
         binding?.apply {
             vm = viewModel
         }
     }
 
-    private fun handleViewModel() {
+    override fun handleViewModel() {
         viewModel.apply {
             action.observe(viewLifecycleOwner) {
                 if (it) {

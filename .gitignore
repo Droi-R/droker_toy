@@ -11,3 +11,5 @@ buildSrc
 buildSrc/build
 *.idea/*
 buildSrc/*
+/buildSrc/build/
+/buildSrc/build/

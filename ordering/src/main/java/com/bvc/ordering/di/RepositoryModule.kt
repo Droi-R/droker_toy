@@ -1,11 +1,21 @@
 package com.bvc.ordering.di
 
+import android.content.Context
 import com.bvc.data.repository.GithubRepositoryImpl
+import com.bvc.data.repository.MainRepositoryImpl
+import com.bvc.data.repository.PreferencesRepositoryImpl
+import com.bvc.data.repository.SplashRepositoryImpl
 import com.bvc.data.repository.remote.datasourceImpl.GithubDataSourceImpl
+import com.bvc.data.repository.remote.datasourceImpl.MainDataSourceImpl
+import com.bvc.data.repository.remote.datasourceImpl.SplashDataSourceImpl
 import com.bvc.domain.repository.GithubRepository
+import com.bvc.domain.repository.MainRepository
+import com.bvc.domain.repository.PreferenceRepository
+import com.bvc.domain.repository.SplashRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -14,8 +24,28 @@ import javax.inject.Singleton
 class RepositoryModule {
     @Provides
     @Singleton
-    fun provideMainRepository(githubDataSourceImpl: GithubDataSourceImpl): GithubRepository =
+    fun providePreferencesRepository(
+        @ApplicationContext context: Context,
+    ): PreferenceRepository = PreferencesRepositoryImpl(context)
+
+    @Provides
+    @Singleton
+    fun provideGithubRepository(githubDataSourceImpl: GithubDataSourceImpl): GithubRepository =
         GithubRepositoryImpl(
             githubDataSourceImpl,
+        )
+
+    @Provides
+    @Singleton
+    fun provideSplashRepository(splashDataSourceImpl: SplashDataSourceImpl): SplashRepository =
+        SplashRepositoryImpl(
+            splashDataSourceImpl,
+        )
+
+    @Provides
+    @Singleton
+    fun provideMainRepository(mainRepositoryImpl: MainDataSourceImpl): MainRepository =
+        MainRepositoryImpl(
+            mainRepositoryImpl,
         )
 }

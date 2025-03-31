@@ -1,6 +1,8 @@
 package com.bvc.ordering.di
 
 import com.bvc.data.remote.api.GithubApi
+import com.bvc.data.remote.api.MainApi
+import com.bvc.data.remote.api.SplashApi
 import com.bvc.domain.utils.Constant
 import dagger.Module
 import dagger.Provides
@@ -48,6 +50,14 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideGithubApiService(retrofit: Retrofit): GithubApi = retrofit.create(GithubApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSplashApiService(retrofit: Retrofit): SplashApi = retrofit.create(SplashApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMainApiService(retrofit: Retrofit): MainApi = retrofit.create(MainApi::class.java)
 
     private fun getLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }

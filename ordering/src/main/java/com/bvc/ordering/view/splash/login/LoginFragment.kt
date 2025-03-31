@@ -1,37 +1,35 @@
 package com.bvc.ordering.view.splash.login
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentLoginBinding
+import com.bvc.ordering.view.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val layoutResourceId: Int
-        get() = R.layout.fragment_splash
+        get() = R.layout.fragment_login
     private val viewModel: LoginViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? = inflater.inflate(R.layout.fragment_login, container, false)
-
     override fun init(savedInstanceState: Bundle?) {
-        handleLiveData()
+        binding?.apply {
+            vm = viewModel
+        }
     }
 
-    fun handleLiveData() {
-    }
-
-    override fun oneClick(
-        v: View,
-        position: Int,
-    ) {
+    override fun handleViewModel() {
+        viewModel.apply {
+            action.observe(viewLifecycleOwner) {
+                if (it) {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }
+            }
+        }
     }
 }

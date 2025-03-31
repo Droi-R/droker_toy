@@ -9,7 +9,7 @@ class GetUserRepoUseCase
     constructor(
         private val githubRepository: GithubRepository,
     ) {
-        suspend fun execute(
+        suspend fun getGithub(
             remoteErrorEmitter: RemoteErrorEmitter,
             owner: String,
         ) = githubRepository.getGithub(remoteErrorEmitter, owner)

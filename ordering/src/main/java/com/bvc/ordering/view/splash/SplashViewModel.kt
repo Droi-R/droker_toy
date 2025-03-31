@@ -1,6 +1,5 @@
 package com.bvc.ordering.view.splash
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.log
@@ -8,6 +7,7 @@ import com.bvc.domain.model.GithubEntity
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.GetUserRepoUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
+import com.bvc.domain.usecase.SplashUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
 import com.bvc.ordering.ksnet.Telegram
@@ -19,8 +19,9 @@ import javax.inject.Inject
 class SplashViewModel
     @Inject
     constructor(
-        private val getUserRepoUseCase: GetUserRepoUseCase,
         private val preferenceUseCase: PreferenceUseCase,
+        private val getUserRepoUseCase: GetUserRepoUseCase,
+        private val splashUseCase: SplashUseCase,
     ) : BaseViewModel() {
         val eventUserRepo: LiveData<List<GithubEntity>> get() = _eventUserRepo
         private val _eventUserRepo = SingleLiveEvent<List<GithubEntity>>()
@@ -74,7 +75,7 @@ class SplashViewModel
         private fun getAffiliate() {
             viewModelScope.launch {
                 val response =
-                    getUserRepoUseCase.execute(this@SplashViewModel, preferenceUseCase.getToken())
+                    getUserRepoUseCase.getGithub(this@SplashViewModel, preferenceUseCase.getToken())
                 log.e("response : $response")
                 if (response == null) {
                     mutableScreenState.postValue(ScreenState.ERROR)
@@ -88,7 +89,7 @@ class SplashViewModel
             }
         }
 
-        fun onClickLogin(view: View) {
+        fun onClickLogin() {
             _action.value = _startVisible.value
         }
     }
