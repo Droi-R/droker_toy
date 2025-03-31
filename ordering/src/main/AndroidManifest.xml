@@ -13,10 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Droi_mvvm">
+        android:theme="@style/Theme.Custom.NoActionBar">
         <activity
             android:name=".view.splash.SplashActivity"
-            android:theme="@style/Theme.Custom.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

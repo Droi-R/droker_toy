@@ -68,8 +68,8 @@ class LoginViewModel
                     mutableScreenState.postValue(ScreenState.ERROR)
                 } else {
                     mutableScreenState.postValue(ScreenState.RENDER)
+                    _action.value = true
                 }
-//                _action.value = true
             }
         }
 

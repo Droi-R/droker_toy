@@ -1,7 +1,11 @@
 package com.bvc.ordering.view.main
 
-import com.bvc.domain.usecase.GetUserRepoUseCase
+import androidx.lifecycle.LiveData
+import com.bvc.domain.usecase.MainUseCase
+import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
+import com.bvc.ordering.base.SingleLiveEvent
+import com.bvc.ordering.ksnet.Telegram
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -9,78 +13,56 @@ import javax.inject.Inject
 class MainViewModel
     @Inject
     constructor(
-        private val getUserUseCase: GetUserRepoUseCase,
+        private val preferenceUseCase: PreferenceUseCase,
+        private val mainUseCase: MainUseCase,
     ) : BaseViewModel() {
         companion object {
-//            const val MIllIS_IN_FUTURE = 30000L
-            const val TICK_INTERVAL = 1000L
         }
 
-//        var liveData_Res: MutableLiveData<YoEntity.Res> = MutableLiveData<YoEntity.Res>()
-        var change: Int = -1
+        private val _requestTelegram = SingleLiveEvent<ByteArray>()
+        val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
 
-//        val customTimerDuration: MutableLiveData<Long> = MutableLiveData(MIllIS_IN_FUTURE)
-        var oldTimeMills: Long = 0
+        private val _affiliteType = SingleLiveEvent<String>()
+        val affiliteType: LiveData<String> get() = _affiliteType
 
-        fun requsetUsers() {
-//        liveData_Res = getUserUseCase.invoke("shop",)
-//            getUserUseCase("shop", viewModelScope) {
-//                liveData_Res.postValue(it)
-//            }
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val response = repo.users("shop")
-//            if (response.isSuccessful) {
-//                response.body()?.let { setLike(it) }
-//            } else {
-//                var handler = android.os.Handler(Looper.getMainLooper())
-//                com.droi.util.Util.showToast("${response.code()} ${response.message()}")
-//            }
-//        }
+        private val _affiliteName = SingleLiveEvent<String>()
+        val affiliteName: LiveData<String> get() = _affiliteName
+
+        private val _alarmVisibility =
+            SingleLiveEvent<Boolean>().apply {
+                value = false
+            }
+        val alarmVisibility: LiveData<Boolean> get() = _alarmVisibility
+
+        private val _alarmCount = SingleLiveEvent<String>()
+        val alarmCount: LiveData<String> get() = _alarmCount
+
+        private val _businessStatus =
+            SingleLiveEvent<String>()
+                .apply {
+                    value = "오픈 대기"
+                }
+        val businessStatus: LiveData<String> get() = _businessStatus
+
+        private val _isBusiness =
+            SingleLiveEvent<Boolean>()
+                .apply {
+                    value = false
+                }
+        val isBusiness: LiveData<Boolean> get() = _isBusiness
+
+        init {
         }
 
-//        val timerJob: Job =
-//            viewModelScope.launch(start = CoroutineStart.LAZY) {
-//                withContext(Dispatchers.IO) {
-//                    oldTimeMills = System.currentTimeMillis()
-//                    while (customTimerDuration.value!! > 0L) {
-//                        val delayMills = System.currentTimeMillis() - oldTimeMills
-//                        if (delayMills == TICK_INTERVAL) {
-//                            customTimerDuration.postValue(customTimerDuration.value!! - delayMills)
-//                            oldTimeMills = System.currentTimeMillis()
-//                        }
-//                    }
-//                }
-//            }
-//
-//        fun setLike(body: YoEntity.Res) {
-//            val db = AppDatabase.getInstance(App.getInstance())
-//            for ((i, b) in body.items.withIndex()) {
-//                val result = db?.contactsDao()?.findByResult(b.id)
-//                if (result != null) {
-//                    b.like = true
-//                    body.items[i] = b
-//                }
-//            }
-//            liveData_Res.postValue(body)
-//        }
-//
-//        fun isLike(position: Int) {
-//            val db = AppDatabase.getInstance(App.getInstance())
-//            val res = liveData_Res.value
-//            val item = res?.items?.get(position)
-//            if (item != null) {
-//                val result = db?.contactsDao()?.findByResult(item.id)
-//                Logger.loge("result   $result")
-//                if (result == null) {
-//                    db?.contactsDao()?.insert(Contacts(0, item.id))
-//                    item.like = true
-//                } else {
-//                    db.contactsDao().delete(result)
-//                    item.like = false
-//                }
-//                res.items[position] = item
-//                change = position
-//                liveData_Res.postValue(res!!)
-//            }
-//        }
+        fun onSplashClick() {
+            _requestTelegram.value =
+                Telegram.makeTelegramIC(
+                    apprCode = "1",
+                    mDeviceNo = "DPT0TEST03",
+                    quota = "00",
+                    totAmt = "1004",
+                    orgApprNo = "123456789012",
+                    orgDate = "201020",
+                )
+        }
     }

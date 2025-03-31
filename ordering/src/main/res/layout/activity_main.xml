@@ -4,112 +4,160 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!--    <data>-->
+    <data>
 
-    <!--        <variable-->
-    <!--            name="myviewModel"-->
-    <!--            type="com.example.droi_mvvm.viewmodel.MainViewModel" />-->
+        <variable
+            name="vm"
+            type="com.bvc.ordering.view.main.MainViewModel" />
+    </data>
 
-    <!--    </data>-->
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rl_main"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_main_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#ffffff">
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_2700"
+            android:background="@drawable/r15_f6f6f6"
+            android:paddingBottom="@dimen/d_2200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tl_main"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:tabGravity="center"
-                app:tabIndicatorColor="@color/main_color" />
-        </RelativeLayout>
-        <ImageView
-            android:id="@+id/iv_main"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_above="@id/rl_main"
-            android:background="#d1d1d1" />
-
-        <FrameLayout
-            android:id="@+id/fl_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/iv_main" />
-
-
-
-
-
-
-
-
-        <RelativeLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_todo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </androidx.recyclerview.widget.RecyclerView>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_main_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_2900"
+                android:layout_marginTop="@dimen/d_2300"
+                android:src="@drawable/ic_logo_small"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_2500"
+                android:layout_marginEnd="@dimen/d_1000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <!--            android:text="@{Integer.toString(myviewModel.count)}"-->
-                <TextView
-                    android:id="@+id/txt_result"
+                <androidx.appcompat.widget.AppCompatImageView
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="@dimen/d_700"
+                    android:id="@+id/iv_main_alarm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d_300"
+                    android:src="@drawable/ic_main_alarm"/>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:gone_visibility="@{vm.alarmVisibility}"
+                    android:id="@+id/cl_main_alarm"
+                    android:layout_width="@dimen/d_1300"
+                    android:layout_height="@dimen/d_1300"
+                    android:background="@drawable/r_17c2c9">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="@{vm.alarmCount}"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_9"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_main_affilite_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_2900"
+                android:layout_marginTop="@dimen/d_1200"
+                android:text="@{vm.affiliteType}"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_10"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_main_logo"
+                tools:text="가맹점" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_main_affilite_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_2900"
+                android:layout_marginTop="@dimen/d_1200"
+                android:layout_marginBottom="@dimen/d_700"
+                android:text="@{vm.affiliteName}"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_18"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_main_affilite_type"
+                tools:text="이태원 쿠바노스" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/d_1300"
+                android:paddingVertical="@dimen/d_1100"
+                android:background="@drawable/r20_ffffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_main_business"
+                    android:layout_width="@dimen/d_800"
+                    android:layout_height="@dimen/d_800"
+                    android:layout_marginStart="@dimen/d_800"
+                    android:background="@drawable/r_17c2c9"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_main_business"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_minus"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_main_business"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_1600"
+                    android:layout_marginEnd="@dimen/d_1600"
+                    android:text="@{vm.businessStatus}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_main_business"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="영업중" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/btn_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
 
-            <Button
-                android:id="@+id/btn_modi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/btn_add" />
-        </RelativeLayout>
-    </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/main_container_view"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/d_1800"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_main_top" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

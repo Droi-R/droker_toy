@@ -31,6 +31,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
+                    requireActivity().finish()
                 } else {
                     // loginFrament 로 이동
                     findNavController().navigate(LoginFragment::class.java.name)
