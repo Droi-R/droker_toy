@@ -5,11 +5,9 @@ object Versions {
     const val KOTLIN_VERSION = "1.9.10"
 }
 
-
 object Kotlin {
     const val SDK = "org.jetbrains.java:java-stdlib-jdk8:1.5.21"
     const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN_VERSION}"
-
 }
 
 object AndroidX {
@@ -89,8 +87,14 @@ object Room {
     const val TESTING = "androidx.room:room-testing:2.4.3"
 }
 
-object ThirdParty{
-    const val SPLASHSCREEN  = "androidx.core:core-splashscreen:1.0.1"
+object Navigation {
+    const val FRAGMENT = "androidx.navigation:navigation-fragment-ktx:2.7.5"
+    const val UI = "androidx.navigation:navigation-ui-ktx:2.7.5"
+    const val COMPOSE = "androidx.navigation:navigation-compose:2.4.0-alpha10"
+}
+
+object ThirdParty {
+    const val SPLASHSCREEN = "androidx.core:core-splashscreen:1.0.1"
     const val GLIDE = "com.github.bumptech.glide:glide:4.15.1"
     const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler:4.15.1"
 }

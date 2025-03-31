@@ -1,4 +1,4 @@
-package com.bvc.ordering.view.splash
+package com.bvc.ordering.view.splash.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel
+class LoginViewModel
     @Inject
     constructor(
         private val getUserRepoUseCase: GetUserRepoUseCase,
@@ -67,7 +67,7 @@ class SplashViewModel
 
         private fun getAffiliate() {
             viewModelScope.launch {
-                val response = getUserRepoUseCase.execute(this@SplashViewModel, preferenceUseCase.getToken())
+                val response = getUserRepoUseCase.execute(this@LoginViewModel, preferenceUseCase.getToken())
                 if (response == null) {
                     mutableScreenState.postValue(ScreenState.ERROR)
                 } else {

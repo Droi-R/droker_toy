@@ -95,6 +95,10 @@ dependencies {
     implementation (OkHttp.OKHTTP)
     implementation (OkHttp.LOGGING_INTERCEPTOR)
 
+    //navigation
+    implementation (Navigation.FRAGMENT)
+    implementation (Navigation.UI)
+
     //Thired party
     implementation(ThirdParty.SPLASHSCREEN)
     implementation(ThirdParty.GLIDE)

@@ -25,7 +25,7 @@ class MainActivity : BaseActivity() {
 //        binding.lifecycleOwner = this
     }
 
-    override fun _init() {
+    override fun init(savedInstanceState: Bundle?) {
         model.requsetUsers()
 //        model.timerJob.start()
         setContent {
