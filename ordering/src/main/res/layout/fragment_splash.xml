@@ -40,6 +40,7 @@
             android:id="@+id/cl_intro_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:onClick="@{(v) -> vm.onClickLogin(v)}"
             android:layout_marginHorizontal="@dimen/d_3000"
             android:layout_marginTop="@dimen/d_6500"
             android:background="@drawable/r23_bvc_main"

@@ -20,10 +20,6 @@ abstract class BaseFragment<T : ViewDataBinding> :
     var gson = Gson()
     abstract val layoutResourceId: Int
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     abstract fun init(savedInstanceState: Bundle?)
 
     override fun onViewCreated(
@@ -44,5 +40,17 @@ abstract class BaseFragment<T : ViewDataBinding> :
     }
 
     override fun onClick(v: View) {
+    }
+
+    override fun oneClick(
+        v: View,
+        position: Int,
+    ) {
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding?.unbind()
+        binding = null
     }
 }

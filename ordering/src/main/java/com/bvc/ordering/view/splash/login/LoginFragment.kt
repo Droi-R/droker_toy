@@ -8,7 +8,9 @@ import androidx.fragment.app.viewModels
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val layoutResourceId: Int
         get() = R.layout.fragment_splash

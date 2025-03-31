@@ -41,7 +41,7 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    fun handleLiveData() {
+    fun handleLiveData() { // 결제 테스트
 //        viewModel.run {
 //            requestTelegram.observe(this@SplashActivity) { mRequestTelegram ->
 //                log.e("mRequestTelegram: ${String(mRequestTelegram)}")

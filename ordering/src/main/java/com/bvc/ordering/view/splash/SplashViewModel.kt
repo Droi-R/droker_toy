@@ -1,7 +1,9 @@
 package com.bvc.ordering.view.splash
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.bvc.domain.log
 import com.bvc.domain.model.GithubEntity
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.GetUserRepoUseCase
@@ -44,9 +46,13 @@ class SplashViewModel
             }
         val startVisible: LiveData<Boolean> get() = _startVisible
 
+        private val _action = SingleLiveEvent<Boolean>()
+        val action: LiveData<Boolean> get() = _action
+
         init {
             viewModelScope.launch {
                 val token = preferenceUseCase.getToken()
+                log.e("token : $token")
                 if (token.isNotEmpty()) {
                     getAffiliate()
                 }
@@ -67,7 +73,9 @@ class SplashViewModel
 
         private fun getAffiliate() {
             viewModelScope.launch {
-                val response = getUserRepoUseCase.execute(this@SplashViewModel, preferenceUseCase.getToken())
+                val response =
+                    getUserRepoUseCase.execute(this@SplashViewModel, preferenceUseCase.getToken())
+                log.e("response : $response")
                 if (response == null) {
                     mutableScreenState.postValue(ScreenState.ERROR)
                 } else {
@@ -78,5 +86,9 @@ class SplashViewModel
                     _startVisible.value = true
                 }
             }
+        }
+
+        fun onClickLogin(view: View) {
+            _action.value = _startVisible.value
         }
     }
