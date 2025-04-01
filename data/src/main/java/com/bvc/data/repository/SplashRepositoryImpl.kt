@@ -2,6 +2,9 @@ package com.bvc.data.repository
 
 import com.bvc.data.mapper.Mapper
 import com.bvc.data.repository.remote.datasource.SplashDataSource
+import com.bvc.domain.model.AffiliateEntity
+import com.bvc.domain.model.Data
+import com.bvc.domain.model.DataList
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.repository.SplashRepository
 import com.bvc.domain.utils.RemoteErrorEmitter
@@ -15,5 +18,10 @@ class SplashRepositoryImpl
         override suspend fun getLogin(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ): List<LoginEntity>? = Mapper.mapperLogin(splashDataSource.getLogin(remoteErrorEmitter, token))
+        ): Data<LoginEntity> = Mapper.mapperLogin(splashDataSource.getLogin(remoteErrorEmitter, token))
+
+        override suspend fun getAffiliate(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+        ): DataList<AffiliateEntity> = Mapper.mapperAffiliate(splashDataSource.getAffiliate(remoteErrorEmitter, token))
     }

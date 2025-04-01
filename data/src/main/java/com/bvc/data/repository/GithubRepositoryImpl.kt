@@ -15,5 +15,5 @@ class GithubRepositoryImpl
         override suspend fun getGithub(
             remoteErrorEmitter: RemoteErrorEmitter,
             owner: String,
-        ): List<GithubEntity>? = Mapper.mapperGithub(githubDataSource.getGithub(remoteErrorEmitter, owner))
+        ): List<GithubEntity> = Mapper.mapperGithub(githubDataSource.getGithub(remoteErrorEmitter, owner))
     }

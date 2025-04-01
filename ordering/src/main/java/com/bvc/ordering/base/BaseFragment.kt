@@ -7,13 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.bvc.ordering.callback.OnItemClick
 import com.google.gson.Gson
 
-abstract class BaseFragment<T : ViewDataBinding> :
-    Fragment(),
-    View.OnClickListener,
-    OnItemClick {
+abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     protected var binding: T? = null
     protected val viewDataBinding: T
         get() = binding!!
@@ -40,15 +36,6 @@ abstract class BaseFragment<T : ViewDataBinding> :
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutResourceId, container, false)
         return viewDataBinding.root
-    }
-
-    override fun onClick(v: View) {
-    }
-
-    override fun oneClick(
-        v: View,
-        position: Int,
-    ) {
     }
 
     override fun onDestroyView() {

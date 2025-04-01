@@ -1,12 +1,12 @@
 package com.bvc.ordering.view.splash.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentLoginBinding
-import com.bvc.ordering.view.main.MainActivity
+import com.bvc.ordering.view.splash.select.SelectFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,10 +25,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         viewModel.apply {
             action.observe(viewLifecycleOwner) {
                 if (it) {
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                    requireActivity().finish()
+                    findNavController().navigate(SelectFragment::class.java.name)
                 }
             }
         }

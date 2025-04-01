@@ -13,4 +13,9 @@ class SplashUseCase
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
         ) = splashRepository.getLogin(remoteErrorEmitter, token)
+
+        suspend fun getAffiliate(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+        ) = splashRepository.getAffiliate(remoteErrorEmitter, token)
     }

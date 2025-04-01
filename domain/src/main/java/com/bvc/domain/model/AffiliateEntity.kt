@@ -1,7 +1,7 @@
 package com.bvc.domain.model
 
 data class AffiliateEntity(
-    val isSuccess: Boolean = false,
-    val apiMessage: String = "",
+    val tid: String = "",
     val name: String = "",
+    val type: String = "",
 )

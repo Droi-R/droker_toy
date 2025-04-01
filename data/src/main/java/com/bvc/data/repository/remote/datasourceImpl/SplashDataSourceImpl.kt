@@ -1,7 +1,10 @@
 package com.bvc.data.repository.remote.datasourceImpl
 
 import com.bvc.data.remote.api.SplashApi
+import com.bvc.data.remote.model.AffiliateResponse
 import com.bvc.data.remote.model.LoginResponse
+import com.bvc.data.remote.model.ResData
+import com.bvc.data.remote.model.ResDataList
 import com.bvc.data.repository.remote.datasource.SplashDataSource
 import com.bvc.data.utils.base.BaseRepository
 import com.bvc.domain.utils.RemoteErrorEmitter
@@ -16,5 +19,10 @@ class SplashDataSourceImpl
         override suspend fun getLogin(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ): List<LoginResponse>? = safeApiCall(remoteErrorEmitter) { splashApi.getLogin(token).body() }
+        ): ResData<LoginResponse>? = safeApiCall(remoteErrorEmitter) { splashApi.getLogin(token).body() }
+
+        override suspend fun getAffiliate(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+        ): ResDataList<AffiliateResponse>? = safeApiCall(remoteErrorEmitter) { splashApi.getAffiliate(token).body() }
     }

@@ -2,6 +2,7 @@ package com.bvc.data.repository.remote.datasourceImpl
 
 import com.bvc.data.remote.api.MainApi
 import com.bvc.data.remote.model.AffiliateResponse
+import com.bvc.data.remote.model.ResDataList
 import com.bvc.data.repository.remote.datasource.MainDataSource
 import com.bvc.data.utils.base.BaseRepository
 import com.bvc.domain.utils.RemoteErrorEmitter
@@ -16,5 +17,5 @@ class MainDataSourceImpl
         override suspend fun getAffiliate(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ): List<AffiliateResponse>? = safeApiCall(remoteErrorEmitter) { mainApi.getAffiliate(token).body() }
+        ): ResDataList<AffiliateResponse>? = safeApiCall(remoteErrorEmitter) { mainApi.getAffiliate(token).body() }
     }

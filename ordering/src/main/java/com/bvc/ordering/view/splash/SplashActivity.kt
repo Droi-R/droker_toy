@@ -10,6 +10,7 @@ import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseActivity
 import com.bvc.ordering.databinding.ActivitySplashBinding
 import com.bvc.ordering.view.splash.login.LoginFragment
+import com.bvc.ordering.view.splash.select.SelectFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("CustomSplashScreen")
@@ -30,6 +31,7 @@ class SplashActivity : BaseActivity() {
                 ) {
                     fragment<LoginFragment>(route = LoginFragment::class.java.name)
                     fragment<SplashFragment>(route = SplashFragment::class.java.name)
+                    fragment<SelectFragment>(route = SelectFragment::class.java.name)
                 }
             navController.setGraph(
                 graph = navGraph,

@@ -1,6 +1,5 @@
 package com.bvc.ordering.view.splash
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,10 +27,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
             action.observe(viewLifecycleOwner) {
                 if (it) {
                     // 로그인 되어있으면 메인으로 이동
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                    requireActivity().finish()
+                    MainActivity.startActivity(requireActivity())
                 } else {
                     // loginFrament 로 이동
                     findNavController().navigate(LoginFragment::class.java.name)

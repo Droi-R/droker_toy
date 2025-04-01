@@ -1,11 +1,14 @@
 package com.bvc.ordering.view.main
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,38 +23,88 @@ import com.bvc.ordering.base.BaseActivity
 import com.bvc.ordering.databinding.ActivityMainBinding
 import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.TransactionData
+import com.bvc.ordering.view.order.OrderFragment
 import com.bvc.ordering.view.splash.SplashFragment
 import com.bvc.ordering.view.splash.login.LoginFragment
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
     private val viewModel: MainViewModel by viewModels()
-
     private lateinit var binding: ActivityMainBinding
+
+    companion object {
+        fun startActivity(activity: Activity?) {
+            val intent = Intent(activity, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            activity?.startActivity(intent)
+            activity?.finish()
+        }
+    }
 
     override fun init(savedInstanceState: Bundle?) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.vm = viewModel
-        handleViewModel()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_container_view) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.apply {
+            lifecycleOwner = this@MainActivity
+            vm = viewModel
+            tlMainBottom.run {
+                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_order), R.drawable.tab_order) })
+                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_table), R.drawable.tab_table) })
+                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_history), R.drawable.tab_history) })
+                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_materials), R.drawable.tab_materials) })
+                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_setting), R.drawable.tab_setting) })
+                addOnTabSelectedListener(
+                    object : TabLayout.OnTabSelectedListener {
+                        override fun onTabSelected(tab: TabLayout.Tab?) {
+                            tab?.customView?.findViewById<TextView>(R.id.tab_text)?.text?.let { tabText ->
+                                when (tabText) {
+                                    getString(R.string.main_tab_order) -> {
+                                        navController.navigate(OrderFragment::class.java.name)
+                                    }
+                                    getString(R.string.main_tab_table) -> {
+                                        navController.navigate(LoginFragment::class.java.name)
+                                    }
+                                    getString(R.string.main_tab_history) -> {
+                                    }
+                                    getString(R.string.main_tab_materials) -> {
+                                        navController.navigate(SplashFragment::class.java.name)
+                                    }
+                                    getString(R.string.main_tab_setting) -> {
+                                    }
+                                }
+                            }
+                        }
+
+                        override fun onTabUnselected(tab: TabLayout.Tab?) {
+                        }
+
+                        override fun onTabReselected(tab: TabLayout.Tab?) {
+                        }
+                    },
+                )
+            }
+        }
 
         if (savedInstanceState == null) {
-            val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_container_view) as NavHostFragment
-            val navController = navHostFragment.navController
             val navGraph =
                 navController.createGraph(
-                    startDestination = SplashFragment::class.java.name,
-                    route = "splash_graph",
+                    startDestination = OrderFragment::class.java.name,
+                    route = "main_graph",
                 ) {
-                    fragment<LoginFragment>(route = LoginFragment::class.java.name)
+                    fragment<OrderFragment>(route = OrderFragment::class.java.name)
                     fragment<SplashFragment>(route = SplashFragment::class.java.name)
+                    fragment<LoginFragment>(route = LoginFragment::class.java.name)
                 }
             navController.setGraph(
                 graph = navGraph,
                 startDestinationArgs = null,
             )
         }
+
+        handleViewModel()
     }
 
     private fun handleViewModel() {
@@ -106,6 +159,28 @@ class MainActivity : BaseActivity() {
             }
         }
     }
+
+    private fun setCustomTabTitles(
+        tab: TabLayout.Tab,
+        title: String,
+        iconResId: Int,
+    ) {
+        val customView = layoutInflater.inflate(R.layout.custom_tab, null)
+        customView.findViewById<ImageView>(R.id.tab_icon).setImageResource(iconResId)
+        customView.findViewById<TextView>(R.id.tab_text).text = title
+        tab.customView = customView
+    }
+
+//    private fun setCustomTabTitles(tab: TabLayout.Tab) {
+//        val customView = layoutInflater.inflate(R.layout.custom_tab, null)
+// //        customView.findViewById<ImageView>(R.id.tab_icon).setImageDrawable(tab.icon)
+// //        customView.findViewById<TextView>(R.id.tab_text).apply {
+// //            text = tab.text
+// //            setTextColor(resources.getColorStateList(R.color.co, null))
+// //        }
+//        tab.customView = customView
+//        tab.view.background = resources.getDrawable(R.drawable.tab_background_selector, null)
+//    }
 
     val startForResultForTelegram =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->

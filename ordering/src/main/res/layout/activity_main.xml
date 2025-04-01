@@ -48,23 +48,23 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginEnd="@dimen/d_700"
                     android:id="@+id/iv_main_alarm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d_300"
-                    android:src="@drawable/ic_main_alarm"/>
+                    android:layout_marginEnd="@dimen/d_700"
+                    android:src="@drawable/ic_main_alarm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:gone_visibility="@{vm.alarmVisibility}"
                     android:id="@+id/cl_main_alarm"
                     android:layout_width="@dimen/d_1300"
                     android:layout_height="@dimen/d_1300"
-                    android:background="@drawable/r_17c2c9">
+                    android:background="@drawable/r_17c2c9"
+                    app:gone_visibility="@{vm.alarmVisibility}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -115,8 +115,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/d_1300"
-                android:paddingVertical="@dimen/d_1100"
                 android:background="@drawable/r20_ffffff"
+                android:paddingVertical="@dimen/d_1100"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -157,6 +157,20 @@
             android:layout_marginTop="@dimen/d_1800"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_main_top" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_main_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/r12_top_f6f6f6"
+            android:paddingTop="@dimen/d_1300"
+            android:paddingBottom="@dimen/d_1300"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

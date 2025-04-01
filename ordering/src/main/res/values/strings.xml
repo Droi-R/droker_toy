@@ -8,6 +8,7 @@
     <string name="confirm">확인</string>
     <string name="cancel">취소</string>
     <string name="verification">인증</string>
+    <string name="start">시작하기</string>
 
     <!--intro-->
     <string name="intro_affiliate">가맹점</string>
@@ -23,5 +24,17 @@
 
     <string name="login_verification_number">인증번호 입력</string>
     <string name="login_verification_number_desc">인증번호가 도착하지 않을 경우 <font color="#FF0000"><u>재발송</u></font> 버튼을 눌러주세요.</string>
+
+    <!--select-->
+    <string name="select_title">쉽고 빠른 매장결제,\n재고관리 및 발주\n오더링이 함께합니다.</string>
+    <string name="select_subtitle">영업할 매장을 선택(추가)해 주세요.</string>
+    <string name="select_add">매장 추가하기</string>
+
+    <!--main-->
+    <string name="main_tab_order">주문</string>
+    <string name="main_tab_table">테이블</string>
+    <string name="main_tab_history">주문내역</string>
+    <string name="main_tab_materials">재료</string>
+    <string name="main_tab_setting">매장관리</string>
 
 </resources>
