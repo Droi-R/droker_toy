@@ -63,6 +63,7 @@ class MainViewModel
                     totAmt = "1004",
                     orgApprNo = "123456789012",
                     orgDate = "201020",
+                    taxFree = "000000000000",
                 )
         }
     }

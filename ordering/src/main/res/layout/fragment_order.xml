@@ -16,16 +16,9 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_ardor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-
+        <include
+            android:id="@+id/ic_order"
+            layout="@layout/inflate_menu" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

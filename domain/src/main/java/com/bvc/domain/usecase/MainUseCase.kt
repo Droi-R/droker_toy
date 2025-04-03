@@ -13,4 +13,21 @@ class MainUseCase
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
         ) = mainRepository.getAffiliate(remoteErrorEmitter, token)
+
+        suspend fun getMenuCategory(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+        ) = mainRepository.getMenuCategory(remoteErrorEmitter, token)
+
+        suspend fun getSubCategory(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+            id: String,
+        ) = mainRepository.getSubCategory(remoteErrorEmitter, token, id)
+
+        suspend fun getProducts(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+            id: String,
+        ) = mainRepository.getProducts(remoteErrorEmitter, token, id)
     }

@@ -63,7 +63,7 @@ class LoginViewModel
             viewModelScope.launch {
 //                val response = getUserRepoUseCase.getGithub(this@LoginViewModel, preferenceUseCase.getToken())
                 val response = getUserRepoUseCase.getGithub(this@LoginViewModel, "sam")
-                log.e("response : $response")
+//                log.e("response : $response")
                 if (response == null) {
                     mutableScreenState.postValue(ScreenState.ERROR)
                 } else {

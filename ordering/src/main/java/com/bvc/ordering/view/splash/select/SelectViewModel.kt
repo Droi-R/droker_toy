@@ -2,7 +2,6 @@ package com.bvc.ordering.view.splash.select
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.bvc.domain.log
 import com.bvc.domain.model.AffiliateEntity
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -36,7 +35,7 @@ class SelectViewModel
                 val response =
 //                    getUserRepoUseCase.getGithub(this@SelectViewModel, preferenceUseCase.getToken())
                     splashUseCase.getAffiliate(this@SelectViewModel, preferenceUseCase.getToken())
-                log.e("response : $response")
+//                log.e("response : $response")
 
                 _affiliate.value = (
                     response?.data?.map {

@@ -18,10 +18,10 @@ class SplashRepositoryImpl
         override suspend fun getLogin(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ): Data<LoginEntity> = Mapper.mapperLogin(splashDataSource.getLogin(remoteErrorEmitter, token))
+        ): Data<LoginEntity> = Mapper.mapLogin(splashDataSource.getLogin(remoteErrorEmitter, token))
 
         override suspend fun getAffiliate(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ): DataList<AffiliateEntity> = Mapper.mapperAffiliate(splashDataSource.getAffiliate(remoteErrorEmitter, token))
+        ): DataList<AffiliateEntity> = Mapper.mapAffiliate(splashDataSource.getAffiliate(remoteErrorEmitter, token))
     }
