@@ -1,7 +1,9 @@
 package com.bvc.ordering.view.order
 
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bvc.domain.model.CategoryEntity
@@ -12,6 +14,9 @@ import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentOrderBinding
 import com.bvc.ordering.ui.HorizontalSpaceItemDecoration
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
+import com.bvc.ordering.util.Util
+import com.bvc.ordering.view.cart.CartFragment
+import com.bvc.ordering.view.dialog.OptionSelectDialog
 import com.bvc.ordering.view.inflate.CategoryAdapter
 import com.bvc.ordering.view.inflate.GridAdapter
 import com.bvc.ordering.view.inflate.SubCategoryAdapter
@@ -59,9 +64,24 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
                     GridAdapter(
                         object : GridAdapter.OnItemClickListener<ProductEntity> {
                             override fun onItemClick(item: ProductEntity) {
+                                if (item.productOption.size > 1) {
+                                    val dialog =
+                                        OptionSelectDialog(item) { selectProduct ->
+                                            viewModel.addToCart(selectProduct)
+                                        }
+                                    dialog.show(childFragmentManager, "OptionSelectDialog")
+                                } else {
+                                    viewModel.addToCart(item)
+                                }
                             }
                         },
                     )
+            }
+            icCartCount.ivCartDelete.setOnClickListener {
+                viewModel.clearCart()
+            }
+            icCartCount.clCartRoot.setOnClickListener {
+                findNavController().navigate(CartFragment::class.java.name)
             }
         }
     }
@@ -90,6 +110,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
                         (adapter as GridAdapter<ProductEntity>).submitList(it.toList())
                     }
                 }
+            }
+            cartData.observe(viewLifecycleOwner) {
+                binding?.icCartCount?.root?.isVisible = it.isNotEmpty()
+                binding?.icCartCount?.tvCartCount?.text = "${it.sumOf { it.quantity }}개"
+                val totalPrice = it.sumOf { it.getTotalPrice() }
+                binding?.icCartCount?.tvCartPrice?.text = "${Util.myFormatter(totalPrice)}"
             }
         }
     }

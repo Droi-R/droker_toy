@@ -9,6 +9,7 @@
     <string name="cancel">취소</string>
     <string name="verification">인증</string>
     <string name="start">시작하기</string>
+    <string name="won">원</string>
 
     <!--intro-->
     <string name="intro_affiliate">가맹점</string>
@@ -36,5 +37,8 @@
     <string name="main_tab_history">주문내역</string>
     <string name="main_tab_materials">재료</string>
     <string name="main_tab_setting">매장관리</string>
+
+    <!--상품-->
+    <string name="cart_add_desc">원 담기</string>
 
 </resources>

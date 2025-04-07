@@ -1,7 +1,7 @@
 package com.bvc.domain.model
 
 data class ProductEntity(
-    val id: String = "",
+    val externalKey: String = "",
     val name: String = "",
     var categoryKey: String = "",
     var categoryName: String = "",
@@ -53,18 +53,3 @@ data class Options(
     val isSoldOut: Boolean = false,
     var isSelected: Boolean = false,
 )
-//    : Parcelable {
-//    fun getPriceToText(): String {
-//        var subString = ""
-//        if (price.isNotEmpty() && price[0].toString() == "-") {
-//            subString = price[0].toString()
-//        }
-//        price = price.replace("-", "")
-//        price = "${subString}$price"
-//        return if (price.isNotEmpty()) {
-//            "${price.toDoubleOrNull()?.toInt()?.let { it1 -> Constant.toPriceFormat(it1) }}원"
-//        } else {
-//            price
-//        }
-//    }
-// }

@@ -23,6 +23,7 @@ import com.bvc.ordering.base.BaseActivity
 import com.bvc.ordering.databinding.ActivityMainBinding
 import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.TransactionData
+import com.bvc.ordering.view.cart.CartFragment
 import com.bvc.ordering.view.order.OrderFragment
 import com.bvc.ordering.view.splash.SplashFragment
 import com.bvc.ordering.view.splash.login.LoginFragment
@@ -88,6 +89,10 @@ class MainActivity : BaseActivity() {
             }
         }
 
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            log.e("destination.route: ${destination.route}")
+        }
+
         if (savedInstanceState == null) {
             val navGraph =
                 navController.createGraph(
@@ -95,6 +100,7 @@ class MainActivity : BaseActivity() {
                     route = "main_graph",
                 ) {
                     fragment<OrderFragment>(route = OrderFragment::class.java.name)
+                    fragment<CartFragment>(route = CartFragment::class.java.name)
                     fragment<SplashFragment>(route = SplashFragment::class.java.name)
                     fragment<LoginFragment>(route = LoginFragment::class.java.name)
                 }
@@ -170,17 +176,6 @@ class MainActivity : BaseActivity() {
         customView.findViewById<TextView>(R.id.tab_text).text = title
         tab.customView = customView
     }
-
-//    private fun setCustomTabTitles(tab: TabLayout.Tab) {
-//        val customView = layoutInflater.inflate(R.layout.custom_tab, null)
-// //        customView.findViewById<ImageView>(R.id.tab_icon).setImageDrawable(tab.icon)
-// //        customView.findViewById<TextView>(R.id.tab_text).apply {
-// //            text = tab.text
-// //            setTextColor(resources.getColorStateList(R.color.co, null))
-// //        }
-//        tab.customView = customView
-//        tab.view.background = resources.getDrawable(R.drawable.tab_background_selector, null)
-//    }
 
     val startForResultForTelegram =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->

@@ -7,7 +7,7 @@
     <data>
         <variable
             name="vm"
-            type="com.bvc.ordering.view.order.OrderViewModel" />
+            type="com.bvc.ordering.view.cart.CartViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,14 +16,10 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/ic_order"
-            layout="@layout/inflate_menu" />
-
-        <include
-            android:visibility="gone"
-            android:id="@+id/ic_cart_count"
-            layout="@layout/inflate_cart" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:text="dasdasdasdasdasdsadasd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

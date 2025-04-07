@@ -1,4 +1,4 @@
-package com.bvc.ordering.view.order
+package com.bvc.ordering.view.cart
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OrderViewModel
+class CartViewModel
     @Inject
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
@@ -47,7 +47,7 @@ class OrderViewModel
         private fun getCategory() {
             viewModelScope.launch {
                 val response =
-                    getMainUseCase.getMenuCategory(this@OrderViewModel, preferenceUseCase.getToken())
+                    getMainUseCase.getMenuCategory(this@CartViewModel, preferenceUseCase.getToken())
 //                log.e("response : $response")
                 val selectId = category.value?.find { it.selected }?.id
                 _category.value = (
@@ -94,7 +94,7 @@ class OrderViewModel
         fun getSubCategory(id: String) {
             viewModelScope.launch {
                 val response =
-                    getMainUseCase.getSubCategory(this@OrderViewModel, preferenceUseCase.getToken(), id)
+                    getMainUseCase.getSubCategory(this@CartViewModel, preferenceUseCase.getToken(), id)
 //                log.e("response : $response")
                 val selectId = category.value?.find { it.selected }?.id
                 _subCategory.value = (
@@ -157,7 +157,7 @@ class OrderViewModel
         fun getProducts(externalKey: String) {
             viewModelScope.launch {
                 val response =
-                    getMainUseCase.getProducts(this@OrderViewModel, preferenceUseCase.getToken(), externalKey)
+                    getMainUseCase.getProducts(this@CartViewModel, preferenceUseCase.getToken(), externalKey)
                 log.e("response : ${response.data}")
                 _product.value = (
 //                    response.data ?:

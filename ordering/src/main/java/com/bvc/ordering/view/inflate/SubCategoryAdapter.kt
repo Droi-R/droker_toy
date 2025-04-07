@@ -49,13 +49,13 @@ class SubCategoryAdapter<T : Any>(
                 is SubCategoryEntity -> {
                     binding.tvSubCategory.text = item.name
                     if (item.selected) {
-                        binding.clItemSubCategory.setBackgroundResource(R.drawable.r15_17c2c9)
+                        binding.clItemSubCategory.setBackgroundResource(R.drawable.r34_17c2c9)
                         binding.tvSubCategory.setTypeface(null, Typeface.BOLD)
                         binding.tvSubCategory.setTextColor(
                             binding.root.context.getColor(R.color.white),
                         )
                     } else {
-                        binding.clItemSubCategory.setBackgroundResource(R.drawable.r15_f6f6f6)
+                        binding.clItemSubCategory.setBackgroundResource(R.drawable.r34_f6f6f6)
                         binding.tvSubCategory.setTypeface(null, Typeface.NORMAL)
                         binding.tvSubCategory.setTextColor(
                             binding.root.context.getColor(R.color.bvc_666E89),

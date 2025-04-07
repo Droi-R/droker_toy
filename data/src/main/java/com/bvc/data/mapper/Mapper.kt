@@ -108,7 +108,7 @@ object Mapper {
             data =
                 response?.data?.map {
                     ProductEntity(
-                        id = it.id,
+                        externalKey = it.externalKey,
                         name = it.name,
                         categoryKey = it.categoryKey,
                         categoryName = it.categoryName,
