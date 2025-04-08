@@ -11,7 +11,6 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import com.bvc.domain.log
 import com.bvc.domain.model.Options
 import com.bvc.domain.model.ProductEntity
 import com.bvc.ordering.R
@@ -219,13 +218,11 @@ class OptionSelectDialog(
 
     private fun updateTotalPrice() {
         var totalPrice = product.price.toInt()
-        log.e("totalPrice: $totalPrice")
 
         selectedOptions.forEach { (optionId, selectedIds) ->
             val option = product.productOption.find { it.id == optionId }
             selectedIds.forEach { id ->
                 val selectedOption = option?.options?.find { it.id == id }
-                log.e("selectedOption: $selectedOption")
                 totalPrice += selectedOption?.price?.toInt() ?: 0
             }
         }

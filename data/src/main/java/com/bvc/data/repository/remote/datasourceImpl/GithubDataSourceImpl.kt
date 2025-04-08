@@ -1,7 +1,7 @@
 package com.bvc.data.repository.remote.datasourceImpl
 
 import com.bvc.data.remote.api.GithubApi
-import com.bvc.data.remote.model.GithubResponse
+import com.bvc.data.remote.model.response.GithubResponse
 import com.bvc.data.repository.remote.datasource.GithubDataSource
 import com.bvc.data.utils.base.BaseRepository
 import com.bvc.domain.utils.RemoteErrorEmitter

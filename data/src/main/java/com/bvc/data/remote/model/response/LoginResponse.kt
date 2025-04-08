@@ -1,4 +1,4 @@
-package com.bvc.data.remote.model
+package com.bvc.data.remote.model.response
 
 import com.google.gson.annotations.SerializedName
 

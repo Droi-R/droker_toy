@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.bvc.ordering.view.cart.CartViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/d_2900"
+        android:layout_marginTop="@dimen/d_1500"
+        android:background="@drawable/r15_f6f6f6"
+        android:paddingHorizontal="@dimen/d_2300"
+        android:paddingVertical="@dimen/d_2700">
+
+        <!-- "결제금액" 타이틀 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_payment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_payment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="결제금액"
+                android:textColor="@color/bvc_main_color"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_marginTop="@dimen/d_700"
+                app:layout_constraintEnd_toEndOf="@+id/tv_payment_title"
+                app:layout_constraintStart_toStartOf="@+id/tv_payment_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_payment_title"
+                android:background="@color/bvc_main_color"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/d_100"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!-- 공급가액 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_supply_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_1200"
+            android:text="@string/cart_supply_price"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_payment_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_supply_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="9,910원"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_supply_label" />
+
+        <!-- 부가세 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_vat_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_800"
+            android:text="@string/cart_vat"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_supply_label" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_vat_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="990원"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_vat_label" />
+
+        <!-- 할인/쿠폰 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_800"
+            android:text="@string/cart_discount_coupon"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vat_label" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0원"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_discount_label" />
+
+        <!-- 총액 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_total_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_1200"
+            android:text="총액"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_discount_label" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_total_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="10,900원"
+            android:textColor="@color/bvc_main_color"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_total_label" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

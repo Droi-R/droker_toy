@@ -35,8 +35,6 @@ class SelectViewModel
                 val response =
 //                    getUserRepoUseCase.getGithub(this@SelectViewModel, preferenceUseCase.getToken())
                     splashUseCase.getAffiliate(this@SelectViewModel, preferenceUseCase.getToken())
-//                log.e("response : $response")
-
                 _affiliate.value = (
                     response?.data?.map {
                         AffiliateEntity(

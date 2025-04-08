@@ -27,7 +27,7 @@ class SplashViewModel
 
         private val _affiliate =
             SingleLiveEvent<String>().apply {
-                value = ""
+                value = "가맹점"
             }
         val affiliate: LiveData<String> get() = _affiliate
 

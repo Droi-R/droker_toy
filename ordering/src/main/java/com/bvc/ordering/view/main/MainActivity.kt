@@ -13,10 +13,12 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.fragment
+import androidx.navigation.navOptions
 import com.bvc.domain.log
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseActivity
@@ -63,7 +65,20 @@ class MainActivity : BaseActivity() {
                             tab?.customView?.findViewById<TextView>(R.id.tab_text)?.text?.let { tabText ->
                                 when (tabText) {
                                     getString(R.string.main_tab_order) -> {
-                                        navController.navigate(OrderFragment::class.java.name)
+                                        val popped = navController.popBackStack(OrderFragment::class.java.name, false)
+                                        if (!popped) {
+                                            navController.navigate(
+                                                OrderFragment::class.java.name,
+                                                navOptions {
+                                                    popUpTo(OrderFragment::class.java.name) {
+                                                        inclusive = false
+                                                        saveState = true
+                                                    }
+                                                    restoreState = true
+                                                    launchSingleTop = true
+                                                },
+                                            )
+                                        }
                                     }
                                     getString(R.string.main_tab_table) -> {
                                         navController.navigate(LoginFragment::class.java.name)
@@ -90,7 +105,13 @@ class MainActivity : BaseActivity() {
         }
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            log.e("destination.route: ${destination.route}")
+            if (destination.route != CartFragment::class.java.name) {
+                binding.clMainTop.isVisible = true
+                binding.tlMainBottom.isVisible = true
+            } else {
+                binding.clMainTop.isVisible = false
+                binding.tlMainBottom.isVisible = false
+            }
         }
 
         if (savedInstanceState == null) {
@@ -100,9 +121,10 @@ class MainActivity : BaseActivity() {
                     route = "main_graph",
                 ) {
                     fragment<OrderFragment>(route = OrderFragment::class.java.name)
-                    fragment<CartFragment>(route = CartFragment::class.java.name)
                     fragment<SplashFragment>(route = SplashFragment::class.java.name)
                     fragment<LoginFragment>(route = LoginFragment::class.java.name)
+
+                    fragment<CartFragment>(route = CartFragment::class.java.name)
                 }
             navController.setGraph(
                 graph = navGraph,

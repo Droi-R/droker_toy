@@ -21,4 +21,16 @@ class PreferencesRepositoryImpl
         }
 
         override suspend fun getToken(): String = sharedPreferences.getString(Constant.PREF.BVC_TOKEN, "") ?: ""
+
+        override suspend fun setAffiliteName(value: String) {
+            sharedPreferences.edit { putString(Constant.PREF.BVC_AFFILITE_NAME, value) }
+        }
+
+        override suspend fun getAffiliteName(): String = sharedPreferences.getString(Constant.PREF.BVC_AFFILITE_NAME, "") ?: ""
+
+        override suspend fun setAffiliteType(value: String) {
+            sharedPreferences.edit { putString(Constant.PREF.BVC_AFFILITE_TYPE, value) }
+        }
+
+        override suspend fun getAffiliteType(): String = sharedPreferences.getString(Constant.PREF.BVC_AFFILITE_TYPE, "") ?: ""
     }

@@ -76,6 +76,7 @@ dependencies {
 
     //Room
     implementation (Room.RUNTIME)
+
     kapt(Room.COMPILER)
     implementation (Room.KTX)
     implementation(Room.GUAVA)

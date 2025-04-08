@@ -1,8 +1,8 @@
-package com.bvc.data.remote.model
+package com.bvc.data.remote.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class CategoryResponse(
+data class SubCategoryResponse(
     @SerializedName("id")
     val id: String = "",
     @SerializedName("name")

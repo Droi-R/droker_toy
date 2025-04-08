@@ -10,6 +10,8 @@
     <string name="verification">인증</string>
     <string name="start">시작하기</string>
     <string name="won">원</string>
+    <string name="menu">메뉴</string>
+    <string name="cart">담은메뉴</string>
 
     <!--intro-->
     <string name="intro_affiliate">가맹점</string>
@@ -40,5 +42,20 @@
 
     <!--상품-->
     <string name="cart_add_desc">원 담기</string>
+
+    <!--담은상품-->
+    <string name="cart_supply_price">공급가액</string>
+    <string name="cart_vat">부가세</string>
+    <string name="cart_discount_coupon">할인/쿠폰</string>
+    <string name="cart_total_price">총액</string>
+    <string name="cart_point">포인트</string>
+    <string name="cart_price_change">금액변경</string>
+    <string name="cart_split_payment">분할결제</string>
+    <string name="cart_cash_payment">현금결제</string>
+    <string name="cart_etc_payment">기타결제</string>
+    <string name="cart_card_payment">카드결제</string>
+
+
+
 
 </resources>

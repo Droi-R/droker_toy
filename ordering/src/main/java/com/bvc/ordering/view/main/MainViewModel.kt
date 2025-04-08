@@ -5,7 +5,6 @@ import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
-import com.bvc.ordering.ksnet.Telegram
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -54,16 +53,7 @@ class MainViewModel
         init {
         }
 
-        fun onSplashClick() {
-            _requestTelegram.value =
-                Telegram.makeTelegramIC(
-                    apprCode = "1",
-                    mDeviceNo = "DPT0TEST03",
-                    quota = "00",
-                    totAmt = "1004",
-                    orgApprNo = "123456789012",
-                    orgDate = "201020",
-                    taxFree = "000000000000",
-                )
+        fun requestTelegram(data: ByteArray) {
+            _requestTelegram.value = data
         }
     }

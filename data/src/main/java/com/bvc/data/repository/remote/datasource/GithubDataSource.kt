@@ -1,6 +1,6 @@
 package com.bvc.data.repository.remote.datasource
 
-import com.bvc.data.remote.model.GithubResponse
+import com.bvc.data.remote.model.response.GithubResponse
 import com.bvc.domain.utils.RemoteErrorEmitter
 
 interface GithubDataSource {

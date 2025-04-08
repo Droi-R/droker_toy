@@ -3,6 +3,9 @@ package com.bvc.ordering.view.order
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +24,7 @@ import com.bvc.ordering.view.inflate.CategoryAdapter
 import com.bvc.ordering.view.inflate.GridAdapter
 import com.bvc.ordering.view.inflate.SubCategoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class OrderFragment : BaseFragment<FragmentOrderBinding>() {
@@ -87,35 +91,50 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
     }
 
     override fun handleViewModel() {
-        viewModel.apply {
-            category.observe(viewLifecycleOwner) {
-                binding?.icOrder?.rvInflateCategory?.adapter?.let { adapter ->
-                    if (adapter is CategoryAdapter<*>) {
-                        (adapter as CategoryAdapter<CategoryEntity>).submitList(it.toList())
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.apply {
+                    launch {
+                        category.collect { list ->
+                            // 카테고리 UI 갱신
+                            binding?.icOrder?.rvInflateCategory?.adapter?.let { adapter ->
+                                if (adapter is CategoryAdapter<*>) {
+                                    (adapter as CategoryAdapter<CategoryEntity>).submitList(list.toList())
+                                }
+                            }
+                            getSubCategory(list.find { it.selected }?.id ?: "")
+                        }
+                    }
+                    launch {
+                        subCategory.collect { subCategory ->
+                            // 상품 UI 갱신
+                            binding?.icOrder?.rvInflateSubCategory?.adapter?.let { adapter ->
+                                if (adapter is SubCategoryAdapter<*>) {
+                                    (adapter as SubCategoryAdapter<SubCategoryEntity>).submitList(subCategory.toList())
+                                }
+                            }
+                            getProducts(subCategory.find { it.selected }?.id ?: "")
+                        }
+                    }
+                    launch {
+                        product.collect { product ->
+                            // 장바구니 UI 갱신
+                            binding?.icOrder?.rvInflateGrid?.adapter?.let { adapter ->
+                                if (adapter is GridAdapter<*>) {
+                                    (adapter as GridAdapter<ProductEntity>).submitList(product.toList())
+                                }
+                            }
+                        }
+                    }
+                    launch {
+                        cartData.collect { cartData ->
+                            binding?.icCartCount?.root?.isVisible = cartData.isNotEmpty()
+                            binding?.icCartCount?.tvCartCount?.text = "${cartData.sumOf { it.quantity }}개"
+                            val totalPrice = cartData.sumOf { it.getTotalPrice() }
+                            binding?.icCartCount?.tvCartPrice?.text = "${Util.myFormatter(totalPrice)}"
+                        }
                     }
                 }
-                viewModel.getSubCategory(it.find { it.selected }?.id ?: "")
-            }
-            subCategory.observe(viewLifecycleOwner) {
-                binding?.icOrder?.rvInflateSubCategory?.adapter?.let { adapter ->
-                    if (adapter is SubCategoryAdapter<*>) {
-                        (adapter as SubCategoryAdapter<SubCategoryEntity>).submitList(it.toList())
-                    }
-                }
-                viewModel.getProducts(it.find { it.selected }?.id ?: "")
-            }
-            product.observe(viewLifecycleOwner) {
-                binding?.icOrder?.rvInflateGrid?.adapter?.let { adapter ->
-                    if (adapter is GridAdapter<*>) {
-                        (adapter as GridAdapter<ProductEntity>).submitList(it.toList())
-                    }
-                }
-            }
-            cartData.observe(viewLifecycleOwner) {
-                binding?.icCartCount?.root?.isVisible = it.isNotEmpty()
-                binding?.icCartCount?.tvCartCount?.text = "${it.sumOf { it.quantity }}개"
-                val totalPrice = it.sumOf { it.getTotalPrice() }
-                binding?.icCartCount?.tvCartPrice?.text = "${Util.myFormatter(totalPrice)}"
             }
         }
     }

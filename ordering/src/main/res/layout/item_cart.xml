@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.bvc.domain.model.CartEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/d_1200"
+        android:background="@drawable/r15_f6f6f6"
+        android:padding="@dimen/d_2500">
+
+        <!-- 삭제 버튼 -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_cart_delete"
+            android:layout_width="@dimen/d_2400"
+            android:layout_height="@dimen/d_2400"
+            android:src="@drawable/ic_close_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- 메뉴명 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_menu_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_16"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_cart_delete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="샌드위치 쿠바노" />
+
+        <LinearLayout
+            android:id="@+id/ll_cart_option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_2800"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_menu_name" />
+        <!--        &lt;!&ndash; 필수 옵션 &ndash;&gt;-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/tv_required_option"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:textColor="@color/bvc_666E89"-->
+        <!--            android:textSize="@dimen/text_size_12"-->
+        <!--            tools:text="└ 필수 선택 : 커팅 없음 (9,900원)" />-->
+
+        <!--        &lt;!&ndash; 추가 옵션 &ndash;&gt;-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tv_optional_option"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:textColor="@color/bvc_666E89"-->
+        <!--            android:textSize="@dimen/text_size_12"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/tv_required_option"-->
+        <!--            tools:text="└ 옵션 선택 : 치즈 추가 (1,000원)" />-->
+
+        <!-- 이미지 -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_menu_thumb"
+            android:layout_width="@dimen/d_5000"
+            android:layout_height="@dimen/d_5000"
+            android:layout_marginTop="@dimen/d_3100"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_cart_option"
+            app:layout_constraintVertical_bias="1" />
+
+        <!-- 수량 조절 영역 -->
+        <LinearLayout
+            android:id="@+id/layout_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_3100"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_cart_option">
+
+            <RelativeLayout
+                android:id="@+id/rl_cart_minus"
+                android:layout_width="@dimen/d_2500"
+                android:layout_height="@dimen/d_2500"
+                android:background="@drawable/r5_sto_666e89">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="-"
+                    android:textSize="@dimen/text_size_14" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_quantity"
+                android:layout_width="@dimen/d_4000"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_14"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:id="@+id/rl_cart_plus"
+                android:layout_width="@dimen/d_2500"
+                android:layout_height="@dimen/d_2500"
+                android:background="@drawable/r5_sto_666e89">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="+"
+                    android:textSize="@dimen/text_size_14" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!-- 금액 -->
+        <TextView
+            android:id="@+id/tv_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_800"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_quantity"
+            tools:text="10,900원" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

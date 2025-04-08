@@ -1,6 +1,6 @@
 package com.bvc.data.repository
 
-import com.bvc.data.mapper.Mapper
+import com.bvc.data.mapper.ResponseMapper
 import com.bvc.data.repository.remote.datasource.GithubDataSource
 import com.bvc.domain.model.GithubEntity
 import com.bvc.domain.repository.GithubRepository
@@ -15,5 +15,5 @@ class GithubRepositoryImpl
         override suspend fun getGithub(
             remoteErrorEmitter: RemoteErrorEmitter,
             owner: String,
-        ): List<GithubEntity> = Mapper.mapGithub(githubDataSource.getGithub(remoteErrorEmitter, owner))
+        ): List<GithubEntity> = ResponseMapper.mapGithub(githubDataSource.getGithub(remoteErrorEmitter, owner))
     }

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bvc.domain.log
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.ordering.databinding.ItemTopCategoryBinding
 
@@ -72,11 +71,7 @@ class CategoryAdapter<T : Any>(
             override fun areContentsTheSame(
                 oldItem: T,
                 newItem: T,
-            ): Boolean {
-                log.e("oldItem : $oldItem")
-                log.e("newItem : $newItem")
-                return oldItem == newItem
-            }
+            ): Boolean = oldItem == newItem
         }
     }
 }

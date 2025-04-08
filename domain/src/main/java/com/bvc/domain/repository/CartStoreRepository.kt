@@ -7,6 +7,8 @@ interface CartStoreRepository {
 
     fun removeItem(item: CartEntity)
 
+    fun minusItem(item: CartEntity)
+
     fun getItems(): List<CartEntity>
 
     fun clearCart()

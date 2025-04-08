@@ -1,8 +1,6 @@
 package com.bvc.ordering.view.order
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.bvc.domain.log
 import com.bvc.domain.model.CartEntity
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.Options
@@ -15,8 +13,9 @@ import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
-import com.bvc.ordering.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,17 +27,17 @@ class OrderViewModel
         private val getMainUseCase: MainUseCase,
         private val cartStoreRepository: CartStoreRepository,
     ) : BaseViewModel() {
-        private val _category = SingleLiveEvent<List<CategoryEntity>>()
-        val category: LiveData<List<CategoryEntity>> get() = _category
+        private val _category = MutableStateFlow<List<CategoryEntity>>(emptyList())
+        val category: StateFlow<List<CategoryEntity>> get() = _category
 
-        private val _subCategory = SingleLiveEvent<List<SubCategoryEntity>>()
-        val subCategory: LiveData<List<SubCategoryEntity>> get() = _subCategory
+        private val _subCategory = MutableStateFlow<List<SubCategoryEntity>>(emptyList())
+        val subCategory: StateFlow<List<SubCategoryEntity>> get() = _subCategory
 
-        private val _product = SingleLiveEvent<List<ProductEntity>>()
-        val product: LiveData<List<ProductEntity>> get() = _product
+        private val _product = MutableStateFlow<List<ProductEntity>>(emptyList())
+        val product: StateFlow<List<ProductEntity>> get() = _product
 
-        private val _cartData = SingleLiveEvent<List<CartEntity>>()
-        val cartData: LiveData<List<CartEntity>> get() = _cartData
+        private val _cartData = MutableStateFlow<List<CartEntity>>(emptyList())
+        val cartData: StateFlow<List<CartEntity>> get() = _cartData
 
         init {
             getCategory()
@@ -48,7 +47,6 @@ class OrderViewModel
             viewModelScope.launch {
                 val response =
                     getMainUseCase.getMenuCategory(this@OrderViewModel, preferenceUseCase.getToken())
-//                log.e("response : $response")
                 val selectId = category.value?.find { it.selected }?.id
                 _category.value = (
                     response?.data?.map {
@@ -75,10 +73,10 @@ class OrderViewModel
                         ),
                     )
                 )
-                val selectedCategory = category.value?.find { it.selected }
-                if (selectedCategory == null && category.value?.isNotEmpty() == true) {
+                val selectedCategory = category.value.find { it.selected }
+                if (selectedCategory == null && category.value.isNotEmpty()) {
                     _category.value =
-                        category.value?.mapIndexed { index, item ->
+                        category.value.mapIndexed { index, item ->
                             if (index == 0) item.copy(selected = true) else item.copy(selected = false)
                         }
                 }
@@ -95,8 +93,7 @@ class OrderViewModel
             viewModelScope.launch {
                 val response =
                     getMainUseCase.getSubCategory(this@OrderViewModel, preferenceUseCase.getToken(), id)
-//                log.e("response : $response")
-                val selectId = category.value?.find { it.selected }?.id
+                val selectId = subCategory.value?.find { it.selected }?.id
                 _subCategory.value = (
                     response?.data?.map {
                         SubCategoryEntity(
@@ -141,7 +138,7 @@ class OrderViewModel
                 val selectedCategory = subCategory.value?.find { it.selected }
                 if (selectedCategory == null && subCategory.value?.isNotEmpty() == true) {
                     _subCategory.value =
-                        subCategory.value?.mapIndexed { index, item ->
+                        subCategory.value.mapIndexed { index, item ->
                             if (index == 0) item.copy(selected = true) else item.copy(selected = false)
                         }
                 }
@@ -158,7 +155,7 @@ class OrderViewModel
             viewModelScope.launch {
                 val response =
                     getMainUseCase.getProducts(this@OrderViewModel, preferenceUseCase.getToken(), externalKey)
-                log.e("response : ${response.data}")
+//                log.e("response : ${response.data}")
                 _product.value = (
 //                    response.data ?:
                     listOf(
@@ -168,6 +165,7 @@ class OrderViewModel
                             selected = false,
                             image = "https://cdn.imweb.me/upload/S20210720ef466f4f488bc/04045dccedf91.jpg",
                             price = "8900",
+                            isVat = true,
                         ),
                         ProductEntity(
                             externalKey = "2",
@@ -180,8 +178,8 @@ class OrderViewModel
                                     ProductOptionEntity(
                                         id = "1",
                                         name = "바게트",
-                                        selected = false,
-                                        price = "0",
+//                                        selected = false,
+//                                        price = "0",
                                         required = "true",
                                         minOptionCountLimit = 1,
                                         maxOptionCountLimit = 1,
@@ -213,8 +211,8 @@ class OrderViewModel
                                     ProductOptionEntity(
                                         id = "2",
                                         name = "소스",
-                                        selected = false,
-                                        price = "0",
+//                                        selected = false,
+//                                        price = "0",
                                         required = "false",
                                         minOptionCountLimit = 1,
                                         maxOptionCountLimit = 1,
@@ -251,6 +249,7 @@ class OrderViewModel
                             selected = false,
                             image = "https://cdn.animaltoc.com/news/photo/202312/505_2403_4626.jpg",
                             price = "10900",
+                            isVat = false,
                         ),
                         ProductEntity(
                             externalKey = "4",
@@ -258,6 +257,7 @@ class OrderViewModel
                             selected = false,
                             image = "https://cdn.imweb.me/upload/S20210720ef466f4f488bc/b0773058f7005.jpg",
                             price = "10800",
+                            isVat = false,
                         ),
                         ProductEntity(
                             externalKey = "5",
@@ -331,7 +331,6 @@ class OrderViewModel
                         ),
                     )
                 )
-                log.e("_product: ${product.value}")
                 if (response == null) {
                     mutableScreenState.postValue(ScreenState.ERROR)
                 } else {
@@ -342,21 +341,21 @@ class OrderViewModel
 
         fun updateCategory(item: CategoryEntity) {
             _category.value =
-                category.value?.map {
+                category.value.map {
                     it.copy(selected = it == item) // 새로운 객체 생성
                 }
         }
 
         fun updateSubCategory(item: SubCategoryEntity) {
             _subCategory.value =
-                subCategory.value?.map {
+                subCategory.value.map {
                     it.copy(selected = it == item) // 새로운 객체 생성
                 }
         }
 
         fun updateProduct(item: ProductEntity) {
             _product.value =
-                product.value?.map {
+                product.value.map {
                     it.copy(selected = it == item) // 새로운 객체 생성
                 }
         }

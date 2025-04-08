@@ -1,6 +1,6 @@
 package com.bvc.data.remote.api
 
-import com.bvc.data.remote.model.GithubResponse
+import com.bvc.data.remote.model.response.GithubResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

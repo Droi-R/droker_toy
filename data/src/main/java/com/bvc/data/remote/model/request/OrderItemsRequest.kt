@@ -1,8 +1,8 @@
-package com.bvc.data.remote.model
+package com.bvc.data.remote.model.request
 
 import com.google.gson.annotations.SerializedName
 
-data class ProductResponse(
+data class ProductItemsRequest(
     @SerializedName("externalKey")
     val externalKey: String = "",
     @SerializedName("name")
@@ -18,7 +18,7 @@ data class ProductResponse(
     @SerializedName("selected")
     val selected: Boolean = false,
     @SerializedName("stock")
-    val stock: StockResponse = StockResponse(),
+    val stock: StockRequest = StockRequest(),
     @SerializedName("color")
     var color: String = "#ffffff",
     @SerializedName("image")
@@ -26,20 +26,16 @@ data class ProductResponse(
     @SerializedName("price")
     val price: String = "",
     @SerializedName("productOption")
-    val productOption: List<ProductOptionResponse> = emptyList(),
+    val productOption: List<ProductOptionRequest> = emptyList(),
     @SerializedName("position")
     val position: Int = 0,
 )
 
-data class ProductOptionResponse(
+data class ProductOptionRequest(
     @SerializedName("id")
     val id: String = "",
     @SerializedName("name")
     val name: String = "",
-    @SerializedName("selected")
-    val selected: Boolean = false,
-    @SerializedName("price")
-    val price: String = "",
     @SerializedName("required")
     val required: String = "",
     @SerializedName("minOptionCountLimit")
@@ -49,10 +45,10 @@ data class ProductOptionResponse(
     @SerializedName("position")
     var position: Int = 0,
     @SerializedName("options")
-    var options: ArrayList<OptionResponse> = ArrayList(),
+    var options: ArrayList<OptionsRequest> = ArrayList(),
 )
 
-data class StockResponse(
+data class StockRequest(
     @SerializedName("externalKey")
     val externalKey: String = "",
     @SerializedName("useStock")
@@ -61,7 +57,7 @@ data class StockResponse(
     var count: Int = 0,
 )
 
-data class ImageResponse(
+data class ImagesRequest(
     @SerializedName("id")
     val id: Long = 0L,
     @SerializedName("externalKey")
@@ -74,7 +70,7 @@ data class ImageResponse(
     var position: Int = 0,
 )
 
-data class OptionResponse(
+data class OptionsRequest(
     @SerializedName("id")
     val id: String = "",
     @SerializedName("name")

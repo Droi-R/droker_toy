@@ -1,9 +1,9 @@
 package com.bvc.data.remote.api
 
-import com.bvc.data.remote.model.AffiliateResponse
-import com.bvc.data.remote.model.LoginResponse
-import com.bvc.data.remote.model.ResData
-import com.bvc.data.remote.model.ResDataList
+import com.bvc.data.remote.model.response.AffiliateResponse
+import com.bvc.data.remote.model.response.LoginResponse
+import com.bvc.data.remote.model.response.ResData
+import com.bvc.data.remote.model.response.ResDataList
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

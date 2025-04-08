@@ -20,8 +20,8 @@ data class ProductEntity(
 data class ProductOptionEntity(
     val id: String = "",
     val name: String = "",
-    val selected: Boolean = false,
-    val price: String = "",
+//    val selected: Boolean = false,
+//    val price: String = "",
     val required: String = "",
     var minOptionCountLimit: Int = 0,
     var maxOptionCountLimit: Int = 0,
