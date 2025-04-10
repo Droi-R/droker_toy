@@ -12,12 +12,12 @@ data class Pagination(
     val nextCursor: String? = "",
 )
 
-data class Data<T>(
+data class ApiData<T>(
     val data: T,
     val meta: Meta,
 )
 
-data class DataList<T>(
+data class ApiDataList<T>(
     val data: List<T>?,
     val meta: Meta,
     val pagination: Pagination? = Pagination(),

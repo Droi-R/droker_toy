@@ -1,15 +1,19 @@
 package com.bvc.ordering.view.splash.login
 
+import android.content.Context
 import android.text.Editable
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.log
-import com.bvc.domain.type.ScreenState
-import com.bvc.domain.usecase.GetUserRepoUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
+import com.bvc.domain.usecase.SplashUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
+import com.bvc.ordering.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,65 +21,85 @@ import javax.inject.Inject
 class LoginViewModel
     @Inject
     constructor(
-        private val getUserRepoUseCase: GetUserRepoUseCase,
+        private val splashUseCase: SplashUseCase,
         private val preferenceUseCase: PreferenceUseCase,
+        @ApplicationContext private val context: Context,
     ) : BaseViewModel() {
-        private val _phoneNum =
-            SingleLiveEvent<String>().apply {
-                value = ""
-            }
-        val phoneNum: LiveData<String> get() = _phoneNum
+        private val _phoneNum = MutableLiveData<String>("")
+        val phoneNum: LiveData<String> = _phoneNum
 
-        private val _verification =
-            SingleLiveEvent<String>().apply {
-                value = ""
-            }
-        val verification: LiveData<String> get() = _verification
+        private val _verification = MutableLiveData<String>("")
+        val verification: LiveData<String> = _verification
+
+        private val _enableVerify = MutableLiveData<Boolean>(false)
+        val enableVerify: LiveData<Boolean> = _enableVerify
 
         private val _action = SingleLiveEvent<Boolean>()
-        val action: LiveData<Boolean> get() = _action
+        val action: LiveData<Boolean> = _action
 
         fun loginPhoneAfterTextChanged(editable: Editable?) {
-            if (editable == null) {
-                return
-            }
-
-            try {
-                _phoneNum.value = editable.toString().replace("-", "")
-            } catch (e: Exception) {
-                log.e(e)
-            }
+            _phoneNum.value = editable?.toString()?.replace("-", "") ?: ""
         }
 
         fun loginVerificationAfterTextChanged(editable: Editable?) {
-            if (editable == null) {
-                return
-            }
-
-            try {
-                _verification.value = editable.toString().replace("-", "")
-            } catch (e: Exception) {
-                log.e(e)
-            }
-        }
-
-        fun onClickVerification() {
-            viewModelScope.launch {
-//                val response = getUserRepoUseCase.getGithub(this@LoginViewModel, preferenceUseCase.getToken())
-                val response = getUserRepoUseCase.getGithub(this@LoginViewModel, "sam")
-//                log.e("response : $response")
-                if (response == null) {
-                    mutableScreenState.postValue(ScreenState.ERROR)
-                } else {
-                    mutableScreenState.postValue(ScreenState.RENDER)
-                    _action.value = true
-                }
-            }
+            _verification.value = editable?.toString()?.replace("-", "") ?: ""
         }
 
         fun onClickSend() {
+            requestApi(
+                request = { splashUseCase.sendSms(this@LoginViewModel, phoneNum.value.orEmpty()) },
+                successAction = {
+//                    _enableVerify.value = true
+                    _enableVerify.postValue(true)
+                    Utils.showToast("인증번호가 발송되었습니다.")
+                },
+                errorAction = {
+                    _enableVerify.value = false
+                    Utils.showToast(it)
+                },
+            )
         }
 
-        fun onClickResend() {
+        fun onClickVerification() {
+            requestApi(
+                request = { splashUseCase.verifySms(this@LoginViewModel, phoneNum.value.orEmpty(), verification.value.orEmpty()) },
+                successAction = {
+                    Utils.showToast("인증번호가 확인되었습니다.")
+                    // 값에따라 로그인 or 회원가입
+//                    signUp()
+                    login()
+                },
+                errorAction = {
+                    Utils.showToast(it)
+                },
+            )
+        }
+
+        private fun signUp() {
+            requestApi(
+                request = { splashUseCase.signUp(this@LoginViewModel, phoneNum.value.orEmpty(), verification.value.orEmpty()) },
+                successAction = { response ->
+                    viewModelScope.launch(Dispatchers.IO) {
+                        preferenceUseCase.setToken(response.data.accessToken)
+                    }
+                    _action.value = true
+                },
+                errorAction = { Utils.showToast(it) },
+            )
+        }
+
+        private fun login() {
+            requestApi(
+                request = { splashUseCase.getLogin(this@LoginViewModel, phoneNum.value.orEmpty(), verification.value.orEmpty()) },
+                successAction = { response ->
+                    log.e("response: $response")
+                    viewModelScope.launch(Dispatchers.IO) {
+                        preferenceUseCase.setToken(response.data.accessToken)
+                        preferenceUseCase.setRefreshToken(response.data.refreshToken)
+                    }
+                    _action.value = true
+                },
+                errorAction = { Utils.showToast(it) },
+            )
         }
     }

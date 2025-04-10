@@ -5,14 +5,16 @@ import com.bvc.data.remote.api.MainApi
 import com.bvc.data.remote.model.request.OrderRequest
 import com.bvc.data.remote.model.response.AffiliateResponse
 import com.bvc.data.remote.model.response.CategoryResponse
+import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.OrderResponse
 import com.bvc.data.remote.model.response.ProductResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
 import com.bvc.data.remote.model.response.SubCategoryResponse
+import com.bvc.data.remote.model.response.TableResponse
 import com.bvc.data.repository.remote.datasource.MainDataSource
 import com.bvc.data.utils.base.BaseRepository
-import com.bvc.domain.model.CartEntity
+import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
 import com.bvc.domain.utils.RemoteErrorEmitter
@@ -24,6 +26,18 @@ class MainDataSourceImpl
         private val mainApi: MainApi,
     ) : BaseRepository(),
         MainDataSource {
+        override suspend fun refreshToken(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+        ): ResData<LoginResponse>? =
+            safeApiCall(remoteErrorEmitter) {
+                mainApi
+                    .refreshToken(
+                        token = token,
+                        refreshRequest = mapOf("refresh_token" to token),
+                    ).body()
+            }
+
         override suspend fun getAffiliate(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
@@ -50,7 +64,7 @@ class MainDataSourceImpl
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             id: String,
-            productItems: List<CartEntity>,
+            productItems: List<ProductEntity>,
             status: OrderStatus,
             orderFrom: OrderFrom,
             tableNumber: String,
@@ -66,4 +80,10 @@ class MainDataSourceImpl
                 )
             return safeApiCall(remoteErrorEmitter) { mainApi.postOrder(token, id, orderReqest).body() }
         }
+
+        override suspend fun getTables(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+            id: String,
+        ): ResDataList<TableResponse>? = safeApiCall(remoteErrorEmitter) { mainApi.getTables(token, id).body() }
     }

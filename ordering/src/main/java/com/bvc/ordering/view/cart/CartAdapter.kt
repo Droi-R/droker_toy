@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.bvc.domain.model.CartEntity
+import com.bvc.domain.model.ProductEntity
 import com.bvc.ordering.R
 import com.bvc.ordering.databinding.ItemCartBinding
-import com.bvc.ordering.util.Util
+import com.bvc.ordering.util.Utils
 
 class CartAdapter(
-    private var items: List<CartEntity>,
+    private var items: List<ProductEntity>,
     private val itemClickListener: OnItemClickListener,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //    companion object {
@@ -24,11 +24,11 @@ class CartAdapter(
 //    }
 
     interface OnItemClickListener {
-        fun onItemClick(item: CartEntity)
+        fun onItemClick(item: ProductEntity)
 
-        fun minusClick(item: CartEntity)
+        fun minusClick(item: ProductEntity)
 
-        fun plusClick(item: CartEntity)
+        fun plusClick(item: ProductEntity)
     }
 
 //    override fun getItemViewType(position: Int): Int {
@@ -66,7 +66,7 @@ class CartAdapter(
         }
     }
 
-    fun updateItems(newItems: List<CartEntity>) {
+    fun updateItems(newItems: List<ProductEntity>) {
         val diffCallback =
             object : DiffUtil.Callback() {
                 override fun getOldListSize() = items.size
@@ -95,7 +95,7 @@ class CartAdapter(
         private val binding: ItemCartBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            item: CartEntity,
+            item: ProductEntity,
             clickListener: OnItemClickListener,
         ) {
             binding.apply {
@@ -112,19 +112,19 @@ class CartAdapter(
                 }
 
                 llCartOption.removeAllViews()
-                tvMenuName.text = item.product.name
-                tvTotalPrice.text = "${Util.myFormatter(item.getTotalPrice())}원"
+                tvMenuName.text = item.name
+                tvTotalPrice.text = "${Utils.myFormatter(item.getTotalPrice())}원"
                 tvQuantity.text = item.quantity.toString()
                 val requestOptions = RequestOptions().transform(RoundedCorners(5))
                 Glide
                     .with(ivMenuThumb.context)
-                    .load(item.product.image)
+                    .load(item.image)
                     .apply(requestOptions)
                     .into(ivMenuThumb)
 
-                if (item.product.productOption.isNotEmpty()) {
+                if (item.productOption.isNotEmpty()) {
                     llCartOption.visibility = ViewGroup.VISIBLE
-                    item.product.productOption.forEach { option ->
+                    item.productOption.forEach { option ->
                         val context = binding.root.context
                         val optionType = "└ ${if (option.required == "true") {
                             "필수 선택: "
@@ -133,7 +133,7 @@ class CartAdapter(
                         }}"
                         option.options.forEach { optionItem ->
                             if (optionItem.price.isNotEmpty() && optionItem.isSelected) {
-                                val optionText = "$optionType ${optionItem.name} (${Util.myFormatter(optionItem.price.toInt())}원)"
+                                val optionText = "$optionType ${optionItem.name} (${Utils.myFormatter(optionItem.price.toInt())}원)"
                                 val textView =
                                     TextView(context).apply {
                                         text = optionText

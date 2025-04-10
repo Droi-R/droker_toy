@@ -17,7 +17,8 @@ import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentOrderBinding
 import com.bvc.ordering.ui.HorizontalSpaceItemDecoration
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
-import com.bvc.ordering.util.Util
+import com.bvc.ordering.ui.event.collectNonEmpty
+import com.bvc.ordering.util.Utils
 import com.bvc.ordering.view.cart.CartFragment
 import com.bvc.ordering.view.dialog.OptionSelectDialog
 import com.bvc.ordering.view.inflate.CategoryAdapter
@@ -35,7 +36,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
             vm = viewModel
-            icOrder.vm = viewModel
             icOrder.rvInflateCategory.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_3200)))
@@ -90,49 +90,51 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCart()
+    }
+
     override fun handleViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.apply {
-                    launch {
-                        category.collect { list ->
-                            // 카테고리 UI 갱신
-                            binding?.icOrder?.rvInflateCategory?.adapter?.let { adapter ->
-                                if (adapter is CategoryAdapter<*>) {
-                                    (adapter as CategoryAdapter<CategoryEntity>).submitList(list.toList())
-                                }
+                    category.collectNonEmpty(viewLifecycleOwner) { list ->
+                        // 카테고리 UI 갱신
+                        binding?.icOrder?.rvInflateCategory?.adapter?.let { adapter ->
+                            if (adapter is CategoryAdapter<*>) {
+                                (adapter as CategoryAdapter<CategoryEntity>).submitList(list.toList())
                             }
-                            getSubCategory(list.find { it.selected }?.id ?: "")
                         }
+                        getSubCategory(list.find { it.selected }?.id ?: "")
                     }
-                    launch {
-                        subCategory.collect { subCategory ->
-                            // 상품 UI 갱신
-                            binding?.icOrder?.rvInflateSubCategory?.adapter?.let { adapter ->
-                                if (adapter is SubCategoryAdapter<*>) {
-                                    (adapter as SubCategoryAdapter<SubCategoryEntity>).submitList(subCategory.toList())
-                                }
+                    subCategory.collectNonEmpty(viewLifecycleOwner) { subCategory ->
+                        // 상품 UI 갱신
+                        binding?.icOrder?.rvInflateSubCategory?.adapter?.let { adapter ->
+                            if (adapter is SubCategoryAdapter<*>) {
+                                (adapter as SubCategoryAdapter<SubCategoryEntity>).submitList(
+                                    subCategory.toList(),
+                                )
                             }
-                            getProducts(subCategory.find { it.selected }?.id ?: "")
                         }
+                        getProducts(subCategory.find { it.selected }?.id ?: "")
                     }
-                    launch {
-                        product.collect { product ->
-                            // 장바구니 UI 갱신
-                            binding?.icOrder?.rvInflateGrid?.adapter?.let { adapter ->
-                                if (adapter is GridAdapter<*>) {
-                                    (adapter as GridAdapter<ProductEntity>).submitList(product.toList())
-                                }
+
+                    product.collectNonEmpty(viewLifecycleOwner) { product ->
+                        // 장바구니 UI 갱신
+                        binding?.icOrder?.rvInflateGrid?.adapter?.let { adapter ->
+                            if (adapter is GridAdapter<*>) {
+                                (adapter as GridAdapter<ProductEntity>).submitList(product.toList())
                             }
                         }
                     }
-                    launch {
-                        cartData.collect { cartData ->
-                            binding?.icCartCount?.root?.isVisible = cartData.isNotEmpty()
-                            binding?.icCartCount?.tvCartCount?.text = "${cartData.sumOf { it.quantity }}개"
-                            val totalPrice = cartData.sumOf { it.getTotalPrice() }
-                            binding?.icCartCount?.tvCartPrice?.text = "${Util.myFormatter(totalPrice)}"
-                        }
+
+                    cartData.collectNonEmpty(viewLifecycleOwner) { cartData ->
+                        binding?.icCartCount?.root?.isVisible = cartData.isNotEmpty()
+                        binding?.icCartCount?.tvCartCount?.text =
+                            "${cartData.sumOf { it.quantity }}개"
+                        val totalPrice = cartData.sumOf { it.getTotalPrice() * it.quantity }
+                        binding?.icCartCount?.tvCartPrice?.text = "${Utils.myFormatter(totalPrice)}"
                     }
                 }
             }

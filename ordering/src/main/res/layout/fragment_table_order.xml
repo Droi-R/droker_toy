@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.bvc.ordering.view.table.TableOrderViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <!-- 상단 가맹점 정보 영역 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_table_order_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_2700"
+            android:background="@drawable/r15_f6f6f6"
+            android:paddingBottom="@dimen/d_2200"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_table_order_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_1400"
+                android:layout_marginEnd="@dimen/d_1400"
+                android:src="@drawable/ic_cart_close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+            </androidx.appcompat.widget.AppCompatImageView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_cart_affilite_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_2900"
+                android:layout_marginTop="@dimen/d_2500"
+                android:text="@{vm.affiliteName}"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_10"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="가맹점명" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_cart_affilite_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_2900"
+                android:layout_marginTop="@dimen/d_500"
+                android:layout_marginBottom="@dimen/d_700"
+                android:text="@{vm.tableName}"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_18"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_type"
+                tools:text="테이블명" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_cart_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_2900"
+                android:layout_marginTop="@dimen/d_2600"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_name">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_cart_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d_200"
+                    android:layout_marginTop="@dimen/d_700"
+                    android:background="@color/bvc_666E89"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_cart_menu"
+                    app:layout_constraintStart_toStartOf="@+id/tv_cart_menu"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_cart_menu" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_cart_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/d_2900"
+                android:layout_marginTop="@dimen/d_2600"
+                app:layout_constraintStart_toEndOf="@+id/cl_cart_menu"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_name">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_cart_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cart"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/d_200"
+                    android:layout_marginTop="@dimen/d_700"
+                    android:background="@color/bvc_666E89"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_cart_cart"
+                    app:layout_constraintStart_toStartOf="@+id/tv_cart_cart"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_cart_cart" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_table_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_2900"
+            android:textColor="@color/bvc_666E89"
+            android:textStyle="bold"
+            android:text="@string/table_order_desc"
+            android:textSize="@dimen/text_size_20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_table_order_top" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="@dimen/d_1200"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_table_order">
+
+            <include
+                android:id="@+id/ic_order"
+                layout="@layout/inflate_menu" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <include
+            android:id="@+id/ic_cart_count"
+            layout="@layout/inflate_cart"
+            android:visibility="gone" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

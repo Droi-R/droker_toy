@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.log
 import com.bvc.domain.model.GithubEntity
-import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.GetUserRepoUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.domain.usecase.SplashUseCase
@@ -49,7 +48,6 @@ class SplashViewModel
         init {
             viewModelScope.launch {
                 val token = preferenceUseCase.getToken()
-                log.e("token : $token")
                 if (token.isNotEmpty()) {
                     getAffiliate()
                 }
@@ -58,18 +56,18 @@ class SplashViewModel
 
         private fun getAffiliate() {
             viewModelScope.launch {
-                val response =
-                    getUserRepoUseCase.getGithub(this@SplashViewModel, preferenceUseCase.getToken())
-                log.e("response : $response")
-                if (response == null) {
-                    mutableScreenState.postValue(ScreenState.ERROR)
-                } else {
-                    mutableScreenState.postValue(ScreenState.RENDER)
-//                    _eventUserRepo.postValue(response)
-                    _affiliateName.value = response.first().name
-                    _affiliate.value = "가맹점"
-                    _startVisible.value = true
-                }
+//                val response = getUserRepoUseCase.getGithub(this@SplashViewModel, preferenceUseCase.getToken())
+                log.e("response :${preferenceUseCase.getToken()}")
+//                if (response == null) {
+//                    mutableScreenState.postValue(ScreenState.ERROR)
+//                } else {
+//                    mutableScreenState.postValue(ScreenState.RENDER)
+//                    _affiliateName.value = response.first().name
+//                    _affiliate.value = "가맹점"
+// //                    _startVisible.value = true
+//                }
+                _startVisible.value = true
+                onClickLogin()
             }
         }
 

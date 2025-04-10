@@ -1,11 +1,18 @@
 package com.bvc.ordering.view.main
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import com.bvc.domain.log
+import com.bvc.domain.model.TableEntity
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
+import com.bvc.ordering.ui.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,9 +22,6 @@ class MainViewModel
         private val preferenceUseCase: PreferenceUseCase,
         private val mainUseCase: MainUseCase,
     ) : BaseViewModel() {
-        companion object {
-        }
-
         private val _requestTelegram = SingleLiveEvent<ByteArray>()
         val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
 
@@ -50,10 +54,20 @@ class MainViewModel
                 }
         val isBusiness: LiveData<Boolean> get() = _isBusiness
 
+        private val _tableEventFlow = MutableSharedFlow<Event<TableEntity>>(replay = 1)
+        val tableEventFlow = _tableEventFlow.asSharedFlow()
+
         init {
         }
 
         fun requestTelegram(data: ByteArray) {
             _requestTelegram.value = data
+        }
+
+        fun sendTableEvent(table: TableEntity) {
+            log.e("sendTableEvent: $table")
+            viewModelScope.launch {
+                _tableEventFlow.emit(Event(table))
+            }
         }
     }

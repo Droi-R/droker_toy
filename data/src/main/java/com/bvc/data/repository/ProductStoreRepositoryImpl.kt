@@ -1,73 +1,73 @@
 package com.bvc.data.repository
 
-import com.bvc.domain.model.CartEntity
-import com.bvc.domain.repository.CartStoreRepository
+import com.bvc.domain.model.ProductEntity
+import com.bvc.domain.repository.ProductStoreRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CartStoreRepositoryImpl
+class ProductStoreRepositoryImpl
     @Inject
-    constructor() : CartStoreRepository {
-        private val cartItems = mutableListOf<CartEntity>()
+    constructor() : ProductStoreRepository {
+        private val productItems = mutableListOf<ProductEntity>()
 
-        override fun addItem(item: CartEntity) {
+        override fun addItem(item: ProductEntity) {
             // Check if the item already exists in the cart
             val existingItem =
-                cartItems.find { cartItem ->
-                    cartItem.product.externalKey == item.product.externalKey &&
-                        cartItem.product.productOption
+                productItems.find { cartItem ->
+                    cartItem.externalKey == item.externalKey &&
+                        cartItem.productOption
                             .flatMap { it.options }
                             .filter { it.isSelected } ==
-                        item.product.productOption
+                        item.productOption
                             .flatMap { it.options }
                             .filter { it.isSelected }
                 }
             // If it exists, update the quantity
             if (existingItem != null) {
-                val index = cartItems.indexOf(existingItem)
+                val index = productItems.indexOf(existingItem)
                 if (index != -1) {
                     val updatedItem = existingItem.copy(quantity = existingItem.quantity + item.quantity)
-                    cartItems[index] = updatedItem
+                    productItems[index] = updatedItem
                     return
                 }
             } else {
-                cartItems.add(item)
+                productItems.add(item)
             }
         }
 
-        override fun removeItem(item: CartEntity) {
-            cartItems.remove(item)
+        override fun removeItem(item: ProductEntity) {
+            productItems.remove(item)
         }
 
-        override fun minusItem(item: CartEntity) {
+        override fun minusItem(item: ProductEntity) {
             val existingItem =
-                cartItems.find { cartItem ->
-                    cartItem.product.externalKey == item.product.externalKey &&
-                        cartItem.product.productOption
+                productItems.find { cartItem ->
+                    cartItem.externalKey == item.externalKey &&
+                        cartItem.productOption
                             .flatMap { it.options }
                             .filter { it.isSelected } ==
-                        item.product.productOption
+                        item.productOption
                             .flatMap { it.options }
                             .filter { it.isSelected }
                 }
             // If it exists, update the quantity
             if (existingItem != null) {
-                val index = cartItems.indexOf(existingItem)
+                val index = productItems.indexOf(existingItem)
                 if (index != -1) {
                     val updatedItem = existingItem.copy(quantity = existingItem.quantity - 1)
                     if (updatedItem.quantity <= 0) {
-                        cartItems.removeAt(index)
+                        productItems.removeAt(index)
                     } else {
-                        cartItems[index] = updatedItem
+                        productItems[index] = updatedItem
                     }
                 }
             }
         }
 
-        override fun getItems(): List<CartEntity> = cartItems.toList()
+        override fun getItems(): List<ProductEntity> = productItems.toList()
 
         override fun clearCart() {
-            cartItems.clear()
+            productItems.clear()
         }
     }

@@ -6,23 +6,35 @@ import javax.inject.Inject
 class PreferenceUseCase
     @Inject
     constructor(
-        private val preferencesHelper: PreferenceRepository,
+        private val preferencesRepository: PreferenceRepository,
     ) {
         suspend fun setToken(value: String) {
-            preferencesHelper.setToken(value)
+            preferencesRepository.setToken(value)
         }
 
-        suspend fun getToken(): String = preferencesHelper.getToken()
+        suspend fun getToken(): String = preferencesRepository.getToken()
+
+        suspend fun setRefreshToken(value: String) {
+            preferencesRepository.setRefreshToken(value)
+        }
+
+        suspend fun getRefreshToken(): String = preferencesRepository.getRefreshToken()
 
         suspend fun setAffiliteName(value: String) {
-            preferencesHelper.setAffiliteName(value)
+            preferencesRepository.setAffiliteName(value)
         }
 
-        suspend fun getAffiliteName(): String = preferencesHelper.getAffiliteName()
+        suspend fun getAffiliteName(): String = preferencesRepository.getAffiliteName()
 
         suspend fun setAffiliteType(value: String) {
-            preferencesHelper.setAffiliteType(value)
+            preferencesRepository.setAffiliteType(value)
         }
 
-        suspend fun getAffiliteType(): String = preferencesHelper.getAffiliteType()
+        suspend fun getAffiliteType(): String = preferencesRepository.getAffiliteType()
+
+        suspend fun setAffiliteId(value: String) {
+            preferencesRepository.setAffiliteId(value)
+        }
+
+        suspend fun getAffiliteId(): String = preferencesRepository.getAffiliteId()
     }

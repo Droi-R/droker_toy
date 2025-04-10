@@ -1,6 +1,6 @@
 package com.bvc.domain.usecase
 
-import com.bvc.domain.model.CartEntity
+import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.repository.MainRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
@@ -12,6 +12,11 @@ class MainUseCase
     constructor(
         private val mainRepository: MainRepository,
     ) {
+        suspend fun refreshToken(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            refreshToken: String,
+        ) = mainRepository.refreshToken(remoteErrorEmitter, refreshToken)
+
         suspend fun getAffiliate(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
@@ -38,7 +43,7 @@ class MainUseCase
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             id: String,
-            productItems: List<CartEntity>,
+            productItems: List<ProductEntity>,
             status: OrderStatus,
             orderFrom: OrderFrom,
             tableNumber: String,
@@ -53,4 +58,10 @@ class MainUseCase
             tableNumber,
             tableExternalKey,
         )
+
+        suspend fun getTables(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            token: String,
+            id: String,
+        ) = mainRepository.getTables(remoteErrorEmitter, token, id)
     }

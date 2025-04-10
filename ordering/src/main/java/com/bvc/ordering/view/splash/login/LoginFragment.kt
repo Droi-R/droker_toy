@@ -17,6 +17,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
+            lifecycleOwner = viewLifecycleOwner
             vm = viewModel
         }
     }

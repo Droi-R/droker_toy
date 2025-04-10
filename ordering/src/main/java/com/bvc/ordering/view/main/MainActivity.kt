@@ -27,8 +27,9 @@ import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.view.cart.CartFragment
 import com.bvc.ordering.view.order.OrderFragment
-import com.bvc.ordering.view.splash.SplashFragment
-import com.bvc.ordering.view.splash.login.LoginFragment
+import com.bvc.ordering.view.table.TableCartFragment
+import com.bvc.ordering.view.table.TableFragment
+import com.bvc.ordering.view.table.TableOrderFragment
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,24 +49,69 @@ class MainActivity : BaseActivity() {
 
     override fun init(savedInstanceState: Bundle?) {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_container_view) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.main_container_view) as NavHostFragment
         val navController = navHostFragment.navController
         binding.apply {
             lifecycleOwner = this@MainActivity
             vm = viewModel
             tlMainBottom.run {
-                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_order), R.drawable.tab_order) })
-                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_table), R.drawable.tab_table) })
-                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_history), R.drawable.tab_history) })
-                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_materials), R.drawable.tab_materials) })
-                addTab(newTab().apply { setCustomTabTitles(this, getString(R.string.main_tab_setting), R.drawable.tab_setting) })
+                addTab(
+                    newTab().apply {
+                        setCustomTabTitles(
+                            this,
+                            getString(R.string.main_tab_order),
+                            R.drawable.tab_order,
+                        )
+                    },
+                )
+                addTab(
+                    newTab().apply {
+                        setCustomTabTitles(
+                            this,
+                            getString(R.string.main_tab_table),
+                            R.drawable.tab_table,
+                        )
+                    },
+                )
+                addTab(
+                    newTab().apply {
+                        setCustomTabTitles(
+                            this,
+                            getString(R.string.main_tab_history),
+                            R.drawable.tab_history,
+                        )
+                    },
+                )
+                addTab(
+                    newTab().apply {
+                        setCustomTabTitles(
+                            this,
+                            getString(R.string.main_tab_materials),
+                            R.drawable.tab_materials,
+                        )
+                    },
+                )
+                addTab(
+                    newTab().apply {
+                        setCustomTabTitles(
+                            this,
+                            getString(R.string.main_tab_setting),
+                            R.drawable.tab_setting,
+                        )
+                    },
+                )
                 addOnTabSelectedListener(
                     object : TabLayout.OnTabSelectedListener {
                         override fun onTabSelected(tab: TabLayout.Tab?) {
                             tab?.customView?.findViewById<TextView>(R.id.tab_text)?.text?.let { tabText ->
                                 when (tabText) {
                                     getString(R.string.main_tab_order) -> {
-                                        val popped = navController.popBackStack(OrderFragment::class.java.name, false)
+                                        val popped =
+                                            navController.popBackStack(
+                                                OrderFragment::class.java.name,
+                                                false,
+                                            )
                                         if (!popped) {
                                             navController.navigate(
                                                 OrderFragment::class.java.name,
@@ -80,14 +126,17 @@ class MainActivity : BaseActivity() {
                                             )
                                         }
                                     }
+
                                     getString(R.string.main_tab_table) -> {
-                                        navController.navigate(LoginFragment::class.java.name)
+                                        navController.navigate(TableFragment::class.java.name)
                                     }
+
                                     getString(R.string.main_tab_history) -> {
                                     }
+
                                     getString(R.string.main_tab_materials) -> {
-                                        navController.navigate(SplashFragment::class.java.name)
                                     }
+
                                     getString(R.string.main_tab_setting) -> {
                                     }
                                 }
@@ -105,12 +154,19 @@ class MainActivity : BaseActivity() {
         }
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            if (destination.route != CartFragment::class.java.name) {
-                binding.clMainTop.isVisible = true
-                binding.tlMainBottom.isVisible = true
-            } else {
-                binding.clMainTop.isVisible = false
-                binding.tlMainBottom.isVisible = false
+            when (destination.route) {
+                TableOrderFragment::class.java.name,
+                TableCartFragment::class.java.name,
+                CartFragment::class.java.name,
+                -> {
+                    binding.clMainTop.isVisible = false
+                    binding.tlMainBottom.isVisible = false
+                }
+
+                else -> {
+                    binding.clMainTop.isVisible = true
+                    binding.tlMainBottom.isVisible = true
+                }
             }
         }
 
@@ -121,9 +177,9 @@ class MainActivity : BaseActivity() {
                     route = "main_graph",
                 ) {
                     fragment<OrderFragment>(route = OrderFragment::class.java.name)
-                    fragment<SplashFragment>(route = SplashFragment::class.java.name)
-                    fragment<LoginFragment>(route = LoginFragment::class.java.name)
-
+                    fragment<TableFragment>(route = TableFragment::class.java.name)
+                    fragment<TableOrderFragment>(route = TableOrderFragment::class.java.name)
+                    fragment<TableCartFragment>(route = TableCartFragment::class.java.name)
                     fragment<CartFragment>(route = CartFragment::class.java.name)
                 }
             navController.setGraph(
@@ -206,7 +262,8 @@ class MainActivity : BaseActivity() {
             val data = result.data
             if (resultCode == RESULT_OK && data != null) {
                 Toast.makeText(this, "성공", Toast.LENGTH_LONG).show()
-                val recvByte: ByteArray = data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
+                val recvByte: ByteArray =
+                    data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
                 // Log.e("KSCAT_INTENT_RESULT", HexDump.dumpHexString(recvByte));
                 // KsnetUtil.byteTo20ByteLog(recvByte, "");
                 log.e("Recv Telegram \n ${KsnetUtil.HexDump.dumpHexString(recvByte)}")
@@ -232,7 +289,8 @@ class MainActivity : BaseActivity() {
             } else if (resultCode == RESULT_CANCELED) {
                 if (data != null) {
                     log.e("result" + data.getIntExtra("result", 1).toString())
-                    val recvByte: ByteArray = data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
+                    val recvByte: ByteArray =
+                        data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
                     log.e("recvByte : \n" + KsnetUtil.HexDump.dumpHexString(recvByte))
                     trData.SetData(recvByte)
 

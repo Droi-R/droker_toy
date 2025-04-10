@@ -1,14 +1,12 @@
 package com.bvc.ordering.view.order
 
 import androidx.lifecycle.viewModelScope
-import com.bvc.domain.model.CartEntity
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.Options
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
 import com.bvc.domain.model.SubCategoryEntity
-import com.bvc.domain.repository.CartStoreRepository
-import com.bvc.domain.type.OrderFrom
+import com.bvc.domain.repository.ProductStoreRepository
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -25,7 +23,7 @@ class OrderViewModel
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
         private val getMainUseCase: MainUseCase,
-        private val cartStoreRepository: CartStoreRepository,
+        private val cartStoreRepository: ProductStoreRepository,
     ) : BaseViewModel() {
         private val _category = MutableStateFlow<List<CategoryEntity>>(emptyList())
         val category: StateFlow<List<CategoryEntity>> get() = _category
@@ -36,8 +34,8 @@ class OrderViewModel
         private val _product = MutableStateFlow<List<ProductEntity>>(emptyList())
         val product: StateFlow<List<ProductEntity>> get() = _product
 
-        private val _cartData = MutableStateFlow<List<CartEntity>>(emptyList())
-        val cartData: StateFlow<List<CartEntity>> get() = _cartData
+        private val _cartData = MutableStateFlow<List<ProductEntity>>(emptyList())
+        val cartData: StateFlow<List<ProductEntity>> get() = _cartData
 
         init {
             getCategory()
@@ -48,38 +46,29 @@ class OrderViewModel
                 val response =
                     getMainUseCase.getMenuCategory(this@OrderViewModel, preferenceUseCase.getToken())
                 val selectId = category.value?.find { it.selected }?.id
-                _category.value = (
-                    response?.data?.map {
-                        CategoryEntity(
-                            id = it.id,
-                            name = it.name,
-                            selected = selectId == it.id,
+                _category.value =
+                    (
+                        response?.data?.map {
+                            CategoryEntity(
+                                id = it.id,
+                                name = it.name,
+                                selected = selectId == it.id,
+                            )
+                        } ?: listOf(
+                            CategoryEntity(id = "1", name = "메뉴", selected = false),
+                            CategoryEntity(id = "2", name = "배달메뉴", selected = false),
+                            CategoryEntity(id = "3", name = "포장메뉴", selected = false),
                         )
-                    } ?: listOf(
-                        CategoryEntity(
-                            id = "1",
-                            name = "메뉴",
-                            selected = true,
-                        ),
-                        CategoryEntity(
-                            id = "2",
-                            name = "배달메뉴",
-                            selected = false,
-                        ),
-                        CategoryEntity(
-                            id = "3",
-                            name = "포장메뉴",
-                            selected = false,
-                        ),
-                    )
-                )
-                val selectedCategory = category.value.find { it.selected }
-                if (selectedCategory == null && category.value.isNotEmpty()) {
-                    _category.value =
-                        category.value.mapIndexed { index, item ->
-                            if (index == 0) item.copy(selected = true) else item.copy(selected = false)
+                    ).let { list ->
+                        // selected 없으면 첫번째 선택 처리
+                        if (list.none { it.selected } && list.isNotEmpty()) {
+                            list.mapIndexed { index, item ->
+                                item.copy(selected = index == 0)
+                            }
+                        } else {
+                            list
                         }
-                }
+                    }
 
                 if (response == null) {
                     mutableScreenState.postValue(ScreenState.ERROR)
@@ -94,54 +83,31 @@ class OrderViewModel
                 val response =
                     getMainUseCase.getSubCategory(this@OrderViewModel, preferenceUseCase.getToken(), id)
                 val selectId = subCategory.value?.find { it.selected }?.id
-                _subCategory.value = (
-                    response?.data?.map {
-                        SubCategoryEntity(
-                            id = it.id,
-                            name = it.name,
-                            selected = selectId == it.id,
+                _subCategory.value =
+                    (
+                        response?.data?.map {
+                            SubCategoryEntity(
+                                id = it.id,
+                                name = it.name,
+                                selected = selectId == it.id,
+                            )
+                        } ?: listOf(
+                            SubCategoryEntity(id = "1", name = "대표메뉴", selected = false),
+                            SubCategoryEntity(id = "2", name = "음식", selected = false),
+                            SubCategoryEntity(id = "3", name = "커피", selected = false),
+                            SubCategoryEntity(id = "4", name = "디저트", selected = false),
+                            SubCategoryEntity(id = "5", name = "주류", selected = false),
+                            SubCategoryEntity(id = "6", name = "사이드", selected = false),
                         )
-                    } ?: listOf(
-                        SubCategoryEntity(
-                            id = "1",
-                            name = "대표메뉴",
-                            selected = true,
-                        ),
-                        SubCategoryEntity(
-                            id = "2",
-                            name = "음식",
-                            selected = false,
-                        ),
-                        SubCategoryEntity(
-                            id = "3",
-                            name = "커피",
-                            selected = false,
-                        ),
-                        SubCategoryEntity(
-                            id = "4",
-                            name = "디저트",
-                            selected = false,
-                        ),
-                        SubCategoryEntity(
-                            id = "5",
-                            name = "주류",
-                            selected = false,
-                        ),
-                        SubCategoryEntity(
-                            id = "6",
-                            name = "사이드",
-                            selected = false,
-                        ),
-                    )
-                )
-//                log.e("_subCategory: ${subCategory.value}")
-                val selectedCategory = subCategory.value?.find { it.selected }
-                if (selectedCategory == null && subCategory.value?.isNotEmpty() == true) {
-                    _subCategory.value =
-                        subCategory.value.mapIndexed { index, item ->
-                            if (index == 0) item.copy(selected = true) else item.copy(selected = false)
+                    ).let { list ->
+                        if (list.none { it.selected } && list.isNotEmpty()) {
+                            list.mapIndexed { index, item ->
+                                item.copy(selected = index == 0)
+                            }
+                        } else {
+                            list
                         }
-                }
+                    }
 
                 if (response == null) {
                     mutableScreenState.postValue(ScreenState.ERROR)
@@ -154,7 +120,11 @@ class OrderViewModel
         fun getProducts(externalKey: String) {
             viewModelScope.launch {
                 val response =
-                    getMainUseCase.getProducts(this@OrderViewModel, preferenceUseCase.getToken(), externalKey)
+                    getMainUseCase.getProducts(
+                        this@OrderViewModel,
+                        preferenceUseCase.getToken(),
+                        externalKey,
+                    )
 //                log.e("response : ${response.data}")
                 _product.value = (
 //                    response.data ?:
@@ -361,18 +331,16 @@ class OrderViewModel
         }
 
         fun addToCart(item: ProductEntity) {
-            cartStoreRepository.addItem(
-                CartEntity(
-                    product = item,
-                    quantity = 1,
-                    orderFrom = OrderFrom.POS,
-                ),
-            )
-            _cartData.value = cartStoreRepository.getItems()
+            cartStoreRepository.addItem(item)
+            getCart()
         }
 
         fun clearCart() {
             cartStoreRepository.clearCart()
+            getCart()
+        }
+
+        fun getCart() {
             _cartData.value = cartStoreRepository.getItems()
         }
     }

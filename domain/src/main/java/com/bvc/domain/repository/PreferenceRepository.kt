@@ -5,6 +5,10 @@ interface PreferenceRepository {
 
     suspend fun getToken(): String
 
+    suspend fun setRefreshToken(value: String)
+
+    suspend fun getRefreshToken(): String
+
     suspend fun setAffiliteName(value: String)
 
     suspend fun getAffiliteName(): String
@@ -12,4 +16,8 @@ interface PreferenceRepository {
     suspend fun setAffiliteType(value: String)
 
     suspend fun getAffiliteType(): String
+
+    suspend fun setAffiliteId(value: String)
+
+    suspend fun getAffiliteId(): String
 }

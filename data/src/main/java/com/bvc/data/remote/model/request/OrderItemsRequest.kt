@@ -29,6 +29,8 @@ data class ProductItemsRequest(
     val productOption: List<ProductOptionRequest> = emptyList(),
     @SerializedName("position")
     val position: Int = 0,
+    @SerializedName("quantity")
+    val quantity: Int = 0,
 )
 
 data class ProductOptionRequest(

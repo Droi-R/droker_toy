@@ -1,6 +1,7 @@
 package com.bvc.data.remote.model.response
 
 import com.bvc.domain.type.OrderFrom
+import com.bvc.domain.type.OrderStatus
 import com.google.gson.annotations.SerializedName
 
 data class OrderResponse(
@@ -14,6 +15,8 @@ data class OrderResponse(
     val buyerName: String = "",
     @SerializedName("order_from")
     val orderFrom: OrderFrom = OrderFrom.POS,
+    @SerializedName("order_status")
+    val orderStatus: OrderStatus,
     @SerializedName("table_number")
     val tableNumber: Int = 0,
     @SerializedName("buyer_phone_number")

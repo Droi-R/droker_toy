@@ -105,6 +105,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:onClick="@{() -> vm.onClickLogin()}"
             android:id="@+id/cl_intro_join"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

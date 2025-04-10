@@ -3,9 +3,9 @@ package com.bvc.ordering.view.cart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.log
-import com.bvc.domain.model.CartEntity
+import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.calculateVatSummary
-import com.bvc.domain.repository.CartStoreRepository
+import com.bvc.domain.repository.ProductStoreRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
 import com.bvc.domain.usecase.MainUseCase
@@ -25,7 +25,7 @@ class CartViewModel
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
         private val getMainUseCase: MainUseCase,
-        private val cartStoreRepository: CartStoreRepository,
+        private val cartStoreRepository: ProductStoreRepository,
     ) : BaseViewModel() {
         private val _affiliteType = SingleLiveEvent<String>()
         val affiliteType: LiveData<String> get() = _affiliteType
@@ -45,8 +45,8 @@ class CartViewModel
         private val _taxFreeAmount = MutableStateFlow(0)
         val taxFreeAmount: StateFlow<Int> get() = _taxFreeAmount
 
-        private val _cartData = MutableStateFlow<List<CartEntity>>(emptyList())
-        val cartData: StateFlow<List<CartEntity>> get() = _cartData
+        private val _cartData = MutableStateFlow<List<ProductEntity>>(emptyList())
+        val cartData: StateFlow<List<ProductEntity>> get() = _cartData
 
         private val _requestTelegram = SingleLiveEvent<ByteArray>()
         val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
@@ -67,7 +67,7 @@ class CartViewModel
             }
         }
 
-        private fun calculateAmounts(items: List<CartEntity>) {
+        private fun calculateAmounts(items: List<ProductEntity>) {
             val result = items.calculateVatSummary()
 
             _supplyAmount.value = result.supplyAmount
@@ -76,21 +76,21 @@ class CartViewModel
             log.e("taxFree: ${result.taxFree}")
         }
 
-        fun deleteItem(item: CartEntity) {
+        fun deleteItem(item: ProductEntity) {
             viewModelScope.launch {
                 cartStoreRepository.removeItem(item)
                 getCartStore()
             }
         }
 
-        fun minusItem(item: CartEntity) {
+        fun minusItem(item: ProductEntity) {
             viewModelScope.launch {
                 cartStoreRepository.minusItem(item)
                 getCartStore()
             }
         }
 
-        fun plusItem(item: CartEntity) {
+        fun plusItem(item: ProductEntity) {
             viewModelScope.launch {
                 cartStoreRepository.addItem(item)
                 getCartStore()
@@ -112,6 +112,7 @@ class CartViewModel
                             tableExternalKey = "",
                         )
                 log.e("response: ${cartData.value}")
+                // TODO 여기서 페이먼트 생성
                 _requestTelegram.value =
                     Telegram.makeTelegramIC(
                         apprCode = "1",

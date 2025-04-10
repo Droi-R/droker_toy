@@ -1,7 +1,6 @@
 package com.bvc.ordering.ui
 
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 
 object CommonBindingAdapters {
@@ -11,10 +10,6 @@ object CommonBindingAdapters {
         view: View,
         visible: Boolean?,
     ) {
-        visible?.let {
-            view.isVisible = it
-        } ?: run {
-            view.isVisible = false
-        }
+        view.visibility = if (visible == true) View.VISIBLE else View.GONE
     }
 }

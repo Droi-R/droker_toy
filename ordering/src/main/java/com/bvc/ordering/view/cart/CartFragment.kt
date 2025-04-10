@@ -8,12 +8,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bvc.domain.model.CartEntity
+import com.bvc.domain.model.ProductEntity
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentCartBinding
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
-import com.bvc.ordering.util.Util
+import com.bvc.ordering.util.Utils
 import com.bvc.ordering.view.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -40,15 +40,15 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
                     CartAdapter(
                         viewModel.cartData.value,
                         object : CartAdapter.OnItemClickListener {
-                            override fun onItemClick(item: CartEntity) {
+                            override fun onItemClick(item: ProductEntity) {
                                 viewModel.deleteItem(item)
                             }
 
-                            override fun minusClick(item: CartEntity) {
+                            override fun minusClick(item: ProductEntity) {
                                 viewModel.minusItem(item)
                             }
 
-                            override fun plusClick(item: CartEntity) {
+                            override fun plusClick(item: ProductEntity) {
                                 viewModel.plusItem(item)
                             }
                         },
@@ -82,17 +82,17 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
                     }
                     launch {
                         supplyAmount.collect {
-                            binding?.icCartSummary?.tvSupplyValue?.text = "${Util.myFormatter(it)}원"
+                            binding?.icCartSummary?.tvSupplyValue?.text = "${Utils.myFormatter(it)}원"
                         }
                     }
                     launch {
                         vatAmount.collect {
-                            binding?.icCartSummary?.tvVatValue?.text = "${Util.myFormatter(it)}원"
+                            binding?.icCartSummary?.tvVatValue?.text = "${Utils.myFormatter(it)}원"
                         }
                     }
                     launch {
                         totalAmount.collect {
-                            binding?.icCartSummary?.tvTotalValue?.text = "${Util.myFormatter(it)}원"
+                            binding?.icCartSummary?.tvTotalValue?.text = "${Utils.myFormatter(it)}원"
                         }
                     }
                 }

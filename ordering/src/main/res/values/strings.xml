@@ -55,7 +55,8 @@
     <string name="cart_etc_payment">기타결제</string>
     <string name="cart_card_payment">카드결제</string>
 
-
+    <!--테이블주문-->
+    <string name="table_order_desc">뭐가 있나요??</string>
 
 
 </resources>

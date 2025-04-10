@@ -9,10 +9,28 @@ class SplashUseCase
     constructor(
         private val splashRepository: SplashRepository,
     ) {
+        suspend fun sendSms(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            phoneNum: String,
+        ) = splashRepository.sendSms(remoteErrorEmitter, phoneNum)
+
+        suspend fun verifySms(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            phoneNum: String,
+            verification: String,
+        ) = splashRepository.verifySms(remoteErrorEmitter, phoneNum, verification)
+
+        suspend fun signUp(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            phoneNum: String,
+            verification: String,
+        ) = splashRepository.signUp(remoteErrorEmitter, phoneNum, verification)
+
         suspend fun getLogin(
             remoteErrorEmitter: RemoteErrorEmitter,
-            token: String,
-        ) = splashRepository.getLogin(remoteErrorEmitter, token)
+            phoneNum: String,
+            verification: String,
+        ) = splashRepository.getLogin(remoteErrorEmitter, phoneNum, verification)
 
         suspend fun getAffiliate(
             remoteErrorEmitter: RemoteErrorEmitter,

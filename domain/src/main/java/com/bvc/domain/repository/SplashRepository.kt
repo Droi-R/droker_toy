@@ -1,19 +1,38 @@
 package com.bvc.domain.repository
 
 import com.bvc.domain.model.AffiliateEntity
-import com.bvc.domain.model.Data
-import com.bvc.domain.model.DataList
+import com.bvc.domain.model.ApiData
+import com.bvc.domain.model.ApiDataList
+import com.bvc.domain.model.EmptyEntity
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.utils.RemoteErrorEmitter
 
 interface SplashRepository {
+    suspend fun sendSms(
+        remoteErrorEmitter: RemoteErrorEmitter,
+        phoneNum: String,
+    ): ApiData<EmptyEntity>?
+
+    suspend fun verifySms(
+        remoteErrorEmitter: RemoteErrorEmitter,
+        phoneNum: String,
+        verification: String,
+    ): ApiData<EmptyEntity>?
+
+    suspend fun signUp(
+        remoteErrorEmitter: RemoteErrorEmitter,
+        phoneNum: String,
+        verification: String,
+    ): ApiData<LoginEntity>?
+
     suspend fun getLogin(
         remoteErrorEmitter: RemoteErrorEmitter,
-        token: String,
-    ): Data<LoginEntity>?
+        phoneNum: String,
+        verification: String,
+    ): ApiData<LoginEntity>?
 
     suspend fun getAffiliate(
         remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
-    ): DataList<AffiliateEntity>?
+    ): ApiDataList<AffiliateEntity>?
 }

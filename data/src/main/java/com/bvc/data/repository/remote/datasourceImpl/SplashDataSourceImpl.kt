@@ -1,7 +1,10 @@
 package com.bvc.data.repository.remote.datasourceImpl
 
 import com.bvc.data.remote.api.SplashApi
+import com.bvc.data.remote.model.request.SignUpRequest
+import com.bvc.data.remote.model.request.VerifySmsRequest
 import com.bvc.data.remote.model.response.AffiliateResponse
+import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
@@ -16,10 +19,64 @@ class SplashDataSourceImpl
         private val splashApi: SplashApi,
     ) : BaseRepository(),
         SplashDataSource {
+        override suspend fun sendSms(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            phoneNum: String,
+        ): ResData<EmptyResponse>? =
+            safeApiCall(remoteErrorEmitter) {
+                splashApi
+                    .sendSms(
+                        sendSms = mapOf("phone_number" to phoneNum),
+                    ).body()
+            }
+
+        override suspend fun verifySms(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            phoneNum: String,
+            verification: String,
+        ): ResData<EmptyResponse>? =
+            safeApiCall(remoteErrorEmitter) {
+                splashApi
+                    .verifySms(
+                        verifySmsRequest =
+                            VerifySmsRequest(
+                                phoneNumber = phoneNum,
+                                certificationNumber = verification,
+                            ),
+                    ).body()
+            }
+
+        override suspend fun signUp(
+            remoteErrorEmitter: RemoteErrorEmitter,
+            phoneNum: String,
+            verification: String,
+        ): ResData<LoginResponse>? =
+            safeApiCall(remoteErrorEmitter) {
+                splashApi
+                    .signUp(
+                        signUpRequest =
+                            SignUpRequest(
+                                phoneNumber = phoneNum,
+                                certificationNumber = verification,
+                            ),
+                    ).body()
+            }
+
         override suspend fun getLogin(
             remoteErrorEmitter: RemoteErrorEmitter,
-            token: String,
-        ): ResData<LoginResponse>? = safeApiCall(remoteErrorEmitter) { splashApi.getLogin(token).body() }
+            phoneNum: String,
+            verification: String,
+        ): ResData<LoginResponse>? =
+            safeApiCall(remoteErrorEmitter) {
+                splashApi
+                    .login(
+                        verifySmsRequest =
+                            VerifySmsRequest(
+                                phoneNumber = phoneNum,
+                                certificationNumber = verification,
+                            ),
+                    ).body()
+            }
 
         override suspend fun getAffiliate(
             remoteErrorEmitter: RemoteErrorEmitter,

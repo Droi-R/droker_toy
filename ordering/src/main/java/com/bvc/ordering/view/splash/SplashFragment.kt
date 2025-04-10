@@ -18,6 +18,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
+            lifecycleOwner = viewLifecycleOwner
             vm = viewModel
         }
     }
@@ -29,11 +30,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                     // 로그인 되어있으면 메인으로 이동
                     MainActivity.startActivity(requireActivity())
                 } else {
-                    // loginFrament 로 이동
                     findNavController().navigate(LoginFragment::class.java.name)
-                    //                requireActivity()
-                    //                    .findNavController(R.id.fragment_container_view)
-                    //                    .navigate(LoginFragment::class.java.name)
                 }
             }
         }
