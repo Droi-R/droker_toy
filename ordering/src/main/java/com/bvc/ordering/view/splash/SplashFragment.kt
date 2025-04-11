@@ -8,6 +8,7 @@ import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentSplashBinding
 import com.bvc.ordering.view.main.MainActivity
 import com.bvc.ordering.view.splash.login.LoginFragment
+import com.bvc.ordering.view.splash.select.SelectFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,11 +27,16 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     override fun handleViewModel() {
         viewModel.apply {
             action.observe(viewLifecycleOwner) {
-                if (it) {
-                    // 로그인 되어있으면 메인으로 이동
-                    MainActivity.startActivity(requireActivity())
-                } else {
-                    findNavController().navigate(LoginFragment::class.java.name)
+                when (it) {
+                    1 -> {
+                        findNavController().navigate(SelectFragment::class.java.name)
+                    }
+                    2 -> {
+                        MainActivity.startActivity(requireActivity())
+                    }
+                    else -> {
+                        findNavController().navigate(LoginFragment::class.java.name)
+                    }
                 }
             }
         }

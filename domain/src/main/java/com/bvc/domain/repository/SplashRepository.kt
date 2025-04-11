@@ -1,10 +1,10 @@
 package com.bvc.domain.repository
 
-import com.bvc.domain.model.AffiliateEntity
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
 import com.bvc.domain.model.EmptyEntity
 import com.bvc.domain.model.LoginEntity
+import com.bvc.domain.model.Store
 import com.bvc.domain.utils.RemoteErrorEmitter
 
 interface SplashRepository {
@@ -31,8 +31,9 @@ interface SplashRepository {
         verification: String,
     ): ApiData<LoginEntity>?
 
-    suspend fun getAffiliate(
+    suspend fun getStore(
         remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
-    ): ApiDataList<AffiliateEntity>?
+        id: String,
+    ): ApiDataList<Store>?
 }

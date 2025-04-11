@@ -8,7 +8,7 @@ data class LoginEntity(
 )
 
 data class UserEntity(
-    val id: String = "",
+    val userId: String = "",
     val phone: String = "",
     val role: String = "",
     val createdAt: String = "",

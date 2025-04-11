@@ -2,7 +2,6 @@ package com.bvc.ordering.view.splash
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.bvc.domain.log
 import com.bvc.domain.model.GithubEntity
 import com.bvc.domain.usecase.GetUserRepoUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -26,7 +25,7 @@ class SplashViewModel
 
         private val _affiliate =
             SingleLiveEvent<String>().apply {
-                value = "가맹점"
+                value = ""
             }
         val affiliate: LiveData<String> get() = _affiliate
 
@@ -42,36 +41,26 @@ class SplashViewModel
             }
         val startVisible: LiveData<Boolean> get() = _startVisible
 
-        private val _action = SingleLiveEvent<Boolean>()
-        val action: LiveData<Boolean> get() = _action
+        private val _action = SingleLiveEvent<Int>()
+        val action: LiveData<Int> get() = _action
+        private var loginLevel = 0
 
         init {
+
             viewModelScope.launch {
-                val token = preferenceUseCase.getToken()
-                if (token.isNotEmpty()) {
-                    getAffiliate()
+                if (preferenceUseCase.getToken().isNotEmpty()) {
+                    loginLevel = 1
+                    if (preferenceUseCase.getStoreId() != -1) {
+                        _affiliateName.value = preferenceUseCase.getStoreName() ?: "로그인"
+                        _affiliate.value = preferenceUseCase.getStoreType() ?: "비가맹점"
+                        _startVisible.value = true
+                        loginLevel = 2
+                    }
                 }
             }
         }
 
-        private fun getAffiliate() {
-            viewModelScope.launch {
-//                val response = getUserRepoUseCase.getGithub(this@SplashViewModel, preferenceUseCase.getToken())
-                log.e("response :${preferenceUseCase.getToken()}")
-//                if (response == null) {
-//                    mutableScreenState.postValue(ScreenState.ERROR)
-//                } else {
-//                    mutableScreenState.postValue(ScreenState.RENDER)
-//                    _affiliateName.value = response.first().name
-//                    _affiliate.value = "가맹점"
-// //                    _startVisible.value = true
-//                }
-                _startVisible.value = true
-                onClickLogin()
-            }
-        }
-
         fun onClickLogin() {
-            _action.value = _startVisible.value
+            _action.value = loginLevel
         }
     }

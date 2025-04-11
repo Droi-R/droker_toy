@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.log
 import com.bvc.domain.model.ProductEntity
+import com.bvc.domain.model.TableEntity
 import com.bvc.domain.model.calculateVatSummary
-import com.bvc.domain.repository.ProductStoreRepository
+import com.bvc.domain.repository.TableStoreRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
 import com.bvc.domain.usecase.MainUseCase
@@ -25,7 +26,7 @@ class TableCartViewModel
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
         private val getMainUseCase: MainUseCase,
-        private val cartStoreRepository: ProductStoreRepository,
+        private val cartStoreRepository: TableStoreRepository,
     ) : BaseViewModel() {
         private val _affiliteType = SingleLiveEvent<String>()
         val affiliteType: LiveData<String> get() = _affiliteType
@@ -51,13 +52,19 @@ class TableCartViewModel
         private val _requestTelegram = SingleLiveEvent<ByteArray>()
         val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
 
+        private val _tableInfo = SingleLiveEvent<TableEntity>()
+        val tableInfo: LiveData<TableEntity> get() = _tableInfo
+
+        private val _tableName = SingleLiveEvent<String>()
+        val tableName: LiveData<String> get() = _tableName
+
         init {
 
             viewModelScope.launch {
-                _affiliteName.value = preferenceUseCase.getAffiliteName() ?: ""
-                _affiliteType.value = preferenceUseCase.getAffiliteType() ?: ""
+                _affiliteName.value = preferenceUseCase.getStoreName() ?: ""
+                _affiliteType.value = preferenceUseCase.getStoreType() ?: ""
             }
-            getCartStore()
+//            getCartStore()
         }
 
         fun getCartStore() {
@@ -124,5 +131,20 @@ class TableCartViewModel
                         taxFree = "${taxFreeAmount.value}",
                     )
             }
+        }
+
+        fun setTableInfo(table: TableEntity) {
+            _tableInfo.value = table
+            _tableName.value = table.tableName
+            tableInfo.value?.orders?.map {
+                it.orderItems.map { item ->
+                    cartStoreRepository.addItem(item)
+                }
+            }
+            getCartStore()
+        }
+
+        fun clearCart() {
+            cartStoreRepository.clearCart()
         }
     }

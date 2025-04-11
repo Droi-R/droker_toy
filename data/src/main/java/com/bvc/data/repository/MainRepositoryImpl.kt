@@ -2,13 +2,13 @@ package com.bvc.data.repository
 
 import com.bvc.data.mapper.ResponseMapper
 import com.bvc.data.repository.remote.datasource.MainDataSource
-import com.bvc.domain.model.AffiliateEntity
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.model.OrderEntity
 import com.bvc.domain.model.ProductEntity
+import com.bvc.domain.model.Store
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.repository.MainRepository
@@ -30,7 +30,7 @@ class MainRepositoryImpl
         override suspend fun getAffiliate(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ): ApiDataList<AffiliateEntity> = ResponseMapper.mapAffiliate(mainDataSource.getAffiliate(remoteErrorEmitter, token))
+        ): ApiDataList<Store> = ResponseMapper.mapStore(mainDataSource.getAffiliate(remoteErrorEmitter, token))
 
         override suspend fun getMenuCategory(
             remoteErrorEmitter: RemoteErrorEmitter,

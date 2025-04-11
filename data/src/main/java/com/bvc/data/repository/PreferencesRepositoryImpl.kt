@@ -28,21 +28,27 @@ class PreferencesRepositoryImpl
 
         override suspend fun getRefreshToken(): String = sharedPreferences.getString(Constant.PREF.BVC_REFRESH_TOKEN, "") ?: ""
 
-        override suspend fun setAffiliteName(value: String) {
-            sharedPreferences.edit { putString(Constant.PREF.BVC_AFFILITE_NAME, value) }
+        override suspend fun setUserId(value: String) {
+            sharedPreferences.edit { putString(Constant.PREF.BVC_USER_ID, value) }
         }
 
-        override suspend fun getAffiliteName(): String = sharedPreferences.getString(Constant.PREF.BVC_AFFILITE_NAME, "") ?: ""
+        override suspend fun getUserId(): String = sharedPreferences.getString(Constant.PREF.BVC_USER_ID, "") ?: ""
 
-        override suspend fun setAffiliteType(value: String) {
-            sharedPreferences.edit { putString(Constant.PREF.BVC_AFFILITE_TYPE, value) }
+        override suspend fun setStoreName(value: String) {
+            sharedPreferences.edit { putString(Constant.PREF.BVC_STORE_NAME, value) }
         }
 
-        override suspend fun getAffiliteType(): String = sharedPreferences.getString(Constant.PREF.BVC_AFFILITE_TYPE, "") ?: ""
+        override suspend fun getStoreName(): String = sharedPreferences.getString(Constant.PREF.BVC_STORE_NAME, "") ?: ""
 
-        override suspend fun setAffiliteId(value: String) {
-            sharedPreferences.edit { putString(Constant.PREF.BVC_AFFILITE_ID, value) }
+        override suspend fun setStoreType(value: String) {
+            sharedPreferences.edit { putString(Constant.PREF.BVC_STORE_TYPE, value) }
         }
 
-        override suspend fun getAffiliteId(): String = sharedPreferences.getString(Constant.PREF.BVC_AFFILITE_ID, "") ?: ""
+        override suspend fun getStoreType(): String = sharedPreferences.getString(Constant.PREF.BVC_STORE_TYPE, "") ?: ""
+
+        override suspend fun setStoreId(value: Int) {
+            sharedPreferences.edit { putInt(Constant.PREF.BVC_STORE_ID, value) }
+        }
+
+        override suspend fun getStoreId(): Int = sharedPreferences.getInt(Constant.PREF.BVC_STORE_ID, -1)
     }

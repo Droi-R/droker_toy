@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.bvc.domain.model.AffiliateEntity" />
+            type="com.bvc.domain.model.Store" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/d_1800"
                 android:layout_marginStart="@dimen/d_2000"
-                android:text="@{item.type}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_12"
                 android:textStyle="normal"

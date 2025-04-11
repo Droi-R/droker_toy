@@ -40,8 +40,9 @@ object Constant {
     object PREF {
         const val BVC_TOKEN = "bvc_token"
         const val BVC_REFRESH_TOKEN = "bvc_refresh_token"
-        const val BVC_AFFILITE_NAME = "bvc_affilite_name"
-        const val BVC_AFFILITE_TYPE = "bvc_affilite_type"
-        const val BVC_AFFILITE_ID = "bvc_affilite_id"
+        const val BVC_USER_ID = "bvc_user_id"
+        const val BVC_STORE_NAME = "bvc_store_name"
+        const val BVC_STORE_TYPE = "bvc_store_type"
+        const val BVC_STORE_ID = "bvc_store_id"
     }
 }

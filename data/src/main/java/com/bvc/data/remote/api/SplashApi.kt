@@ -2,14 +2,15 @@ package com.bvc.data.remote.api
 
 import com.bvc.data.remote.model.request.SignUpRequest
 import com.bvc.data.remote.model.request.VerifySmsRequest
-import com.bvc.data.remote.model.response.AffiliateResponse
 import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
+import com.bvc.data.remote.model.response.StoreResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -34,8 +35,9 @@ interface SplashApi {
         @Body verifySmsRequest: VerifySmsRequest,
     ): Response<ResData<LoginResponse>>
 
-    @GET("users/{token}/repos")
-    suspend fun getAffiliate(
-        @Path("token") token: String,
-    ): Response<ResDataList<AffiliateResponse>>
+    @GET("stores/{id}")
+    suspend fun getStore(
+        @Header("Authorization") Token: String,
+        @Path("id") id: String,
+    ): Response<ResDataList<StoreResponse>>
 }

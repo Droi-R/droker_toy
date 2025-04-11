@@ -241,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/d_1500"
                     android:layout_marginHorizontal="@dimen/d_2100"
-                    android:text="@string/send"
+                    android:text="@string/verification"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_14"
                     android:textStyle="bold"

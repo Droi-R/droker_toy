@@ -6,38 +6,38 @@ import com.google.gson.annotations.SerializedName
 
 data class OrderResponse(
     @SerializedName("oid")
-    val oid: String = "",
+    val oid: String? = null,
     @SerializedName("order_name")
-    val orderName: String = "",
+    val orderName: String? = null,
     @SerializedName("order_items")
-    var orderItems: ArrayList<ProductResponse> = arrayListOf(),
+    var orderItems: ArrayList<ProductResponse>? = null,
     @SerializedName("buyer_name")
-    val buyerName: String = "",
+    val buyerName: String? = null,
     @SerializedName("order_from")
-    val orderFrom: OrderFrom = OrderFrom.POS,
+    val orderFrom: OrderFrom? = null,
     @SerializedName("order_status")
-    val orderStatus: OrderStatus,
+    val orderStatus: OrderStatus? = null,
     @SerializedName("table_number")
-    val tableNumber: Int = 0,
+    val tableNumber: Int? = null,
     @SerializedName("buyer_phone_number")
-    val buyerPhoneNumber: String = "",
+    val buyerPhoneNumber: String? = null,
     @SerializedName("additional_comment")
-    val additionalComment: String = "",
+    val additionalComment: String? = null,
     @SerializedName("order_number")
-    val orderNumber: Int = 0,
+    val orderNumber: Int? = null,
     @SerializedName("order_memos")
-    val orderMemos: ArrayList<OrderMemoResponse> = arrayListOf(),
+    val orderMemos: ArrayList<OrderMemoResponse>? = null,
 )
 
 data class OrderMemoResponse(
     @SerializedName("external_key")
-    val externalKey: String = "",
+    val externalKey: String? = null,
     @SerializedName("oid")
-    val oid: String = "",
+    val oid: String? = null,
     @SerializedName("content")
-    val content: String = "",
+    val content: String? = null,
     @SerializedName("created_at")
-    val createdAt: String = "",
+    val createdAt: String? = null,
     @SerializedName("updated_at")
-    val updatedAt: String = "",
+    val updatedAt: String? = null,
 )

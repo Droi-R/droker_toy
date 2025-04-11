@@ -2,7 +2,6 @@ package com.bvc.ordering.view.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.bvc.domain.log
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -65,9 +64,17 @@ class MainViewModel
         }
 
         fun sendTableEvent(table: TableEntity) {
-            log.e("sendTableEvent: $table")
+            val copiedTable =
+                table.copy(
+                    orders =
+                        table.orders.map { order ->
+                            order.copy(
+                                orderItems = order.orderItems.map { it.copy() },
+                            )
+                        },
+                )
             viewModelScope.launch {
-                _tableEventFlow.emit(Event(table))
+                _tableEventFlow.emit(Event(copiedTable))
             }
         }
     }

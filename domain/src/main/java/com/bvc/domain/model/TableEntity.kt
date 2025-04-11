@@ -8,5 +8,5 @@ data class TableEntity(
     val tableExternalKey: String = "",
     val tableNumber: Int = 0,
     val tableName: String = "",
-    var orders: ArrayList<OrderEntity> = arrayListOf(),
+    var orders: List<OrderEntity> = listOf(),
 ) : Parcelable

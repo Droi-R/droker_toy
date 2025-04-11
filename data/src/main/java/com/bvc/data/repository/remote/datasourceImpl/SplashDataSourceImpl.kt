@@ -3,11 +3,11 @@ package com.bvc.data.repository.remote.datasourceImpl
 import com.bvc.data.remote.api.SplashApi
 import com.bvc.data.remote.model.request.SignUpRequest
 import com.bvc.data.remote.model.request.VerifySmsRequest
-import com.bvc.data.remote.model.response.AffiliateResponse
 import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
+import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.repository.remote.datasource.SplashDataSource
 import com.bvc.data.utils.base.BaseRepository
 import com.bvc.domain.utils.RemoteErrorEmitter
@@ -78,8 +78,9 @@ class SplashDataSourceImpl
                     ).body()
             }
 
-        override suspend fun getAffiliate(
+        override suspend fun getStore(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ): ResDataList<AffiliateResponse>? = safeApiCall(remoteErrorEmitter) { splashApi.getAffiliate(token).body() }
+            id: String,
+        ): ResDataList<StoreResponse>? = safeApiCall(remoteErrorEmitter) { splashApi.getStore(token, id).body() }
     }

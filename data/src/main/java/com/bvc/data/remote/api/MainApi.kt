@@ -1,13 +1,13 @@
 package com.bvc.data.remote.api
 
 import com.bvc.data.remote.model.request.OrderRequest
-import com.bvc.data.remote.model.response.AffiliateResponse
 import com.bvc.data.remote.model.response.CategoryResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.OrderResponse
 import com.bvc.data.remote.model.response.ProductResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
+import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
 import com.bvc.data.remote.model.response.TableResponse
 import retrofit2.Response
@@ -28,7 +28,7 @@ interface MainApi {
     @GET("users/{token}/repos")
     suspend fun getAffiliate(
         @Header("Authorization") token: String,
-    ): Response<ResDataList<AffiliateResponse>>
+    ): Response<ResDataList<StoreResponse>>
 
     @GET("users/{token}/repos")
     suspend fun getMenuCategory(

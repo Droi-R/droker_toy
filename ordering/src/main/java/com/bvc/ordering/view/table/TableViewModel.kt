@@ -135,11 +135,9 @@ class TableViewModel
         }
 
         fun getTables(externalKey: String) {
-            log.e("externalKey: $externalKey")
             viewModelScope.launch {
                 val response =
                     getMainUseCase.getTables(this@TableViewModel, preferenceUseCase.getToken(), externalKey)
-                log.e("response : ${response.data}")
                 _tables.value = (
 //                    response.data ?:
                     listOf(

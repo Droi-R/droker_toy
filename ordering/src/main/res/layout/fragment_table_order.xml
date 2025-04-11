@@ -105,7 +105,7 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_cart_cart"
+                android:id="@+id/cl_table_order_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/d_2900"

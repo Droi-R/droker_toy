@@ -20,21 +20,27 @@ class PreferenceUseCase
 
         suspend fun getRefreshToken(): String = preferencesRepository.getRefreshToken()
 
-        suspend fun setAffiliteName(value: String) {
-            preferencesRepository.setAffiliteName(value)
+        suspend fun setUserId(value: String) {
+            preferencesRepository.setUserId(value)
         }
 
-        suspend fun getAffiliteName(): String = preferencesRepository.getAffiliteName()
+        suspend fun getUserId(): String = preferencesRepository.getUserId()
 
-        suspend fun setAffiliteType(value: String) {
-            preferencesRepository.setAffiliteType(value)
+        suspend fun setStoreName(value: String) {
+            preferencesRepository.setStoreName(value)
         }
 
-        suspend fun getAffiliteType(): String = preferencesRepository.getAffiliteType()
+        suspend fun getStoreName(): String = preferencesRepository.getStoreName()
 
-        suspend fun setAffiliteId(value: String) {
-            preferencesRepository.setAffiliteId(value)
+        suspend fun setStoreType(value: String) {
+            preferencesRepository.setStoreType(value)
         }
 
-        suspend fun getAffiliteId(): String = preferencesRepository.getAffiliteId()
+        suspend fun getStoreType(): String = preferencesRepository.getStoreType()
+
+        suspend fun setStoreId(value: Int) {
+            preferencesRepository.setStoreId(value)
+        }
+
+        suspend fun getStoreId(): Int = preferencesRepository.getStoreId()
     }

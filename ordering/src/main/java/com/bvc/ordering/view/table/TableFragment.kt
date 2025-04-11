@@ -9,7 +9,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bvc.domain.log
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
@@ -92,7 +91,6 @@ class TableFragment : BaseFragment<FragmentTableBinding>() {
                                 (adapter as CategoryAdapter<CategoryEntity>).submitList(list.toList())
                             }
                         }
-                        log.e("category: $list")
                         getSubCategory(list.find { it.selected }?.id ?: "")
                     }
 
@@ -105,7 +103,6 @@ class TableFragment : BaseFragment<FragmentTableBinding>() {
                                 )
                             }
                         }
-                        log.e("subCategory: $subCategory")
                         getTables(subCategory.find { it.selected }?.id ?: "")
                     }
 

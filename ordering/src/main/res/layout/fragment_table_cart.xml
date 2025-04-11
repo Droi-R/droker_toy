@@ -27,7 +27,7 @@
 
             <!-- 상단 가맹점 정보 영역 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_cart_top"
+                android:id="@+id/cl_table_order_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/d_2900"
@@ -40,7 +40,7 @@
 
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_cart_close"
+                    android:id="@+id/iv_table_cart_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/d_1400"
@@ -58,13 +58,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/d_2900"
                     android:layout_marginTop="@dimen/d_2500"
-                    android:text="@{vm.affiliteType}"
+                    android:text="@{vm.affiliteName}"
                     android:textColor="@color/bvc_666E89"
                     android:textSize="@dimen/text_size_10"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="가맹점" />
+                    tools:text="가맹점명" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_cart_affilite_name"
@@ -73,16 +73,16 @@
                     android:layout_marginStart="@dimen/d_2900"
                     android:layout_marginTop="@dimen/d_500"
                     android:layout_marginBottom="@dimen/d_700"
-                    android:text="@{vm.affiliteName}"
+                    android:text="@{vm.tableName}"
                     android:textColor="@color/bvc_666E89"
                     android:textSize="@dimen/text_size_18"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_type"
-                    tools:text="이태원 쿠바노스" />
+                    tools:text="테이블명" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_cart_menu"
+                    android:id="@+id/cl_table_cart_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/d_2900"
@@ -91,7 +91,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_name">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_cart_menu"
+                        android:id="@+id/tv_table_cart_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/menu"
@@ -107,19 +107,19 @@
                         android:layout_marginTop="@dimen/d_700"
                         android:background="@color/bvc_666E89"
                         android:visibility="invisible"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_cart_menu"
-                        app:layout_constraintStart_toStartOf="@+id/tv_cart_menu"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_cart_menu" />
+                        app:layout_constraintEnd_toEndOf="@+id/tv_table_cart_menu"
+                        app:layout_constraintStart_toStartOf="@+id/tv_table_cart_menu"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_table_cart_menu" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_cart_cart"
+                    android:id="@+id/cl_table_cart_cart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/d_2900"
                     android:layout_marginTop="@dimen/d_2600"
-                    app:layout_constraintStart_toEndOf="@+id/cl_cart_menu"
+                    app:layout_constraintStart_toEndOf="@+id/cl_table_cart_menu"
                     app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_name">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -138,12 +138,11 @@
                         android:layout_height="@dimen/d_200"
                         android:layout_marginTop="@dimen/d_700"
                         android:background="@color/bvc_666E89"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="@+id/tv_cart_cart"
                         app:layout_constraintStart_toStartOf="@+id/tv_cart_cart"
                         app:layout_constraintTop_toBottomOf="@+id/tv_cart_cart" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

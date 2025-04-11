@@ -33,7 +33,7 @@ abstract class BaseViewModel :
     fun <T> requestApi(
         request: suspend () -> T?,
         successAction: (T) -> Unit,
-        errorAction: (String) -> Unit,
+        errorAction: (Int, String) -> Unit,
     ) {
         viewModelScope.launch {
             mutableScreenState.postValue(ScreenState.LOADING)
@@ -44,7 +44,6 @@ abstract class BaseViewModel :
                 mutableScreenState.postValue(ScreenState.ERROR)
                 return@launch
             }
-
             val meta =
                 response.javaClass
                     .getDeclaredField("meta")
@@ -63,7 +62,7 @@ abstract class BaseViewModel :
 
             when (Constant.getStatus(code)) {
                 ApiStatus.SUCCESS -> successAction(response)
-                else -> errorAction(message)
+                else -> errorAction(code, message)
             }
         }
     }

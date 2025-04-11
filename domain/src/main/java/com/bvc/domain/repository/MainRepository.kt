@@ -1,12 +1,12 @@
 package com.bvc.domain.repository
 
-import com.bvc.domain.model.AffiliateEntity
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.model.OrderEntity
 import com.bvc.domain.model.ProductEntity
+import com.bvc.domain.model.Store
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.type.OrderFrom
@@ -22,7 +22,7 @@ interface MainRepository {
     suspend fun getAffiliate(
         remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
-    ): ApiDataList<AffiliateEntity>
+    ): ApiDataList<Store>
 
     suspend fun getMenuCategory(
         remoteErrorEmitter: RemoteErrorEmitter,

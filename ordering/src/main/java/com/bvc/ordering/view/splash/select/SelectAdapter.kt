@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bvc.domain.model.AffiliateEntity
+import com.bvc.domain.model.Store
 import com.bvc.ordering.databinding.ItemSelectAlternateBinding
 import com.bvc.ordering.databinding.ItemSelectBinding
 
 class SelectAdapter(
-    private var items: List<AffiliateEntity>,
+    private var items: List<Store>,
     private val itemClickListener: OnItemClickListener,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
@@ -18,12 +18,12 @@ class SelectAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item: AffiliateEntity)
+        fun onItemClick(item: Store)
     }
 
     override fun getItemViewType(position: Int): Int {
         // 뷰 타입을 결정하는 로직을 추가합니다.
-        return if (items[position].type.isEmpty()) VIEW_TYPE_ALTERNATE else VIEW_TYPE_DEFAULT
+        return if (items[position].isActive != 1) VIEW_TYPE_ALTERNATE else VIEW_TYPE_DEFAULT
     }
 
     override fun onCreateViewHolder(
@@ -52,7 +52,7 @@ class SelectAdapter(
         }
     }
 
-    fun updateItems(newItems: List<AffiliateEntity>) {
+    fun updateItems(newItems: List<Store>) {
         val diffCallback =
             object : DiffUtil.Callback() {
                 override fun getOldListSize() = items.size
@@ -81,7 +81,7 @@ class SelectAdapter(
         private val binding: ItemSelectBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            item: AffiliateEntity,
+            item: Store,
             clickListener: OnItemClickListener,
         ) {
             binding.item = item
@@ -89,6 +89,7 @@ class SelectAdapter(
             binding.root.setOnClickListener {
                 clickListener.onItemClick(item)
             }
+            binding.tvIntroAffiliate.text = if (item.isActive == 1) "가맹점" else "비가맹점"
         }
     }
 
@@ -96,7 +97,7 @@ class SelectAdapter(
         private val binding: ItemSelectAlternateBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            item: AffiliateEntity,
+            item: Store,
             clickListener: OnItemClickListener,
         ) {
             binding.executePendingBindings()

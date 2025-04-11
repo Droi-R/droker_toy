@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 data class OrderEntity(
     val oid: String = "",
     val orderName: String = "",
-    var orderItems: ArrayList<ProductEntity> = arrayListOf(),
+    var orderItems: List<ProductEntity> = listOf(),
     val buyerName: String = "",
     val orderFrom: OrderFrom = OrderFrom.POS,
     val orderStatus: OrderStatus = OrderStatus.READY,
@@ -17,7 +17,7 @@ data class OrderEntity(
     val buyerPhoneNumber: String = "",
     val additionalComment: String = "",
     val orderNumber: Int = 0,
-    val orderMemos: ArrayList<OrderMemo> = arrayListOf(),
+    val orderMemos: List<OrderMemo> = listOf(),
 ) : Parcelable
 
 @Parcelize

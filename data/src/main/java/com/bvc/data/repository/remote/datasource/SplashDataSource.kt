@@ -1,10 +1,10 @@
 package com.bvc.data.repository.remote.datasource
 
-import com.bvc.data.remote.model.response.AffiliateResponse
 import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
+import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.domain.utils.RemoteErrorEmitter
 
 interface SplashDataSource {
@@ -31,8 +31,9 @@ interface SplashDataSource {
         verification: String,
     ): ResData<LoginResponse>?
 
-    suspend fun getAffiliate(
+    suspend fun getStore(
         remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
-    ): ResDataList<AffiliateResponse>?
+        id: String,
+    ): ResDataList<StoreResponse>?
 }

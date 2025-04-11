@@ -1,6 +1,5 @@
 package com.bvc.data.mapper
 
-import com.bvc.data.remote.model.response.AffiliateResponse
 import com.bvc.data.remote.model.response.CategoryResponse
 import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.GithubResponse
@@ -15,9 +14,9 @@ import com.bvc.data.remote.model.response.ResDataList
 import com.bvc.data.remote.model.response.ResMeta
 import com.bvc.data.remote.model.response.ResPagination
 import com.bvc.data.remote.model.response.StockResponse
+import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
 import com.bvc.data.remote.model.response.TableResponse
-import com.bvc.domain.model.AffiliateEntity
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
 import com.bvc.domain.model.CategoryEntity
@@ -32,6 +31,7 @@ import com.bvc.domain.model.Pagination
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
 import com.bvc.domain.model.Stock
+import com.bvc.domain.model.Store
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.model.UserEntity
@@ -108,7 +108,7 @@ object ResponseMapper {
                     mobilePhoneNumber = response?.data?.mobilePhoneNumber ?: "",
                     user =
                         UserEntity(
-                            id = response?.data?.user?.id ?: "",
+                            userId = response?.data?.user?.userId ?: "",
                             phone = response?.data?.user?.phone ?: "",
                             role = response?.data?.user?.role ?: "",
                             createdAt = response?.data?.user?.createdAt ?: "",
@@ -127,17 +127,12 @@ object ResponseMapper {
                 ),
         )
 
-    fun mapAffiliate(response: ResDataList<AffiliateResponse>?): ApiDataList<AffiliateEntity> =
+    fun mapStore(response: ResDataList<StoreResponse>?): ApiDataList<Store> =
         ApiDataList(
             meta = mapMeta(response?.meta),
             pagination = mapPagination(response?.pagination),
             data =
-                response?.data?.map {
-                    AffiliateEntity(
-                        name = it.name,
-                        type = it.type,
-                    )
-                },
+                response?.data?.map { it.toEntity() },
         )
 
     fun mapCategory(response: ResDataList<CategoryResponse>?): ApiDataList<CategoryEntity> =
@@ -145,13 +140,7 @@ object ResponseMapper {
             meta = mapMeta(response?.meta),
             pagination = mapPagination(response?.pagination),
             data =
-                response?.data?.map {
-                    CategoryEntity(
-                        id = it.id,
-                        name = it.name,
-                        selected = it.selected,
-                    )
-                },
+                response?.data?.map { it.toEntity() },
         )
 
     fun mapSubCategory(response: ResDataList<SubCategoryResponse>?): ApiDataList<SubCategoryEntity> =
@@ -190,55 +179,77 @@ object ResponseMapper {
 
     // ----- Private extension functions -----
 
+    private fun EmptyResponse.toEntity(): EmptyEntity =
+        EmptyEntity(
+            nothing = nothing ?: "",
+        )
+
+    private fun StoreResponse.toEntity(): Store =
+        Store(
+            storeId = storeId ?: 0,
+            ownerID = ownerID ?: 0,
+            tid = tid ?: "",
+            name = name ?: "",
+            address = address ?: "",
+            isActive = isActive ?: 0,
+        )
+
+    private fun CategoryResponse.toEntity(): CategoryEntity =
+        CategoryEntity(
+            id = id ?: "",
+            name = name ?: "",
+            selected = selected ?: false,
+        )
+
     private fun ProductResponse.toEntity(): ProductEntity =
         ProductEntity(
-            externalKey = externalKey,
-            name = name,
-            categoryKey = categoryKey,
-            categoryName = categoryName,
-            descriptions = descriptions,
-            isVat = isVat,
-            selected = selected,
-            stock = stock.toEntity(),
-            color = color,
-            image = image,
-            price = price,
-            productOption = productOption.map { it.toEntity() },
-            position = position,
+            externalKey = externalKey ?: "",
+            name = name ?: "",
+            categoryKey = categoryKey ?: "",
+            categoryName = categoryName ?: "",
+            descriptions = descriptions ?: "",
+            isVat = isVat ?: true,
+            selected = selected ?: false,
+            stock = stock?.toEntity() ?: Stock(),
+            color = color ?: "#ffffff",
+            image = image ?: "",
+            price = price ?: "",
+            productOption = productOption?.map { it.toEntity() } ?: emptyList(),
+            position = position ?: 0,
         )
 
     private fun StockResponse.toEntity(): Stock =
         Stock(
-            externalKey = externalKey,
-            useStock = useStock,
-            count = count,
+            externalKey = externalKey ?: "",
+            useStock = useStock ?: false,
+            count = count ?: 0,
         )
 
     private fun ProductOptionResponse.toEntity(): ProductOptionEntity =
         ProductOptionEntity(
-            id = id,
-            name = name,
-            required = required,
-            minOptionCountLimit = minOptionCountLimit,
-            maxOptionCountLimit = maxOptionCountLimit,
-            position = position,
-            options = options.toEntities(),
+            id = id ?: "",
+            name = name ?: "",
+            required = required ?: "",
+            minOptionCountLimit = minOptionCountLimit ?: 0,
+            maxOptionCountLimit = maxOptionCountLimit ?: 0,
+            position = position ?: 0,
+            options = options?.toEntities() ?: arrayListOf(),
         )
 
-    private fun List<OptionResponse>.toEntities(): ArrayList<Options> =
+    private fun List<OptionResponse>?.toEntities(): ArrayList<Options> =
         ArrayList(
-            map {
+            this?.map {
                 Options(
-                    id = it.id,
-                    name = it.name,
-                    price = it.price,
-                    position = it.position,
-                    useStock = it.useStock,
-                    stockQuantity = it.stockQuantity,
-                    isSoldOut = it.isSoldOut,
-                    isSelected = it.isSelected,
+                    id = it.id ?: "",
+                    name = it.name ?: "",
+                    price = it.price ?: "",
+                    position = it.position ?: 0,
+                    useStock = it.useStock ?: false,
+                    stockQuantity = it.stockQuantity ?: -1,
+                    isSoldOut = it.isSoldOut ?: false,
+                    isSelected = it.isSelected ?: false,
                 )
-            },
+            } ?: emptyList(),
         )
 
     private fun OrderMemoResponse.toEntity(): OrderMemo =

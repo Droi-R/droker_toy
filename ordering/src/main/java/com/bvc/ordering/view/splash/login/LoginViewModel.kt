@@ -53,53 +53,81 @@ class LoginViewModel
                     _enableVerify.postValue(true)
                     Utils.showToast("인증번호가 발송되었습니다.")
                 },
-                errorAction = {
+                errorAction = { code, message ->
                     _enableVerify.value = false
-                    Utils.showToast(it)
+                    Utils.showToast(message)
                 },
             )
         }
 
         fun onClickVerification() {
             requestApi(
-                request = { splashUseCase.verifySms(this@LoginViewModel, phoneNum.value.orEmpty(), verification.value.orEmpty()) },
+                request = {
+                    splashUseCase.verifySms(
+                        this@LoginViewModel,
+                        phoneNum.value.orEmpty(),
+                        verification.value.orEmpty(),
+                    )
+                },
                 successAction = {
                     Utils.showToast("인증번호가 확인되었습니다.")
                     // 값에따라 로그인 or 회원가입
-//                    signUp()
-                    login()
+                    signUp()
                 },
-                errorAction = {
-                    Utils.showToast(it)
+                errorAction = { code, message ->
+                    if (code == 207) {
+                        login()
+                    } else {
+                        Utils.showToast(message)
+                    }
                 },
             )
         }
 
         private fun signUp() {
             requestApi(
-                request = { splashUseCase.signUp(this@LoginViewModel, phoneNum.value.orEmpty(), verification.value.orEmpty()) },
+                request = {
+                    splashUseCase.signUp(
+                        this@LoginViewModel,
+                        phoneNum.value.orEmpty(),
+                        verification.value.orEmpty(),
+                    )
+                },
                 successAction = { response ->
                     viewModelScope.launch(Dispatchers.IO) {
-                        preferenceUseCase.setToken(response.data.accessToken)
+                        preferenceUseCase.setToken("Bearer ${response.data.accessToken}")
+                        preferenceUseCase.setUserId(response.data.user.userId)
+                        preferenceUseCase.setRefreshToken(response.data.refreshToken)
                     }
                     _action.value = true
                 },
-                errorAction = { Utils.showToast(it) },
+                errorAction = { code, message ->
+                    Utils.showToast(message)
+                },
             )
         }
 
         private fun login() {
             requestApi(
-                request = { splashUseCase.getLogin(this@LoginViewModel, phoneNum.value.orEmpty(), verification.value.orEmpty()) },
+                request = {
+                    splashUseCase.getLogin(
+                        this@LoginViewModel,
+                        phoneNum.value.orEmpty(),
+                        verification.value.orEmpty(),
+                    )
+                },
                 successAction = { response ->
                     log.e("response: $response")
                     viewModelScope.launch(Dispatchers.IO) {
-                        preferenceUseCase.setToken(response.data.accessToken)
+                        preferenceUseCase.setToken("Bearer ${response.data.accessToken}")
+                        preferenceUseCase.setUserId(response.data.user.userId)
                         preferenceUseCase.setRefreshToken(response.data.refreshToken)
                     }
                     _action.value = true
                 },
-                errorAction = { Utils.showToast(it) },
+                errorAction = { code, message ->
+                    Utils.showToast(message)
+                },
             )
         }
     }

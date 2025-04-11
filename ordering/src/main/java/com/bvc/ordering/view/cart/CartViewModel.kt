@@ -54,8 +54,8 @@ class CartViewModel
         init {
 
             viewModelScope.launch {
-                _affiliteName.value = preferenceUseCase.getAffiliteName() ?: ""
-                _affiliteType.value = preferenceUseCase.getAffiliteType() ?: ""
+                _affiliteName.value = preferenceUseCase.getStoreName() ?: ""
+                _affiliteType.value = preferenceUseCase.getStoreType() ?: ""
             }
             getCartStore()
         }

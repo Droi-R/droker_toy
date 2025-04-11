@@ -4,91 +4,91 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
     @SerializedName("externalKey")
-    val externalKey: String = "",
+    val externalKey: String? = null,
     @SerializedName("name")
-    val name: String = "",
+    val name: String? = null,
     @SerializedName("categoryKey")
-    var categoryKey: String = "",
+    var categoryKey: String? = null,
     @SerializedName("categoryName")
-    var categoryName: String = "",
+    var categoryName: String? = null,
     @SerializedName("descriptions")
-    val descriptions: String = "",
+    val descriptions: String? = null,
     @SerializedName("isVat")
-    var isVat: Boolean = true,
+    var isVat: Boolean? = null,
     @SerializedName("selected")
-    val selected: Boolean = false,
+    val selected: Boolean? = null,
     @SerializedName("stock")
-    val stock: StockResponse = StockResponse(),
+    val stock: StockResponse? = null,
     @SerializedName("color")
-    var color: String = "#ffffff",
+    var color: String? = null,
     @SerializedName("image")
-    val image: String = "",
+    val image: String? = null,
     @SerializedName("price")
-    val price: String = "",
+    val price: String? = null,
     @SerializedName("productOption")
-    val productOption: List<ProductOptionResponse> = emptyList(),
+    val productOption: List<ProductOptionResponse>? = null,
     @SerializedName("position")
-    val position: Int = 0,
+    val position: Int? = null,
 )
 
 data class ProductOptionResponse(
     @SerializedName("id")
-    val id: String = "",
+    val id: String? = null,
     @SerializedName("name")
-    val name: String = "",
+    val name: String? = null,
     @SerializedName("selected")
-    val selected: Boolean = false,
+    val selected: Boolean? = null,
     @SerializedName("price")
-    val price: String = "",
+    val price: String? = null,
     @SerializedName("required")
-    val required: String = "",
+    val required: String? = null,
     @SerializedName("minOptionCountLimit")
-    var minOptionCountLimit: Int = 0,
+    var minOptionCountLimit: Int? = null,
     @SerializedName("maxOptionCountLimit")
-    var maxOptionCountLimit: Int = 0,
+    var maxOptionCountLimit: Int? = null,
     @SerializedName("position")
-    var position: Int = 0,
+    var position: Int? = null,
     @SerializedName("options")
-    var options: ArrayList<OptionResponse> = ArrayList(),
+    var options: ArrayList<OptionResponse>? = null,
 )
 
 data class StockResponse(
     @SerializedName("externalKey")
-    val externalKey: String = "",
+    val externalKey: String? = null,
     @SerializedName("useStock")
-    var useStock: Boolean = false,
+    var useStock: Boolean? = null,
     @SerializedName("count")
-    var count: Int = 0,
+    var count: Int? = null,
 )
 
 data class ImageResponse(
     @SerializedName("id")
-    val id: Long = 0L,
+    val id: Long? = null,
     @SerializedName("externalKey")
-    val externalKey: String = "",
+    val externalKey: String? = null,
     @SerializedName("url")
-    var url: String = "",
+    var url: String? = null,
     @SerializedName("isRepresentativeImage")
-    var isRepresentativeImage: Boolean = false,
+    var isRepresentativeImage: Boolean? = null,
     @SerializedName("position")
-    var position: Int = 0,
+    var position: Int? = null,
 )
 
 data class OptionResponse(
     @SerializedName("id")
-    val id: String = "",
+    val id: String? = null,
     @SerializedName("name")
-    var name: String = "",
+    var name: String? = null,
     @SerializedName("price")
-    var price: String = "",
+    var price: String? = null,
     @SerializedName("position")
-    val position: Int = 0,
+    val position: Int? = null,
     @SerializedName("useStock")
-    val useStock: Boolean = false,
+    val useStock: Boolean? = null,
     @SerializedName("stockQuantity")
-    val stockQuantity: Int = -1,
+    val stockQuantity: Int? = null,
     @SerializedName("isSoldOut")
-    val isSoldOut: Boolean = false,
+    val isSoldOut: Boolean? = null,
     @SerializedName("isSelected")
-    var isSelected: Boolean = false,
+    var isSelected: Boolean? = null,
 )

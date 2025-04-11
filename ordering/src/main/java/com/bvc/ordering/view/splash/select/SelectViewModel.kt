@@ -2,12 +2,13 @@ package com.bvc.ordering.view.splash.select
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.bvc.domain.model.AffiliateEntity
-import com.bvc.domain.type.ScreenState
+import com.bvc.domain.log
+import com.bvc.domain.model.Store
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.domain.usecase.SplashUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
+import com.bvc.ordering.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,50 +20,55 @@ class SelectViewModel
         private val splashUseCase: SplashUseCase,
         private val preferenceUseCase: PreferenceUseCase,
     ) : BaseViewModel() {
-        private val _affiliate =
-            SingleLiveEvent<List<AffiliateEntity>>()
-        val affiliate: LiveData<List<AffiliateEntity>> get() = _affiliate
+        private val _affiliate = SingleLiveEvent<List<Store>>()
+        val affiliate: LiveData<List<Store>> get() = _affiliate
 
-        private val _action = SingleLiveEvent<Boolean>()
-        val action: LiveData<Boolean> get() = _action
+        private val _action = SingleLiveEvent<Int>()
+        val action: LiveData<Int> get() = _action
 
         init {
-            getAffiliate()
+            getStore()
+            viewModelScope.launch {
+                log.e("preferenceUseCase.getUserId(): ${preferenceUseCase.getUserId()}")
+            }
         }
 
-        private fun getAffiliate() {
-            viewModelScope.launch {
-                val response =
-//                    getUserRepoUseCase.getGithub(this@SelectViewModel, preferenceUseCase.getToken())
-                    splashUseCase.getAffiliate(this@SelectViewModel, preferenceUseCase.getToken())
-                _affiliate.value = (
-                    response?.data?.map {
-                        AffiliateEntity(
-                            tid = it.tid,
-                            name = it.name,
-                            type = it.type,
-                        )
-                    } ?: listOf(
-                        AffiliateEntity(
-                            tid = "",
-                            name = "쿠바노스",
-                            type = "가맹점",
-                        ),
+        private fun getStore() {
+            requestApi(
+                request = {
+                    splashUseCase.getStore(
+                        this@SelectViewModel,
+                        preferenceUseCase.getToken(),
+                        preferenceUseCase.getUserId(),
                     )
-                ) +
-                    listOf(
-                        AffiliateEntity(
-                            tid = "",
-                            name = "매장 추가하기",
-                            type = "",
-                        ),
-                    )
+                },
+                successAction = {
+                    _affiliate.value =
+                        buildList {
+                            addAll(it.data.orEmpty())
+                            add(Store(tid = "", name = "매장 추가하기", isActive = 0))
+                        }
+                },
+                errorAction = { code, message ->
+                    log.e("code: $code, message: $message")
+                    Utils.showToast(message)
+                    viewModelScope.launch {
+                        if (code == 401) {
+                            preferenceUseCase.setToken("")
+                            preferenceUseCase.setStoreId(-1)
+                            _action.value = 2
+                        }
+                    }
+                },
+            )
+        }
 
-                if (response == null) {
-                    mutableScreenState.postValue(ScreenState.ERROR)
-                } else {
-                    mutableScreenState.postValue(ScreenState.RENDER)
-                }
+        fun selectStore(item: Store) {
+            log.e("item: $item")
+            viewModelScope.launch {
+                preferenceUseCase.setStoreId(item.storeId)
+                preferenceUseCase.setStoreName(item.name)
+                _action.value = 1
             }
         }
     }

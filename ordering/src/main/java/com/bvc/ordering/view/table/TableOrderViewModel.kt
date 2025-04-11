@@ -2,13 +2,16 @@ package com.bvc.ordering.view.table
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.bvc.domain.log
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.Options
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
-import com.bvc.domain.repository.ProductStoreRepository
+import com.bvc.domain.repository.TableStoreRepository
+import com.bvc.domain.type.OrderFrom
+import com.bvc.domain.type.OrderStatus
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -26,7 +29,7 @@ class TableOrderViewModel
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
         private val getMainUseCase: MainUseCase,
-        private val cartStoreRepository: ProductStoreRepository,
+        private val cartStoreRepository: TableStoreRepository,
     ) : BaseViewModel() {
         private val _category = MutableStateFlow<List<CategoryEntity>>(emptyList())
         val category: StateFlow<List<CategoryEntity>> get() = _category
@@ -51,7 +54,7 @@ class TableOrderViewModel
 
         init {
             viewModelScope.launch {
-                _affiliteName.value = preferenceUseCase.getAffiliteName() ?: ""
+                _affiliteName.value = preferenceUseCase.getStoreName() ?: ""
             }
             getCategory()
         }
@@ -59,6 +62,51 @@ class TableOrderViewModel
         fun setTableInfo(table: TableEntity) {
             _tableInfo.value = table
             _tableName.value = table.tableName
+            tableInfo.value?.orders?.map {
+                it.orderItems.map { item ->
+                    cartStoreRepository.addItem(item)
+                }
+            }
+        }
+
+        fun postOrder() {
+            requestApi(
+                request = {
+                    getMainUseCase.postOrder(
+                        this@TableOrderViewModel,
+                        preferenceUseCase.getToken(),
+                        id = "",
+                        productItems = cartData.value,
+                        status = OrderStatus.READY,
+                        orderFrom = OrderFrom.POS,
+                        tableNumber = "${tableInfo.value?.tableNumber}",
+                        tableExternalKey = tableInfo.value?.tableExternalKey ?: "",
+                    )
+                },
+                successAction = {
+                    log.e("success: $it")
+                    mutableScreenState.postValue(ScreenState.RENDER)
+                },
+                errorAction = { code, message ->
+                    log.e("error: $message")
+                    mutableScreenState.postValue(ScreenState.ERROR)
+                },
+            )
+//            viewModelScope.launch {
+//                val response =
+//                    getMainUseCase
+//                        .postOrder(
+//                            remoteErrorEmitter = this@TableOrderViewModel,
+//                            token = preferenceUseCase.getToken(),
+//                            id = "",
+//                            productItems = cartData.value,
+//                            status = OrderStatus.READY,
+//                            orderFrom = OrderFrom.POS,
+//                            tableNumber = "",
+//                            tableExternalKey = "",
+//                        )
+//                log.e("response: ${cartData.value}")
+//            }s
         }
 
         private fun getCategory() {

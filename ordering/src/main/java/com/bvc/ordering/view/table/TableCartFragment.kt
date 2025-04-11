@@ -8,7 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bvc.domain.log
 import com.bvc.domain.model.ProductEntity
+import com.bvc.domain.model.TableEntity
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentTableCartBinding
@@ -17,6 +19,7 @@ import com.bvc.ordering.ui.event.collectNonEmpty
 import com.bvc.ordering.util.Utils
 import com.bvc.ordering.view.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -25,6 +28,7 @@ class TableCartFragment : BaseFragment<FragmentTableCartBinding>() {
         get() = R.layout.fragment_table_cart
     private val viewModel: TableCartViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
+    private var tableEventJob: Job? = null
 
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
@@ -56,11 +60,18 @@ class TableCartFragment : BaseFragment<FragmentTableCartBinding>() {
                     )
                 addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_2300)))
             }
-            ivCartClose.setOnClickListener {
+            ivTableCartClose.setOnClickListener {
+                viewModel.clearCart()
                 val navController = findNavController()
                 if (navController.previousBackStackEntry != null) {
                     navController.navigateUp()
                 }
+            }
+            clTableCartMenu.setOnClickListener {
+                viewModel.clearCart()
+                tableEventJob?.cancel()
+                findNavController().navigate(TableOrderFragment::class.java.name)
+                mainViewModel.sendTableEvent(viewModel.tableInfo.value ?: TableEntity())
             }
             llCartCardPayment.setOnClickListener {
                 viewModel.postOrder()
@@ -69,6 +80,18 @@ class TableCartFragment : BaseFragment<FragmentTableCartBinding>() {
     }
 
     override fun handleViewModel() {
+        tableEventJob =
+            viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    mainViewModel.tableEventFlow.collect { event ->
+                        event.getContentIfNotHandled()?.let { table ->
+                            log.e("tableCart: $table")
+                            viewModel.setTableInfo(table)
+                        }
+                    }
+                }
+            }
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.apply {

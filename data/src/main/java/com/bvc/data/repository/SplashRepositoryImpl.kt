@@ -2,11 +2,11 @@ package com.bvc.data.repository
 
 import com.bvc.data.mapper.ResponseMapper
 import com.bvc.data.repository.remote.datasource.SplashDataSource
-import com.bvc.domain.model.AffiliateEntity
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
 import com.bvc.domain.model.EmptyEntity
 import com.bvc.domain.model.LoginEntity
+import com.bvc.domain.model.Store
 import com.bvc.domain.repository.SplashRepository
 import com.bvc.domain.utils.RemoteErrorEmitter
 import javax.inject.Inject
@@ -39,8 +39,9 @@ class SplashRepositoryImpl
             verification: String,
         ): ApiData<LoginEntity> = ResponseMapper.mapLogin(splashDataSource.getLogin(remoteErrorEmitter, phoneNum, verification))
 
-        override suspend fun getAffiliate(
+        override suspend fun getStore(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ): ApiDataList<AffiliateEntity> = ResponseMapper.mapAffiliate(splashDataSource.getAffiliate(remoteErrorEmitter, token))
+            id: String,
+        ): ApiDataList<Store> = ResponseMapper.mapStore(splashDataSource.getStore(remoteErrorEmitter, token, id))
     }

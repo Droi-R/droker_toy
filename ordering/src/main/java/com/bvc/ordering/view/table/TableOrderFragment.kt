@@ -14,6 +14,7 @@ import com.bvc.domain.log
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.SubCategoryEntity
+import com.bvc.domain.model.TableEntity
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentTableOrderBinding
@@ -21,13 +22,13 @@ import com.bvc.ordering.ui.HorizontalSpaceItemDecoration
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
 import com.bvc.ordering.ui.event.collectNonEmpty
 import com.bvc.ordering.util.Utils
-import com.bvc.ordering.view.cart.CartFragment
 import com.bvc.ordering.view.dialog.OptionSelectDialog
 import com.bvc.ordering.view.inflate.CategoryAdapter
 import com.bvc.ordering.view.inflate.GridAdapter
 import com.bvc.ordering.view.inflate.SubCategoryAdapter
 import com.bvc.ordering.view.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -36,6 +37,7 @@ class TableOrderFragment : BaseFragment<FragmentTableOrderBinding>() {
         get() = R.layout.fragment_table_order
     private val viewModel: TableOrderViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
+    private var tableEventJob: Job? = null
 
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
@@ -89,18 +91,31 @@ class TableOrderFragment : BaseFragment<FragmentTableOrderBinding>() {
                 viewModel.clearCart()
             }
             icCartCount.clCartRoot.setOnClickListener {
-                findNavController().navigate(CartFragment::class.java.name)
+                viewModel.postOrder()
             }
             ivTableOrderClose.setOnClickListener {
-                val navController = findNavController()
-                if (navController.previousBackStackEntry != null) {
-                    navController.navigateUp()
-                }
+//                val navController = findNavController()
+//                if (navController.previousBackStackEntry != null) {
+//                    navController.navigateUp()
+//                }
+                findNavController().navigate(TableFragment::class.java.name)
             }
+            clTableOrderCart.setOnClickListener {
+                viewModel.clearCart()
+                tableEventJob?.cancel()
+                findNavController().navigate(TableCartFragment::class.java.name)
+                mainViewModel.sendTableEvent(viewModel.tableInfo.value ?: TableEntity())
+            }
+
 //            llCartCardPayment.setOnClickListener {
 //                viewModel.postOrder()
 //            }
         }
+    }
+
+    override fun onDestroyView() {
+        viewModel.clearCart()
+        super.onDestroyView()
     }
 
     override fun onResume() {
@@ -109,15 +124,19 @@ class TableOrderFragment : BaseFragment<FragmentTableOrderBinding>() {
     }
 
     override fun handleViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
+        tableEventJob =
+            viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
                     mainViewModel.tableEventFlow.collect { event ->
                         event.getContentIfNotHandled()?.let { table ->
-                            log.e("table: $table")
+                            log.e("tableCart: $table")
+                            viewModel.setTableInfo(table)
                         }
                     }
                 }
+            }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.apply {
                     category.collectNonEmpty(viewLifecycleOwner) { list ->
                         // 카테고리 UI 갱신

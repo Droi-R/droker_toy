@@ -32,8 +32,9 @@ class SplashUseCase
             verification: String,
         ) = splashRepository.getLogin(remoteErrorEmitter, phoneNum, verification)
 
-        suspend fun getAffiliate(
+        suspend fun getStore(
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-        ) = splashRepository.getAffiliate(remoteErrorEmitter, token)
+            id: String,
+        ) = splashRepository.getStore(remoteErrorEmitter, token, id)
     }
