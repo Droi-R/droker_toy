@@ -180,6 +180,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:paddingHorizontal="@dimen/d_2900"
             gone_visibility="@{vm.visibleSmartOrder}"
             android:id="@+id/rv_smart_order"
             android:layout_width="0dp"

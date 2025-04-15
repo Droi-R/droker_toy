@@ -51,8 +51,8 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
             }
 
             rvSmartOrder.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_3200)))
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
                 adapter =
                     SmartOrderAdapter(
                         object : SmartOrderAdapter.OnItemClickListener {

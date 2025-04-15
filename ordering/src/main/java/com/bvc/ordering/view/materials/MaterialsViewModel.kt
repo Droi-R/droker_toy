@@ -6,6 +6,7 @@ import com.bvc.domain.log
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.Options
+import com.bvc.domain.model.OriginEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
 import com.bvc.domain.model.SmartOrderEntity
@@ -533,6 +534,61 @@ class MaterialsViewModel
                 errorAction = { code, message ->
                     log.e("code: $code, message: $message")
                     Utils.showToast(message)
+                    _smartOrder.value =
+                        listOf(
+                            SmartOrderEntity(
+                                smartOrderId = "SO001",
+                                orderCount = 100,
+                                safetyStock = 50,
+                                description = "테스트 발주 설명",
+                                deliveryCost = "5000",
+                                logisticsCompany = "로지스틱스 A",
+                                expectedConsumption = "1000",
+                                origin =
+                                    OriginEntity(
+                                        orignId = "O001",
+                                        name = "원산지 A",
+                                        price = "2000",
+                                        deliveryCost = 3000,
+                                        supplier = "공급업체 A",
+                                    ),
+                                material =
+                                    MaterialsEntity(
+                                        materialId = "M001",
+                                        stock = 200,
+                                        safetyStock = 50,
+                                        imageUrl = "https://example.com/image.jpg",
+                                        unit = "kg",
+                                        materialName = "재료 A",
+                                    ),
+                            ),
+                            SmartOrderEntity(
+                                smartOrderId = "SO002",
+                                orderCount = 200,
+                                safetyStock = 100,
+                                description = "테스트 발주 설명 2",
+                                deliveryCost = "10000",
+                                logisticsCompany = "로지스틱스 B",
+                                expectedConsumption = "2000",
+                                origin =
+                                    OriginEntity(
+                                        orignId = "O002",
+                                        name = "원산지 B",
+                                        price = "3000",
+                                        deliveryCost = 5000,
+                                        supplier = "공급업체 B",
+                                    ),
+                                material =
+                                    MaterialsEntity(
+                                        materialId = "M002",
+                                        materialName = "재료 B",
+                                        stock = 300,
+                                        safetyStock = 100,
+                                        imageUrl = "https://example.com/image2.jpg",
+                                        unit = "g",
+                                    ),
+                            ),
+                        )
                 },
             )
         }
