@@ -11,4 +11,5 @@ enum class OrderFrom(
     TABLE_ORDER("테이블 오더"),
     FRONT("프론트"),
     TERMINAL("터미널"),
+    NONE(""),
 }

@@ -3,10 +3,12 @@ package com.bvc.data.remote.api
 import com.bvc.data.remote.model.request.OrderRequest
 import com.bvc.data.remote.model.response.CategoryResponse
 import com.bvc.data.remote.model.response.LoginResponse
+import com.bvc.data.remote.model.response.MaterialsResponse
 import com.bvc.data.remote.model.response.OrderResponse
 import com.bvc.data.remote.model.response.ProductResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
+import com.bvc.data.remote.model.response.SmartOrderResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
 import com.bvc.data.remote.model.response.TableResponse
@@ -25,27 +27,46 @@ interface MainApi {
         @Body refreshRequest: Map<String, String>,
     ): Response<ResData<LoginResponse>>
 
-    @GET("users/{token}/repos")
-    suspend fun getAffiliate(
+    @GET("stores/details/{store_id}")
+    suspend fun getStore(
         @Header("Authorization") token: String,
-    ): Response<ResDataList<StoreResponse>>
+        @Path("store_id") storeId: String,
+    ): Response<ResData<StoreResponse>>
 
-    @GET("users/{token}/repos")
+    @GET("/stores/{store_id}/main-categories")
     suspend fun getMenuCategory(
         @Header("Authorization") token: String,
+        @Path("store_id") storeId: String,
     ): Response<ResDataList<CategoryResponse>>
 
-    @GET("users/{token}/repos")
+    @GET("/stores/{store_id}/main-categories/{main_category_id}/sub-categories")
     suspend fun getSubCategory(
         @Header("Authorization") token: String,
-        @Query("id") id: String,
+        @Path("store_id") storeId: String,
+        @Path("main_category_id") mainCategoryId: String,
     ): Response<ResDataList<SubCategoryResponse>>
 
-    @GET("users/{token}/repos")
+    @GET("stores/{store_id}/products")
     suspend fun getProducts(
         @Header("Authorization") token: String,
-        @Query("id") id: String,
+        @Path("store_id") storeId: String,
+        @Query("main_category_id") mainCategoryId: String,
+        @Query("sub_category_id") subCategoryId: String,
     ): Response<ResDataList<ProductResponse>>
+
+    @GET("stores/{store_id}/products")
+    suspend fun getMaterials(
+        @Header("Authorization") token: String,
+        @Path("store_id") storeId: String,
+        @Query("main_category_id") mainCategoryId: String,
+        @Query("sub_category_id") subCategoryId: String,
+    ): Response<ResDataList<MaterialsResponse>>
+
+    @GET("stores/{store_id}/smart-orders")
+    suspend fun getSmartOrder(
+        @Header("Authorization") token: String,
+        @Path("store_id") storeId: String,
+    ): Response<ResDataList<SmartOrderResponse>>
 
     @POST("users/{sid}/repos")
     suspend fun postOrder(

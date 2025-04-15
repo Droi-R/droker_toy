@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bvc.domain.log
 import com.bvc.domain.model.CategoryEntity
-import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.ordering.R
@@ -71,21 +70,20 @@ class TableOrderFragment : BaseFragment<FragmentTableOrderBinding>() {
                 addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
                 addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
                 adapter =
-                    GridAdapter(
-                        object : GridAdapter.OnItemClickListener<ProductEntity> {
-                            override fun onItemClick(item: ProductEntity) {
-                                if (item.productOption.size > 1) {
-                                    val dialog =
-                                        OptionSelectDialog(item) { selectProduct ->
-                                            viewModel.addToCart(selectProduct)
-                                        }
-                                    dialog.show(childFragmentManager, "OptionSelectDialog")
-                                } else {
-                                    viewModel.addToCart(item)
-                                }
+                    GridAdapter {
+                        onProductClick { item ->
+                            log.e("Product Clicked: $item")
+                            if (item.optionGroups.size > 1) {
+                                val dialog =
+                                    OptionSelectDialog(item) { selectProduct ->
+                                        viewModel.addToCart(selectProduct)
+                                    }
+                                dialog.show(childFragmentManager, "OptionSelectDialog")
+                            } else {
+                                viewModel.addToCart(item)
                             }
-                        },
-                    )
+                        }
+                    }
             }
             icCartCount.ivCartDelete.setOnClickListener {
                 viewModel.clearCart()
@@ -145,7 +143,7 @@ class TableOrderFragment : BaseFragment<FragmentTableOrderBinding>() {
                                 (adapter as CategoryAdapter<CategoryEntity>).submitList(list.toList())
                             }
                         }
-                        getSubCategory(list.find { it.selected }?.id ?: "")
+                        getSubCategory(list.find { it.selected }?.mainCategoryId ?: "")
                     }
                     subCategory.collectNonEmpty(viewLifecycleOwner) { subCategory ->
                         // 상품 UI 갱신
@@ -156,13 +154,13 @@ class TableOrderFragment : BaseFragment<FragmentTableOrderBinding>() {
                                 )
                             }
                         }
-                        getProducts(subCategory.find { it.selected }?.id ?: "")
+                        getProducts(subCategory.find { it.selected })
                     }
                     product.collectNonEmpty(viewLifecycleOwner) { product ->
                         // 장바구니 UI 갱신
                         binding?.icOrder?.rvInflateGrid?.adapter?.let { adapter ->
-                            if (adapter is GridAdapter<*>) {
-                                (adapter as GridAdapter<ProductEntity>).submitList(product.toList())
+                            if (adapter is GridAdapter) {
+                                adapter.submitList(product.toList())
                             }
                         }
                     }

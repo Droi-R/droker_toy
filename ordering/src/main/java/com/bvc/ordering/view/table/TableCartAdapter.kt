@@ -118,15 +118,15 @@ class TableCartAdapter(
                 val requestOptions = RequestOptions().transform(RoundedCorners(5))
                 Glide
                     .with(ivMenuThumb.context)
-                    .load(item.image)
+                    .load(item.imageUrl)
                     .apply(requestOptions)
                     .into(ivMenuThumb)
 
-                if (item.productOption.isNotEmpty()) {
+                if (item.optionGroups.isNotEmpty()) {
                     llCartOption.visibility = ViewGroup.VISIBLE
-                    item.productOption.forEach { option ->
+                    item.optionGroups.forEach { option ->
                         val context = binding.root.context
-                        val optionType = "└ ${if (option.required == "true") {
+                        val optionType = "└ ${if (option.required) {
                             "필수 선택: "
                         } else {
                             "옵션 선택: "

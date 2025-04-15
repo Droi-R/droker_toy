@@ -7,14 +7,19 @@ data class StoreResponse(
     val storeId: Int? = null,
     @SerializedName("owner_id")
     val ownerID: Int? = null,
-    @SerializedName("tid")
-    val tid: String? = null,
+    @SerializedName("cats")
+    val cats: List<CatsResponse>? = null,
     @SerializedName("name")
     val name: String? = null,
     @SerializedName("address")
     val address: String? = null,
     @SerializedName("is_active")
-    val isActive: Int? = null,
+    val isActive: Boolean? = null,
     @SerializedName("type")
     val type: String? = null,
+)
+
+data class CatsResponse(
+    @SerializedName("cat_id")
+    val catId: String? = null,
 )

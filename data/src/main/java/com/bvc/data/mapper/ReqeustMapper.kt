@@ -12,8 +12,6 @@ fun ProductEntity.toRequest(): ProductItemsRequest =
     ProductItemsRequest(
         externalKey = externalKey,
         name = name,
-        categoryKey = categoryKey,
-        categoryName = categoryName,
         descriptions = descriptions,
         isVat = isVat,
         selected = selected,
@@ -24,16 +22,21 @@ fun ProductEntity.toRequest(): ProductItemsRequest =
                 count = stock.count,
             ),
         color = color,
-        image = image,
-        price = price,
-        productOption = productOption.map { it.toRequest() },
+//        image = image,
+        productOption = optionGroups.map { it.toRequest() },
         position = position,
         quantity = quantity,
+        imageUrl = imageUrl, // 추가
+        basePrice = basePrice, // 추가
+        isSoldOut = isSoldOut, // 추가
+        isVatIncluded = isVatIncluded, // 추가
+        barcode = barcode, // 추가
+        dailyLimit = dailyLimit, // 추가
     )
 
 fun ProductOptionEntity.toRequest(): ProductOptionRequest =
     ProductOptionRequest(
-        id = id,
+        id = optionGroupId,
         name = name,
         required = required,
         minOptionCountLimit = minOptionCountLimit,
@@ -44,12 +47,11 @@ fun ProductOptionEntity.toRequest(): ProductOptionRequest =
 
 fun Options.toRequest(): OptionsRequest =
     OptionsRequest(
-        id = id,
+        id = productOptionsId,
         name = name,
         price = price,
         position = position,
         useStock = useStock,
-        stockQuantity = stockQuantity,
         isSoldOut = isSoldOut,
         isSelected = isSelected,
     )

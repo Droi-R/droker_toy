@@ -28,11 +28,7 @@ class SelectFragment : BaseFragment<FragmentSelectBinding>() {
                     viewModel.affiliate.value ?: emptyList(),
                     object : SelectAdapter.OnItemClickListener {
                         override fun onItemClick(item: Store) {
-                            if (item.isActive == 1) {
-                                viewModel.selectStore(item)
-                            } else {
-                                // 매장 생성
-                            }
+                            viewModel.selectStore(item)
                         }
                     },
                 )

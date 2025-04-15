@@ -15,11 +15,11 @@ class TableStoreRepositoryImpl
             // Check if the item already exists in the cart
             val existingItem =
                 productItems.find { cartItem ->
-                    cartItem.externalKey == item.externalKey &&
-                        cartItem.productOption
+                    cartItem.productId == item.productId &&
+                        cartItem.optionGroups
                             .flatMap { it.options }
                             .filter { it.isSelected } ==
-                        item.productOption
+                        item.optionGroups
                             .flatMap { it.options }
                             .filter { it.isSelected }
                 }
@@ -43,11 +43,11 @@ class TableStoreRepositoryImpl
         override fun minusItem(item: ProductEntity) {
             val existingItem =
                 productItems.find { cartItem ->
-                    cartItem.externalKey == item.externalKey &&
-                        cartItem.productOption
+                    cartItem.productId == item.productId &&
+                        cartItem.optionGroups
                             .flatMap { it.options }
                             .filter { it.isSelected } ==
-                        item.productOption
+                        item.optionGroups
                             .flatMap { it.options }
                             .filter { it.isSelected }
                 }

@@ -10,18 +10,39 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.ordering.R
+import com.bvc.ordering.databinding.ItemGridMaterialsBinding
 import com.bvc.ordering.databinding.ItemGridProductBinding
 import com.bvc.ordering.databinding.ItemGridTableBinding
+import com.bvc.ordering.ui.OnItemClickListener
 import com.bvc.ordering.util.Utils
 
-class GridAdapter<T : Any>(
-    private val itemClickListener: OnItemClickListener<T>,
-) : ListAdapter<T, RecyclerView.ViewHolder>(DiffCallback<T>()) {
-    interface OnItemClickListener<T> {
-        fun onItemClick(item: T)
+class GridAdapter(
+    private val itemClickListener: OnItemClickListener,
+) : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback<Any>()) {
+    companion object {
+        const val VIEW_TYPE_PRODUCT = 0
+        const val VIEW_TYPE_TABLE = 1
+        const val VIEW_TYPE_MATERIALS = 2
+
+        inline operator fun invoke(block: OnItemClickListener.Builder.() -> Unit): GridAdapter =
+            GridAdapter(OnItemClickListener.Builder().apply(block).build())
+
+        class DiffCallback<T : Any> : DiffUtil.ItemCallback<T>() {
+            override fun areItemsTheSame(
+                oldItem: T,
+                newItem: T,
+            ): Boolean = oldItem == newItem
+
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(
+                oldItem: T,
+                newItem: T,
+            ): Boolean = oldItem == newItem
+        }
     }
 
     override fun onCreateViewHolder(
@@ -37,6 +58,16 @@ class GridAdapter<T : Any>(
                         false,
                     )
                 ProductViewHolder(binding)
+            }
+
+            VIEW_TYPE_MATERIALS -> {
+                val binding =
+                    ItemGridMaterialsBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false,
+                    )
+                MaterialsViewHolder(binding)
             }
 
             VIEW_TYPE_TABLE -> {
@@ -58,6 +89,10 @@ class GridAdapter<T : Any>(
                 return VIEW_TYPE_TABLE
             }
 
+            is MaterialsEntity -> {
+                return VIEW_TYPE_MATERIALS
+            }
+
             else -> {
                 return VIEW_TYPE_PRODUCT
             }
@@ -72,6 +107,8 @@ class GridAdapter<T : Any>(
         when (holder) {
             is ProductViewHolder -> holder.bind(item, itemClickListener)
             is TableViewHolder -> holder.bind(item, itemClickListener)
+            is MaterialsViewHolder -> holder.bind(item, itemClickListener)
+            else -> throw IllegalArgumentException("Invalid view holder")
         }
     }
 
@@ -87,22 +124,23 @@ class GridAdapter<T : Any>(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun <T> bind(
             item: T,
-            clickListener: OnItemClickListener<T>,
+            clickListener: OnItemClickListener,
         ) {
             binding.apply {
                 executePendingBindings()
-                root.setOnClickListener {
-                    clickListener.onItemClick(item)
-                }
+
                 when (item) {
                     is ProductEntity -> {
+                        root.setOnClickListener {
+                            clickListener.onProductClick(item)
+                        }
                         tvGridTitle.text = item.name
-                        tvGridDesc.text = item.price
+                        tvGridDesc.text = item.basePrice
                         Glide
                             .with(
                                 ivGrid.context,
                             ).load(
-                                item.image,
+                                item.imageUrl,
                             ).centerCrop()
                             .into(ivGrid)
                     }
@@ -121,15 +159,16 @@ class GridAdapter<T : Any>(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun <T> bind(
             item: T,
-            clickListener: OnItemClickListener<T>,
+            clickListener: OnItemClickListener,
         ) {
             binding.apply {
                 executePendingBindings()
-                root.setOnClickListener {
-                    clickListener.onItemClick(item)
-                }
+
                 when (item) {
                     is TableEntity -> {
+                        root.setOnClickListener {
+                            clickListener.onTableClick(item)
+                        }
                         tvGridTitle.text = item.tableName
                         if (item.orders.isEmpty()) {
                             tvGridTitle.setTextColor(root.context.getColor(R.color.bvc_666E89))
@@ -172,21 +211,35 @@ class GridAdapter<T : Any>(
         }
     }
 
-    companion object {
-        const val VIEW_TYPE_PRODUCT = 0
-        const val VIEW_TYPE_TABLE = 1
+    class MaterialsViewHolder(
+        private val binding: ItemGridMaterialsBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun <T> bind(
+            item: T,
+            clickListener: OnItemClickListener,
+        ) {
+            binding.apply {
+                executePendingBindings()
 
-        class DiffCallback<T : Any> : DiffUtil.ItemCallback<T>() {
-            override fun areItemsTheSame(
-                oldItem: T,
-                newItem: T,
-            ): Boolean = oldItem == newItem
-
-            @SuppressLint("DiffUtilEquals")
-            override fun areContentsTheSame(
-                oldItem: T,
-                newItem: T,
-            ): Boolean = oldItem == newItem
+                when (item) {
+                    is MaterialsEntity -> {
+                        root.setOnClickListener {
+                            clickListener.onMaterialsClick(item)
+                        }
+                        tvGridMaterialTitle.text = item.materialName
+                        circularDonutView.progress =
+                            item.stock.toFloat() / item.safetyStock.toFloat()
+                        tvGridMaterialCount.text =
+                            "${item.stock} / ${item.safetyStock}"
+                        clGrid.apply {
+                            background =
+                                ContextCompat.getDrawable(root.context, R.drawable.r12_f6f6f6)
+                            outlineProvider = ViewOutlineProvider.BACKGROUND
+                            clipToOutline = true
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -3,7 +3,11 @@ package com.bvc.ordering.di
 import com.bvc.data.remote.api.GithubApi
 import com.bvc.data.remote.api.MainApi
 import com.bvc.data.remote.api.SplashApi
+import com.bvc.domain.log
 import com.bvc.domain.utils.Constant
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
+import com.google.gson.JsonSyntaxException
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,6 +63,27 @@ object NetworkModule {
     @Singleton
     fun provideMainApiService(retrofit: Retrofit): MainApi = retrofit.create(MainApi::class.java)
 
-    private fun getLoggingInterceptor(): HttpLoggingInterceptor =
-        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+    private fun getLoggingInterceptor(): HttpLoggingInterceptor {
+        val logger =
+            HttpLoggingInterceptor.Logger { message ->
+                if (!message.startsWith("{") && !message.startsWith("[")) {
+                    log.d(message)
+                    return@Logger
+                }
+                try {
+                    val prettyJson =
+                        GsonBuilder()
+                            .setPrettyPrinting()
+                            .create()
+                            .toJson(JsonParser.parseString(message))
+                    log.w("prettyJson: $prettyJson")
+                } catch (e: JsonSyntaxException) {
+                    log.d(message)
+                }
+            }
+
+        return HttpLoggingInterceptor(logger).apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
 }

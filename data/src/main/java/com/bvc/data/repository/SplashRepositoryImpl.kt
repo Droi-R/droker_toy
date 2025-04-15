@@ -43,5 +43,5 @@ class SplashRepositoryImpl
             remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             id: String,
-        ): ApiDataList<Store> = ResponseMapper.mapStore(splashDataSource.getStore(remoteErrorEmitter, token, id))
+        ): ApiDataList<Store> = ResponseMapper.mapStores(splashDataSource.getStore(remoteErrorEmitter, token, id))
     }

@@ -1,5 +1,6 @@
 package com.bvc.data.repository
 
+import com.bvc.domain.log
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.repository.ProductStoreRepository
 import javax.inject.Inject
@@ -15,19 +16,21 @@ class ProductStoreRepositoryImpl
             // Check if the item already exists in the cart
             val existingItem =
                 productItems.find { cartItem ->
-                    cartItem.externalKey == item.externalKey &&
-                        cartItem.productOption
+                    cartItem.productId == item.productId &&
+                        cartItem.optionGroups
                             .flatMap { it.options }
                             .filter { it.isSelected } ==
-                        item.productOption
+                        item.optionGroups
                             .flatMap { it.options }
                             .filter { it.isSelected }
                 }
             // If it exists, update the quantity
+            log.e("existingItem: $existingItem")
+            log.e("item: $item")
             if (existingItem != null) {
                 val index = productItems.indexOf(existingItem)
                 if (index != -1) {
-                    val updatedItem = existingItem.copy(quantity = existingItem.quantity + item.quantity)
+                    val updatedItem = existingItem.copy(quantity = existingItem.quantity.plus(1))
                     productItems[index] = updatedItem
                     return
                 }
@@ -43,11 +46,11 @@ class ProductStoreRepositoryImpl
         override fun minusItem(item: ProductEntity) {
             val existingItem =
                 productItems.find { cartItem ->
-                    cartItem.externalKey == item.externalKey &&
-                        cartItem.productOption
+                    cartItem.productId == item.productId &&
+                        cartItem.optionGroups
                             .flatMap { it.options }
                             .filter { it.isSelected } ==
-                        item.productOption
+                        item.optionGroups
                             .flatMap { it.options }
                             .filter { it.isSelected }
                 }

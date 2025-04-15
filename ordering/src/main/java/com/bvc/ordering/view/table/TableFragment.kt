@@ -1,6 +1,7 @@
 package com.bvc.ordering.view.table
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -9,9 +10,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bvc.domain.log
 import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.SubCategoryEntity
-import com.bvc.domain.model.TableEntity
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentTableBinding
@@ -48,6 +49,7 @@ class TableFragment : BaseFragment<FragmentTableBinding>() {
                     )
             }
             icTable.rvInflateSubCategory.apply {
+                visibility = View.GONE
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_600)))
                 adapter =
@@ -64,18 +66,17 @@ class TableFragment : BaseFragment<FragmentTableBinding>() {
                 addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
                 addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
                 adapter =
-                    GridAdapter(
-                        object : GridAdapter.OnItemClickListener<TableEntity> {
-                            override fun onItemClick(item: TableEntity) {
-                                if (item.orders.isEmpty()) {
-                                    findNavController().navigate(TableOrderFragment::class.java.name)
-                                } else {
-                                    findNavController().navigate(TableCartFragment::class.java.name)
-                                }
-                                mainViewModel.sendTableEvent(item)
+                    GridAdapter {
+                        onTableClick { item ->
+                            log.e("Table Clicked: $item")
+                            if (item.orders.isEmpty()) {
+                                findNavController().navigate(TableOrderFragment::class.java.name)
+                            } else {
+                                findNavController().navigate(TableCartFragment::class.java.name)
                             }
-                        },
-                    )
+                            mainViewModel.sendTableEvent(item)
+                        }
+                    }
             }
         }
     }
@@ -91,7 +92,7 @@ class TableFragment : BaseFragment<FragmentTableBinding>() {
                                 (adapter as CategoryAdapter<CategoryEntity>).submitList(list.toList())
                             }
                         }
-                        getSubCategory(list.find { it.selected }?.id ?: "")
+                        getSubCategory(list.find { it.selected }?.mainCategoryId ?: "")
                     }
 
                     subCategory.collectNonEmpty(viewLifecycleOwner) { subCategory ->
@@ -103,14 +104,14 @@ class TableFragment : BaseFragment<FragmentTableBinding>() {
                                 )
                             }
                         }
-                        getTables(subCategory.find { it.selected }?.id ?: "")
+                        getTables(subCategory.find { it.selected }?.subCategoryId ?: "")
                     }
 
                     tables.collectNonEmpty(viewLifecycleOwner) { tables ->
                         // 장바구니 UI 갱신
                         binding?.icTable?.rvInflateGrid?.adapter?.let { adapter ->
-                            if (adapter is GridAdapter<*>) {
-                                (adapter as GridAdapter<TableEntity>).submitList(tables.toList())
+                            if (adapter is GridAdapter) {
+                                adapter.submitList(tables.toList())
                             }
                         }
                     }

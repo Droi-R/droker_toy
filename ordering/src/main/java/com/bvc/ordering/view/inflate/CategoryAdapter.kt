@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bvc.domain.model.CategoryEntity
-import com.bvc.ordering.databinding.ItemTopCategoryBinding
+import com.bvc.ordering.databinding.ItemCategoryBinding
 
 class CategoryAdapter<T : Any>(
     private val itemClickListener: OnItemClickListener<T>,
@@ -23,7 +23,7 @@ class CategoryAdapter<T : Any>(
         viewType: Int,
     ): DefaultViewHolder<T> {
         val binding =
-            ItemTopCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DefaultViewHolder(binding)
     }
 
@@ -35,7 +35,7 @@ class CategoryAdapter<T : Any>(
     }
 
     class DefaultViewHolder<T>(
-        private val binding: ItemTopCategoryBinding,
+        private val binding: ItemCategoryBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: T,
@@ -46,7 +46,8 @@ class CategoryAdapter<T : Any>(
                 clickListener.onItemClick(item)
             }
             when (item) {
-                is CategoryEntity -> {
+                is CategoryEntity,
+                -> {
                     binding.tvTopCategory.text = item.name
                     if (item.selected) {
                         binding.ivTopCategory.visibility = View.VISIBLE

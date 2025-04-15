@@ -23,7 +23,7 @@ class SelectAdapter(
 
     override fun getItemViewType(position: Int): Int {
         // 뷰 타입을 결정하는 로직을 추가합니다.
-        return if (items[position].isActive != 1) VIEW_TYPE_ALTERNATE else VIEW_TYPE_DEFAULT
+        return if (items[position].storeId == -1) VIEW_TYPE_ALTERNATE else VIEW_TYPE_DEFAULT
     }
 
     override fun onCreateViewHolder(
@@ -89,7 +89,7 @@ class SelectAdapter(
             binding.root.setOnClickListener {
                 clickListener.onItemClick(item)
             }
-            binding.tvIntroAffiliate.text = if (item.isActive == 1) "가맹점" else "비가맹점"
+            binding.tvIntroAffiliate.text = if (item.cats.isNotEmpty()) "가맹점" else "비가맹점"
         }
     }
 

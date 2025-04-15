@@ -97,4 +97,5 @@ object ThirdParty {
     const val SPLASHSCREEN = "androidx.core:core-splashscreen:1.0.1"
     const val GLIDE = "com.github.bumptech.glide:glide:4.15.1"
     const val GLIDE_COMPILER = "com.github.bumptech.glide:compiler:4.15.1"
+    const val GSON = "com.google.code.gson:gson:2.10.1"
 }

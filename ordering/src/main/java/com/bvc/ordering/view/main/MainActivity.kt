@@ -26,6 +26,7 @@ import com.bvc.ordering.databinding.ActivityMainBinding
 import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.view.cart.CartFragment
+import com.bvc.ordering.view.materials.MaterialsFragment
 import com.bvc.ordering.view.order.OrderFragment
 import com.bvc.ordering.view.table.TableCartFragment
 import com.bvc.ordering.view.table.TableFragment
@@ -135,6 +136,7 @@ class MainActivity : BaseActivity() {
                                     }
 
                                     getString(R.string.main_tab_materials) -> {
+                                        navController.navigate(MaterialsFragment::class.java.name)
                                     }
 
                                     getString(R.string.main_tab_setting) -> {
@@ -177,10 +179,11 @@ class MainActivity : BaseActivity() {
                     route = "main_graph",
                 ) {
                     fragment<OrderFragment>(route = OrderFragment::class.java.name)
+                    fragment<CartFragment>(route = CartFragment::class.java.name)
                     fragment<TableFragment>(route = TableFragment::class.java.name)
                     fragment<TableOrderFragment>(route = TableOrderFragment::class.java.name)
                     fragment<TableCartFragment>(route = TableCartFragment::class.java.name)
-                    fragment<CartFragment>(route = CartFragment::class.java.name)
+                    fragment<MaterialsFragment>(route = MaterialsFragment::class.java.name)
                 }
             navController.setGraph(
                 graph = navGraph,

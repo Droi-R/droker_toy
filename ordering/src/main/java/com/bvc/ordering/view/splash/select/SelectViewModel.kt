@@ -46,7 +46,7 @@ class SelectViewModel
                     _affiliate.value =
                         buildList {
                             addAll(it.data.orEmpty())
-                            add(Store(tid = "", name = "매장 추가하기", isActive = 0))
+                            add(Store(name = "매장 추가하기", isActive = false))
                         }
                 },
                 errorAction = { code, message ->

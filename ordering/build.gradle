@@ -105,5 +105,6 @@ dependencies {
     implementation(ThirdParty.SPLASHSCREEN)
     implementation(ThirdParty.GLIDE)
     kapt(ThirdParty.GLIDE_COMPILER)
+    implementation(ThirdParty.GSON)
 
 }

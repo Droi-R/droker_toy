@@ -57,6 +57,29 @@ class MainViewModel
         val tableEventFlow = _tableEventFlow.asSharedFlow()
 
         init {
+            getStore()
+        }
+
+        private fun getStore() {
+            requestApi(
+                request = {
+                    mainUseCase.getStore(this@MainViewModel, preferenceUseCase.getToken(), "${preferenceUseCase.getStoreId()}")
+                },
+                successAction = {
+                    _affiliteName.value = it.data.name
+                    _affiliteType.value = if (it.data.cats.isNotEmpty()) "가맹" else "비가맹"
+                    _isBusiness.value = it.data.isActive
+                    if (isBusiness.value == true) {
+                        _businessStatus.value = "영업중"
+                    } else {
+                        _businessStatus.value = "오픈 대기"
+                    }
+                },
+                errorAction = { code, message ->
+                    when (code) {
+                    }
+                },
+            )
         }
 
         fun requestTelegram(data: ByteArray) {

@@ -10,7 +10,9 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.bvc.domain.log
 import com.bvc.domain.model.Options
 import com.bvc.domain.model.ProductEntity
 import com.bvc.ordering.R
@@ -49,17 +51,29 @@ class OptionSelectDialog(
 
         setupOptions()
         binding.btnAddToCart.setOnClickListener {
+            val requiredGroups = product.optionGroups.filter { it.required }
+
+            val allRequiredSelected =
+                requiredGroups.all { group ->
+                    selectedOptions[group.optionGroupId]?.isNotEmpty() == true
+                }
+
+            if (!allRequiredSelected) {
+                Toast.makeText(requireContext(), "모든 필수 옵션을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val cartEntity = createProductEntity()
             onOptionSelected(cartEntity)
             dismiss()
         }
         binding.btnClose.setOnClickListener { dismiss() }
-        binding.tvAddToCart.text = "${product.price}원 담기"
+        binding.tvAddToCart.text = "${product.basePrice}원 담기"
         binding.tvTitle.text = product.name
     }
 
     private fun setupOptions() {
-        product.productOption.forEach { option ->
+        product.optionGroups.forEach { option ->
             val optionGroup =
                 LinearLayout(requireContext()).apply {
                     orientation = LinearLayout.VERTICAL
@@ -74,12 +88,15 @@ class OptionSelectDialog(
                 }
             optionGroup.addView(title)
 
-            if (option.required == "true") {
+            if (option.required) {
                 // 필수 선택 (RadioButton)
                 val group =
                     RadioGroup(requireContext()).apply {
                         orientation = LinearLayout.VERTICAL
                     }
+
+                // 🔥 여기서 그룹별로 라디오 버튼 리스트 만들기
+                val radioList = mutableListOf<RadioButton>()
 
                 option.options.forEach { opt ->
                     val itemLayout =
@@ -101,10 +118,11 @@ class OptionSelectDialog(
                             isChecked = opt.isSelected
                             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                             setOnClickListener {
-                                updateSelection(option.id, opt.id, isMultiple = false)
+                                updateSelection(option.optionGroupId, opt.productOptionsId, isMultiple = false)
                             }
                         }
-                    radioButtons.add(radioButton)
+
+                    radioList.add(radioButton) // 💡 그룹별 리스트에 추가
 
                     val priceView =
                         TextView(requireContext()).apply {
@@ -123,7 +141,10 @@ class OptionSelectDialog(
                     itemLayout.addView(priceView)
                     group.addView(itemLayout)
                 }
-                radioButtonMap[option.id] = radioButtons
+
+                // 여기서 그룹별 라디오버튼 리스트 저장
+                radioButtonMap[option.optionGroupId] = radioList
+
                 optionGroup.addView(group)
             } else {
                 // 옵션 선택 (CheckBox)
@@ -147,7 +168,7 @@ class OptionSelectDialog(
                             setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12f)
                             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                             setOnCheckedChangeListener { _, isChecked ->
-                                updateSelection(option.id, opt.id, isMultiple = true, isChecked)
+                                updateSelection(option.optionGroupId, opt.productOptionsId, isMultiple = true, isChecked)
                             }
                         }
 
@@ -210,38 +231,65 @@ class OptionSelectDialog(
         optionId: String,
         selectedId: String,
     ): String =
-        product.productOption
-            .find { it.id == optionId }
+        product.optionGroups
+            .find { it.optionGroupId == optionId }
             ?.options
-            ?.find { it.id == selectedId }
+            ?.find { it.productOptionsId == selectedId }
             ?.name ?: ""
 
+//    private fun updateTotalPrice() {
+//        var totalPrice = product.basePrice.toInt()
+//
+//        selectedOptions.forEach { (optionId, selectedIds) ->
+//            val option = product.optionGroups.find { it.optionGroupId == optionId }
+//            selectedIds.forEach { id ->
+//                val selectedOption = option?.options?.find { it.productOptionsId == id }
+//                totalPrice += selectedOption?.price?.toInt() ?: 0
+//            }
+//        }
+//
+//        binding.tvAddToCart.text = "${totalPrice}원 담기"
+//    }
+
     private fun updateTotalPrice() {
-        var totalPrice = product.price.toInt()
+        var totalPrice = product.basePrice.toInt()
 
         selectedOptions.forEach { (optionId, selectedIds) ->
-            val option = product.productOption.find { it.id == optionId }
+            val option = product.optionGroups.find { it.optionGroupId == optionId }
             selectedIds.forEach { id ->
-                val selectedOption = option?.options?.find { it.id == id }
+                val selectedOption = option?.options?.find { it.productOptionsId == id }
                 totalPrice += selectedOption?.price?.toInt() ?: 0
             }
         }
 
         binding.tvAddToCart.text = "${totalPrice}원 담기"
+
+        // 🔽 필수 옵션이 모두 선택되었는지 체크
+        val requiredOptions = product.optionGroups.filter { it.required }
+        val isAllRequiredSelected =
+            requiredOptions.all {
+                selectedOptions[it.optionGroupId]?.isNotEmpty() == true
+            }
+        log.e("isAllRequiredSelected: $isAllRequiredSelected")
+
+//        binding.btnAddToCart.isEnabled = isAllRequiredSelected
+
+        // 선택 안 했을 때 버튼 색상 흐리게
+        binding.btnAddToCart.alpha = if (isAllRequiredSelected) 1.0f else 0.5f
     }
 
     private fun createProductEntity(): ProductEntity {
         val updatedOptions =
-            product.productOption.map { option ->
+            product.optionGroups.map { option ->
                 option.copy(
                     options =
                         option.options.map { opt ->
-                            opt.copy(isSelected = selectedOptions[option.id]?.contains(opt.id) == true)
+                            opt.copy(isSelected = selectedOptions[option.optionGroupId]?.contains(opt.productOptionsId) == true)
                         } as ArrayList<Options>,
                 )
             }
 
-        val updatedProduct = product.copy(productOption = updatedOptions)
+        val updatedProduct = product.copy(optionGroups = updatedOptions)
         return updatedProduct
     }
 

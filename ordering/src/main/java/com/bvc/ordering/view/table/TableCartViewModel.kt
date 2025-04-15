@@ -9,6 +9,7 @@ import com.bvc.domain.model.calculateVatSummary
 import com.bvc.domain.repository.TableStoreRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentStatus
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
@@ -113,7 +114,8 @@ class TableCartViewModel
                             token = preferenceUseCase.getToken(),
                             id = "",
                             productItems = cartData.value,
-                            status = OrderStatus.READY,
+                            orderStatus = OrderStatus.PENDING,
+                            paymentStatus = PaymentStatus.READY,
                             orderFrom = OrderFrom.POS,
                             tableNumber = "",
                             tableExternalKey = "",
