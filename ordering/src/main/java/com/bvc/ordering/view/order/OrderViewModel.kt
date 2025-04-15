@@ -129,13 +129,6 @@ class OrderViewModel
                     )
                 },
                 successAction = { response ->
-                    log.e("response: $response")
-//                    _product.value =
-//                        (
-//                            buildList {
-//                                addAll(response.data.orEmpty().map { it.copy() })
-//                            }
-//                        )
                     _product.value = response.data.orEmpty().toList()
                 },
                 errorAction = { code, message ->

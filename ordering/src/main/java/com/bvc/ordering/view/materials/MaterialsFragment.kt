@@ -161,7 +161,7 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                                 )
                             }
                         }
-                        val item = category.find { it.selected }
+                        val item = topCategory.value.find { it.selected }
                         when (item?.name) {
                             getString(R.string.materials_status) -> {
                                 viewModel.getMaterials(item.mainCategoryId)
@@ -185,10 +185,11 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                                 )
                             }
                         }
-//                        getProducts(subCategory.find { it.selected })
+                        getProducts(subCategory.find { it.selected })
                     }
 
                     material.collectNonEmpty(viewLifecycleOwner) { materials ->
+                        log.e("materials: $materials")
                         binding?.icOrder?.rvInflateGrid?.adapter?.let { adapter ->
                             if (adapter is GridAdapter) {
                                 adapter.submitList(materials.toList())
