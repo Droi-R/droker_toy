@@ -47,7 +47,7 @@ class LoginViewModel
 
         fun onClickSend() {
             requestApi(
-                request = { splashUseCase.sendSms(this@LoginViewModel, phoneNum.value.orEmpty()) },
+                request = { splashUseCase.sendSms(phoneNum.value.orEmpty()) },
                 successAction = {
 //                    _enableVerify.value = true
                     _enableVerify.postValue(true)
@@ -64,7 +64,6 @@ class LoginViewModel
             requestApi(
                 request = {
                     splashUseCase.verifySms(
-                        this@LoginViewModel,
                         phoneNum.value.orEmpty(),
                         verification.value.orEmpty(),
                     )
@@ -88,7 +87,6 @@ class LoginViewModel
             requestApi(
                 request = {
                     splashUseCase.signUp(
-                        this@LoginViewModel,
                         phoneNum.value.orEmpty(),
                         verification.value.orEmpty(),
                     )
@@ -111,7 +109,6 @@ class LoginViewModel
             requestApi(
                 request = {
                     splashUseCase.getLogin(
-                        this@LoginViewModel,
                         phoneNum.value.orEmpty(),
                         verification.value.orEmpty(),
                     )

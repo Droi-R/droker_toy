@@ -63,7 +63,7 @@ class MainViewModel
         private fun getStore() {
             requestApi(
                 request = {
-                    mainUseCase.getStore(this@MainViewModel, preferenceUseCase.getToken(), "${preferenceUseCase.getStoreId()}")
+                    mainUseCase.getStore(preferenceUseCase.getToken(), "${preferenceUseCase.getStoreId()}")
                 },
                 successAction = {
                     _affiliteName.value = it.data.name

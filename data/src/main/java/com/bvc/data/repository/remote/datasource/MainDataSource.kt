@@ -12,35 +12,27 @@ import com.bvc.data.remote.model.response.SmartOrderResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
 import com.bvc.data.remote.model.response.TableResponse
-import com.bvc.domain.utils.RemoteErrorEmitter
 
 interface MainDataSource {
-    suspend fun refreshToken(
-        remoteErrorEmitter: RemoteErrorEmitter,
-        token: String,
-    ): ResData<LoginResponse>?
+    suspend fun refreshToken(token: String): ResData<LoginResponse>?
 
     suspend fun getStore(
-        remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
         storeId: String,
     ): ResData<StoreResponse>?
 
     suspend fun getMenuCategory(
-        remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
         storeId: String,
     ): ResDataList<CategoryResponse>?
 
     suspend fun getSubCategory(
-        remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
         storeId: String,
         mainCategoryId: String,
     ): ResDataList<SubCategoryResponse>?
 
     suspend fun getProducts(
-        remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
         storeId: String,
         mainCategoryId: String,
@@ -48,7 +40,6 @@ interface MainDataSource {
     ): ResDataList<ProductResponse>?
 
     suspend fun getMaterials(
-        remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
         storeId: String,
         mainCategoryId: String,
@@ -56,20 +47,16 @@ interface MainDataSource {
     ): ResDataList<MaterialsResponse>?
 
     suspend fun getSmartOrder(
-        remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
         storeId: String,
     ): ResDataList<SmartOrderResponse>?
 
     suspend fun postOrder(
-        remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
-        id: String,
         orderRequest: OrderRequest,
     ): ResData<OrderResponse>?
 
     suspend fun getTables(
-        remoteErrorEmitter: RemoteErrorEmitter,
         token: String,
         id: String,
     ): ResDataList<TableResponse>?

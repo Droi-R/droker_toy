@@ -115,7 +115,6 @@ class MaterialsViewModel
             requestApi(
                 request = {
                     mainUseCase.getMenuCategory(
-                        this@MaterialsViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
 //                        mainCategoryId = mainCategoryId,
@@ -155,7 +154,6 @@ class MaterialsViewModel
             requestApi(
                 request = {
                     mainUseCase.getSubCategory(
-                        this@MaterialsViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = mainCategoryId,
@@ -310,7 +308,6 @@ class MaterialsViewModel
             requestApi(
                 request = {
                     mainUseCase.getMaterials(
-                        this@MaterialsViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = "$mainCategoryId",
@@ -420,7 +417,6 @@ class MaterialsViewModel
             requestApi(
                 request = {
                     mainUseCase.getProducts(
-                        this@MaterialsViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = "${subCategoryEntity?.mainCategoryId}",
@@ -502,7 +498,6 @@ class MaterialsViewModel
             requestApi(
                 request = {
                     mainUseCase.getMenuCategory(
-                        this@MaterialsViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                     )
@@ -521,7 +516,6 @@ class MaterialsViewModel
             requestApi(
                 request = {
                     mainUseCase.getSmartOrder(
-                        this@MaterialsViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = "${category.value.find { it.selected }?.mainCategoryId}",

@@ -8,12 +8,11 @@ import com.bvc.domain.model.calculateVatSummary
 import com.bvc.domain.repository.ProductStoreRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
-import com.bvc.domain.type.PaymentStatus
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
-import com.bvc.ordering.ksnet.Telegram
+import com.bvc.ordering.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -99,32 +98,58 @@ class CartViewModel
         }
 
         fun postOrder() {
-            viewModelScope.launch {
-                val response =
+            requestApi(
+                request = {
                     getMainUseCase
                         .postOrder(
-                            remoteErrorEmitter = this@CartViewModel,
                             token = preferenceUseCase.getToken(),
-                            id = "",
+                            userId = preferenceUseCase.getUserId(),
+                            storeId = "${preferenceUseCase.getStoreId()}",
                             productItems = cartData.value,
                             orderStatus = OrderStatus.PENDING,
-                            paymentStatus = PaymentStatus.READY,
                             orderFrom = OrderFrom.POS,
-                            tableNumber = "",
-                            tableExternalKey = "",
+                            tablesId = 0,
+                            itemMemo = "",
+                            totalPrice = totalAmount.value,
+                            supplyPrice = supplyAmount.value,
+                            vatPrice = vatAmount.value,
+                            discountPrice = 0,
                         )
-                log.e("response: ${cartData.value}")
-                // TODO 여기서 페이먼트 생성
-                _requestTelegram.value =
-                    Telegram.makeTelegramIC(
-                        apprCode = "1",
-                        mDeviceNo = "DPT0TEST03",
-                        quota = "00",
-                        totAmt = "${totalAmount.value}",
-                        orgApprNo = "",
-                        orgDate = "",
-                        taxFree = "${taxFreeAmount.value}",
-                    )
-            }
+                },
+                successAction = { response ->
+                    log.e("response: $response")
+                },
+                errorAction = { code, message ->
+                    log.e("code: $code, message: $message")
+                    Utils.showToast(message)
+                },
+            )
+//            viewModelScope.launch {
+//                val response =
+//                    getMainUseCase
+//                        .postOrder(
+//                            remoteErrorEmitter = this@CartViewModel,
+//                            token = preferenceUseCase.getToken(),
+//                            id = "",
+//                            productItems = cartData.value,
+//                            orderStatus = OrderStatus.PENDING,
+//                            paymentStatus = PaymentStatus.READY,
+//                            orderFrom = OrderFrom.POS,
+//                            tableNumber = "",
+//                            tableExternalKey = "",
+//                        )
+//                log.e("response: ${cartData.value}")
+//                // TODO 여기서 페이먼트 생성
+//                _requestTelegram.value =
+//                    Telegram.makeTelegramIC(
+//                        apprCode = "1",
+//                        mDeviceNo = "DPT0TEST03",
+//                        quota = "00",
+//                        totAmt = "${totalAmount.value}",
+//                        orgApprNo = "",
+//                        orgDate = "",
+//                        taxFree = "${taxFreeAmount.value}",
+//                    )
+//            }
         }
     }

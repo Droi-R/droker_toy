@@ -68,10 +68,9 @@ interface MainApi {
         @Path("store_id") storeId: String,
     ): Response<ResDataList<SmartOrderResponse>>
 
-    @POST("users/{sid}/repos")
+    @POST("orders")
     suspend fun postOrder(
         @Header("Authorization") token: String,
-        @Path("sid") sid: String,
         @Body orderRequest: OrderRequest,
     ): Response<ResData<OrderResponse>>
 

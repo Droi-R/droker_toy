@@ -2,6 +2,7 @@ package com.bvc.data.repository
 
 import com.bvc.data.mapper.ResponseMapper
 import com.bvc.data.mapper.toRequest
+import com.bvc.data.remote.model.request.OrderInfoRequest
 import com.bvc.data.remote.model.request.OrderRequest
 import com.bvc.data.repository.remote.datasource.MainDataSource
 import com.bvc.domain.model.ApiData
@@ -18,8 +19,6 @@ import com.bvc.domain.model.TableEntity
 import com.bvc.domain.repository.MainRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
-import com.bvc.domain.type.PaymentStatus
-import com.bvc.domain.utils.RemoteErrorEmitter
 import javax.inject.Inject
 
 class MainRepositoryImpl
@@ -27,86 +26,119 @@ class MainRepositoryImpl
     constructor(
         private val mainDataSource: MainDataSource,
     ) : MainRepository {
-        override suspend fun refreshToken(
-            remoteErrorEmitter: RemoteErrorEmitter,
-            token: String,
-        ): ApiData<LoginEntity> = ResponseMapper.mapRefreshToken(mainDataSource.refreshToken(remoteErrorEmitter, token))
+        override suspend fun refreshToken(token: String): ApiData<LoginEntity> =
+            ResponseMapper.mapRefreshToken(mainDataSource.refreshToken(token))
 
         override suspend fun getStore(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
-        ): ApiData<Store> = ResponseMapper.mapStore(mainDataSource.getStore(remoteErrorEmitter, token, storeId))
+        ): ApiData<Store> = ResponseMapper.mapStore(mainDataSource.getStore(token, storeId))
 
         override suspend fun getMenuCategory(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
-        ): ApiDataList<CategoryEntity> = ResponseMapper.mapCategory(mainDataSource.getMenuCategory(remoteErrorEmitter, token, storeId))
+        ): ApiDataList<CategoryEntity> =
+            ResponseMapper.mapCategory(
+                mainDataSource.getMenuCategory(
+                    token,
+                    storeId,
+                ),
+            )
 
         override suspend fun getSubCategory(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
             mainCategoryId: String,
         ): ApiDataList<SubCategoryEntity> =
-            ResponseMapper.mapSubCategory(mainDataSource.getSubCategory(remoteErrorEmitter, token, storeId, mainCategoryId))
+            ResponseMapper.mapSubCategory(
+                mainDataSource.getSubCategory(
+                    token,
+                    storeId,
+                    mainCategoryId,
+                ),
+            )
 
         override suspend fun getProducts(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
             mainCategoryId: String,
             subCategoryId: String,
         ): ApiDataList<ProductEntity> =
-            ResponseMapper.mapProducts(mainDataSource.getProducts(remoteErrorEmitter, token, storeId, mainCategoryId, subCategoryId))
+            ResponseMapper.mapProducts(
+                mainDataSource.getProducts(
+                    token,
+                    storeId,
+                    mainCategoryId,
+                    subCategoryId,
+                ),
+            )
 
         override suspend fun getMaterials(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
             mainCategoryId: String,
             subCategoryId: String,
         ): ApiDataList<MaterialsEntity> =
-            ResponseMapper.mapMaterials(mainDataSource.getMaterials(remoteErrorEmitter, token, storeId, mainCategoryId, subCategoryId))
+            ResponseMapper.mapMaterials(
+                mainDataSource.getMaterials(
+                    token,
+                    storeId,
+                    mainCategoryId,
+                    subCategoryId,
+                ),
+            )
 
         override suspend fun getSmartOrder(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
-        ): ApiDataList<SmartOrderEntity> = ResponseMapper.mapSmartOrder(mainDataSource.getSmartOrder(remoteErrorEmitter, token, storeId))
+        ): ApiDataList<SmartOrderEntity> =
+            ResponseMapper.mapSmartOrder(
+                mainDataSource.getSmartOrder(
+                    token,
+                    storeId,
+                ),
+            )
 
         override suspend fun postOrder(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-            id: String,
+            userId: String,
+            storeId: String,
             productItems: List<ProductEntity>,
-            orderStatus: OrderStatus,
-            paymentStatus: PaymentStatus,
             orderFrom: OrderFrom,
-            tableNumber: String,
-            tableExternalKey: String,
+            orderStatus: OrderStatus,
+            tablesId: Int,
+            itemMemo: String,
+            totalPrice: Int,
+            supplyPrice: Int,
+            vatPrice: Int,
+            discountPrice: Int,
         ): ApiData<OrderEntity> =
             ResponseMapper.mapOrder(
                 mainDataSource.postOrder(
-                    remoteErrorEmitter = remoteErrorEmitter,
                     token = token,
-                    id = id,
                     orderRequest =
                         OrderRequest(
+                            order =
+                                OrderInfoRequest(
+                                    storeId = storeId.toInt(),
+                                    userId = userId.toInt(),
+                                    tablesId = tablesId,
+                                    orderFrom = orderFrom.name,
+                                    orderStatus = orderStatus,
+                                    itemMemo = itemMemo,
+                                    totalPrice = totalPrice,
+                                    supplyPrice = supplyPrice,
+                                    vatPrice = vatPrice,
+                                    discountPrice = discountPrice,
+                                    finalPrice = totalPrice - discountPrice,
+                                ),
                             productItems = productItems.map { it.toRequest() },
-                            orderStatus = orderStatus,
-                            paymentStatus = paymentStatus,
-                            orderFrom = orderFrom,
-                            tableNumber = tableNumber,
-                            tableExternalKey = tableExternalKey,
                         ),
                 ),
             )
 
         override suspend fun getTables(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             id: String,
-        ): ApiDataList<TableEntity> = ResponseMapper.mapTables(mainDataSource.getTables(remoteErrorEmitter, token, id))
+        ): ApiDataList<TableEntity> = ResponseMapper.mapTables(mainDataSource.getTables(token, id))
     }

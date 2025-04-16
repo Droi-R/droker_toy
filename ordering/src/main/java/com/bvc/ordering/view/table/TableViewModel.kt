@@ -49,7 +49,6 @@ class TableViewModel
             viewModelScope.launch {
                 val response =
                     getMainUseCase.getMenuCategory(
-                        remoteErrorEmitter = this@TableViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                     )
@@ -83,7 +82,6 @@ class TableViewModel
             viewModelScope.launch {
                 val response =
                     getMainUseCase.getSubCategory(
-                        remoteErrorEmitter = this@TableViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = id,
@@ -140,7 +138,7 @@ class TableViewModel
         fun getTables(externalKey: String) {
             viewModelScope.launch {
                 val response =
-                    getMainUseCase.getTables(this@TableViewModel, preferenceUseCase.getToken(), externalKey)
+                    getMainUseCase.getTables(preferenceUseCase.getToken(), externalKey)
                 _tables.value = (
                     //                    response.data ?:
                     listOf(

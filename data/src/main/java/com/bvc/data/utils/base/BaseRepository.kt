@@ -1,15 +1,11 @@
 package com.bvc.data.utils.base
 
-import android.util.Log
-import com.bvc.domain.type.ErrorType
-import com.bvc.domain.utils.RemoteErrorEmitter
+import com.bvc.data.remote.model.response.ResData
+import com.bvc.data.remote.model.response.ResDataList
+import com.bvc.data.remote.model.response.ResMeta
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.HttpException
-import java.io.IOException
-import java.net.SocketTimeoutException
+import retrofit2.Response
 
 abstract class BaseRepository {
     companion object {
@@ -24,33 +20,35 @@ abstract class BaseRepository {
      * override suspend fun loginUser(body: LoginUserBody, emitter: RemoteErrorEmitter): LoginUserResponse?  = safeApiCall( { authApi.loginUser(body)} , emitter)
      * @param emitter is the interface that handles the error messages. The error messages must be displayed on the MainThread, or else they would throw an Exception.
      */
-    suspend inline fun <T> safeApiCall(
-        emitter: RemoteErrorEmitter,
-        crossinline callFunction: suspend () -> T,
-    ): T? =
+
+    suspend inline fun <reified T> safeApiCall(crossinline callFunction: suspend () -> Response<T>): Response<T> =
         try {
-            val myObject = withContext(Dispatchers.IO) { callFunction.invoke() }
-            myObject
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                e.printStackTrace()
-                Log.e("BaseRemoteRepo", "Call error: ${e.localizedMessage}", e.cause)
-                when (e) {
-                    is HttpException -> {
-                        if (e.code() == 401) {
-                            emitter.onError(ErrorType.SESSION_EXPIRED)
-                        } else {
-                            val body = e.response()?.errorBody()
-                            emitter.onError(getErrorMessage(body))
-                        }
-                    }
-                    is SocketTimeoutException -> emitter.onError(ErrorType.TIMEOUT)
-                    is IOException -> emitter.onError(ErrorType.NETWORK)
-                    else -> emitter.onError(ErrorType.UNKNOWN)
-                }
+            val response = withContext(Dispatchers.IO) { callFunction.invoke() }
+
+            if (response.isSuccessful) {
+                response
+            } else {
+                val message = response.errorBody()?.string() ?: "알 수 없는 오류"
+                val fakeBody = createFakeErrorBody<T>(response.code(), message)
+                Response.success(fakeBody)
             }
-            null
+        } catch (e: Exception) {
+            val fakeBody = createFakeErrorBody<T>(-1, e.localizedMessage ?: "Unknown error")
+            Response.success(fakeBody)
         }
+
+    inline fun <reified T> createFakeErrorBody(
+        code: Int,
+        message: String,
+    ): T {
+        val meta = ResMeta(code = code, message = message)
+
+        return when (T::class) {
+            ResData::class -> ResData<Any>(data = null, meta = meta) as T
+            ResDataList::class -> ResDataList<Any>(data = emptyList(), meta = meta) as T
+            else -> throw IllegalArgumentException("Unsupported response wrapper: ${T::class}")
+        }
+    }
 
     /**
      * Function that executes the given function in whichever thread is given. Be aware, this is not friendly with Dispatchers.IO,
@@ -59,41 +57,4 @@ abstract class BaseRepository {
      * override suspend fun loginUser(body: LoginUserBody, emitter: RemoteErrorEmitter): LoginUserResponse?  = safeApiCall( { authApi.loginUser(body)} , emitter)
      * @param emitter is the interface that handles the error messages. The error messages must be displayed on the MainThread, or else they would throw an Exception.
      */
-    inline fun <T> safeApiCallNoContext(
-        emitter: RemoteErrorEmitter,
-        callFunction: () -> T,
-    ): T? =
-        try {
-            val myObject = callFunction.invoke()
-            myObject
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e("BaseRemoteRepo", "Call error: ${e.localizedMessage}", e.cause)
-            when (e) {
-                is HttpException -> {
-                    if (e.code() == 401) {
-                        emitter.onError(ErrorType.SESSION_EXPIRED)
-                    } else {
-                        val body = e.response()?.errorBody()
-                        emitter.onError(getErrorMessage(body))
-                    }
-                }
-                is SocketTimeoutException -> emitter.onError(ErrorType.TIMEOUT)
-                is IOException -> emitter.onError(ErrorType.NETWORK)
-                else -> emitter.onError(ErrorType.UNKNOWN)
-            }
-            null
-        }
-
-    fun getErrorMessage(responseBody: ResponseBody?): String =
-        try {
-            val jsonObject = JSONObject(responseBody!!.string())
-            when {
-                jsonObject.has(MESSAGE_KEY) -> jsonObject.getString(MESSAGE_KEY)
-                jsonObject.has(ERROR_KEY) -> jsonObject.getString(ERROR_KEY)
-                else -> "Something wrong happened"
-            }
-        } catch (e: Exception) {
-            "Something wrong happened"
-        }
 }

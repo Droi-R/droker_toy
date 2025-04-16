@@ -1,14 +1,11 @@
 package com.bvc.ordering.di
 
 import android.content.Context
-import com.bvc.data.repository.GithubRepositoryImpl
 import com.bvc.data.repository.MainRepositoryImpl
 import com.bvc.data.repository.PreferencesRepositoryImpl
 import com.bvc.data.repository.SplashRepositoryImpl
-import com.bvc.data.repository.remote.datasourceImpl.GithubDataSourceImpl
 import com.bvc.data.repository.remote.datasourceImpl.MainDataSourceImpl
 import com.bvc.data.repository.remote.datasourceImpl.SplashDataSourceImpl
-import com.bvc.domain.repository.GithubRepository
 import com.bvc.domain.repository.MainRepository
 import com.bvc.domain.repository.PreferenceRepository
 import com.bvc.domain.repository.SplashRepository
@@ -27,13 +24,6 @@ class RepositoryModule {
     fun providePreferencesRepository(
         @ApplicationContext context: Context,
     ): PreferenceRepository = PreferencesRepositoryImpl(context)
-
-    @Provides
-    @Singleton
-    fun provideGithubRepository(githubDataSourceImpl: GithubDataSourceImpl): GithubRepository =
-        GithubRepositoryImpl(
-            githubDataSourceImpl,
-        )
 
     @Provides
     @Singleton
