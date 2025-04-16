@@ -70,6 +70,9 @@ class SmartOrderAdapter(
                     .load(item.material.imageUrl)
                     .apply(requestOptions)
                     .into(ivSmartThumb)
+
+                tvQuantity.text = "${item.orderCount}"
+                tvSmartOrderStock.text = "${item.material.stock}개"
             }
         }
     }

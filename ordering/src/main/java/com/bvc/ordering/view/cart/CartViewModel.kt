@@ -26,7 +26,7 @@ class CartViewModel
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
         private val getMainUseCase: MainUseCase,
-        private val cartStoreRepository: ProductStoreRepository,
+        private val productStoreRepository: ProductStoreRepository,
     ) : BaseViewModel() {
         private val _affiliteType = SingleLiveEvent<String>()
         val affiliteType: LiveData<String> get() = _affiliteType
@@ -63,7 +63,7 @@ class CartViewModel
 
         fun getCartStore() {
             viewModelScope.launch {
-                _cartData.value = cartStoreRepository.getItems()
+                _cartData.value = productStoreRepository.getItems()
                 calculateAmounts(cartData.value)
             }
         }
@@ -79,21 +79,21 @@ class CartViewModel
 
         fun deleteItem(item: ProductEntity) {
             viewModelScope.launch {
-                cartStoreRepository.removeItem(item)
+                productStoreRepository.removeItem(item)
                 getCartStore()
             }
         }
 
         fun minusItem(item: ProductEntity) {
             viewModelScope.launch {
-                cartStoreRepository.minusItem(item)
+                productStoreRepository.minusItem(item)
                 getCartStore()
             }
         }
 
         fun plusItem(item: ProductEntity) {
             viewModelScope.launch {
-                cartStoreRepository.addItem(item)
+                productStoreRepository.addItem(item)
                 getCartStore()
             }
         }

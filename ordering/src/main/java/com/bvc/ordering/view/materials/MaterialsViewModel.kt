@@ -556,7 +556,7 @@ class MaterialsViewModel
                                         materialId = "M001",
                                         stock = 200,
                                         safetyStock = 50,
-                                        imageUrl = "https://example.com/image.jpg",
+                                        imageUrl = "https://cdn.pixabay.com/photo/2023/07/07/17/47/sushi-8113165_1280.jpg",
                                         unit = "kg",
                                         materialName = "재료 A",
                                     ),
@@ -582,7 +582,7 @@ class MaterialsViewModel
                                         materialName = "재료 B",
                                         stock = 300,
                                         safetyStock = 100,
-                                        imageUrl = "https://example.com/image2.jpg",
+                                        imageUrl = "https://cdn.pixabay.com/photo/2023/07/07/17/47/sushi-8113165_1280.jpg",
                                         unit = "g",
                                     ),
                             ),
@@ -622,14 +622,54 @@ class MaterialsViewModel
         }
 
         fun deleteSmartOrder(item: SmartOrderEntity) {
+            _smartOrder.value =
+                smartOrder.value.filter { it.smartOrderId != item.smartOrderId }
         }
 
-        fun changeSmartOrder(item: SmartOrderEntity) {
+        fun changeSmartOrder(
+            item: SmartOrderEntity,
+            newStock: Int,
+        ) {
+            _smartOrder.value =
+                smartOrder.value.map {
+                    if (it.smartOrderId == item.smartOrderId) {
+                        it.copy(
+                            material =
+                                MaterialsEntity(
+                                    materialId = it.material.materialId,
+                                    materialName = it.material.materialName,
+                                    stock = newStock,
+                                    safetyStock = it.material.safetyStock,
+                                    imageUrl = it.material.imageUrl,
+                                    unit = it.material.unit,
+                                ),
+                        )
+                    } else {
+                        it
+                    }
+                }
         }
 
         fun plusSmartOrder(item: SmartOrderEntity) {
+            log.e("item: $item")
+            _smartOrder.value =
+                smartOrder.value.map {
+                    if (it.smartOrderId == item.smartOrderId) {
+                        it.copy(orderCount = item.orderCount.plus(1))
+                    } else {
+                        it
+                    }
+                }
         }
 
         fun minusSmartOrder(item: SmartOrderEntity) {
+            _smartOrder.value =
+                smartOrder.value.map {
+                    if (it.smartOrderId == item.smartOrderId) {
+                        it.copy(orderCount = item.orderCount.minus(1))
+                    } else {
+                        it
+                    }
+                }
         }
     }

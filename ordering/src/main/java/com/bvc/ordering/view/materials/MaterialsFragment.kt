@@ -18,6 +18,7 @@ import com.bvc.ordering.databinding.FragmentMaterialsBinding
 import com.bvc.ordering.ui.HorizontalSpaceItemDecoration
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
 import com.bvc.ordering.ui.event.collectNonEmpty
+import com.bvc.ordering.view.components.ChangeStockDialog
 import com.bvc.ordering.view.inflate.CategoryAdapter
 import com.bvc.ordering.view.inflate.GridAdapter
 import com.bvc.ordering.view.inflate.SubCategoryAdapter
@@ -61,7 +62,23 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                             }
 
                             override fun onItemChangeClick(item: SmartOrderEntity) {
-                                viewModel.changeSmartOrder(item)
+                                binding?.composeDialogContainer?.apply {
+                                    visibility = View.VISIBLE
+                                    setContent {
+                                        ChangeStockDialog(
+                                            currentStock = item.material.stock,
+                                            onDismiss = {
+                                                log.e("onDismiss")
+                                                setContent {}
+                                                visibility = View.GONE
+                                            },
+                                            onConfirm = { newStock ->
+                                                log.e("onConfirm: $newStock")
+                                                viewModel.changeSmartOrder(item, newStock)
+                                            },
+                                        )
+                                    }
+                                }
                             }
 
                             override fun onItemPlusClick(item: SmartOrderEntity) {
@@ -211,7 +228,7 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                     }
 
                     smartOrder.collectNonEmpty(viewLifecycleOwner) { materials ->
-
+                        log.e("smartOrder: $materials")
                         binding?.rvSmartOrder?.adapter?.let { adapter ->
                             if (adapter is SmartOrderAdapter) {
                                 adapter.submitList(materials.toList())
