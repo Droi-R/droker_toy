@@ -2,6 +2,7 @@ package com.bvc.ordering.view.materials
 
 import android.os.Bundle
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -63,10 +64,15 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
 
                             override fun onItemChangeClick(item: SmartOrderEntity) {
                                 binding?.composeDialogContainer?.apply {
+                                    layoutParams =
+                                        ConstraintLayout.LayoutParams(
+                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                        )
                                     visibility = View.VISIBLE
                                     setContent {
                                         ChangeStockDialog(
-                                            currentStock = item.material.stock,
+                                            materialsEntity = item.material,
                                             onDismiss = {
                                                 log.e("onDismiss")
                                                 setContent {}
@@ -75,6 +81,8 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                                             onConfirm = { newStock ->
                                                 log.e("onConfirm: $newStock")
                                                 viewModel.changeSmartOrder(item, newStock)
+                                                setContent {}
+                                                visibility = View.GONE
                                             },
                                         )
                                     }
