@@ -10,7 +10,7 @@ import com.bvc.domain.model.ProductOptionEntity
 
 fun ProductEntity.toRequest(): ProductItemsRequest =
     ProductItemsRequest(
-        externalKey = externalKey,
+        productId = productId,
         name = name,
         descriptions = descriptions,
         isVat = isVat,
@@ -36,7 +36,7 @@ fun ProductEntity.toRequest(): ProductItemsRequest =
 
 fun ProductOptionEntity.toRequest(): ProductOptionRequest =
     ProductOptionRequest(
-        id = optionGroupId,
+        optionGroupId = optionGroupId,
         name = name,
         required = required,
         minOptionCountLimit = minOptionCountLimit,

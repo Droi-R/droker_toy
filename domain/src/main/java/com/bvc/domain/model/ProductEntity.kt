@@ -5,7 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProductEntity(
-    val externalKey: String,
     val productId: String,
     val storeId: String,
     val mainCategoryId: String,

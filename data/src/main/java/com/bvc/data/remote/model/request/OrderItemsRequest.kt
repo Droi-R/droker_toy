@@ -3,8 +3,8 @@ package com.bvc.data.remote.model.request
 import com.google.gson.annotations.SerializedName
 
 data class ProductItemsRequest(
-    @SerializedName("external_key")
-    val externalKey: String = "",
+    @SerializedName("product_id")
+    val productId: String = "",
     @SerializedName("name")
     val name: String = "",
     @SerializedName("category_key")
@@ -23,7 +23,7 @@ data class ProductItemsRequest(
     var color: String = "#ffffff",
     @SerializedName("image")
     val image: String = "",
-    @SerializedName("product_option")
+    @SerializedName("option_groups")
     val productOption: List<ProductOptionRequest> = emptyList(),
     @SerializedName("position")
     val position: Int = 0,
@@ -44,8 +44,8 @@ data class ProductItemsRequest(
 )
 
 data class ProductOptionRequest(
-    @SerializedName("id")
-    val id: String = "",
+    @SerializedName("option_group_id")
+    val optionGroupId: String = "",
     @SerializedName("name")
     val name: String = "",
     @SerializedName("required")

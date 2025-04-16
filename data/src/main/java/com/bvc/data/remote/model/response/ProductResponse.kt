@@ -3,8 +3,6 @@ package com.bvc.data.remote.model.response
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
-    @SerializedName("external_key")
-    val externalKey: String? = null,
     @SerializedName("product_id")
     val productId: String? = null,
     @SerializedName("store_id")

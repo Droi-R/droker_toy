@@ -439,7 +439,6 @@ class MaterialsViewModel
                     _product.value =
                         listOf(
                             ProductEntity(
-                                externalKey = "12345",
                                 productId = "P001",
                                 storeId = "S001",
                                 mainCategoryId = "C001",

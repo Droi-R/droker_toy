@@ -160,7 +160,6 @@ class TableViewModel
                                         orderItems =
                                             arrayListOf(
                                                 ProductEntity(
-                                                    externalKey = "101",
                                                     name = "콜라",
                                                     mainCategoryId = "C001",
                                                     descriptions = "시원한 콜라",

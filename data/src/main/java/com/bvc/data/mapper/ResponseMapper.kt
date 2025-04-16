@@ -239,7 +239,6 @@ object ResponseMapper {
 
     private fun ProductResponse.toEntity(): ProductEntity =
         ProductEntity(
-            externalKey = externalKey ?: "",
             productId = productId ?: "", // 추가
             storeId = storeId ?: "", // 추가
             mainCategoryId = mainCategoryId ?: "", // 추가
