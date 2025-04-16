@@ -56,7 +56,20 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                 adapter =
                     SmartOrderAdapter(
                         object : SmartOrderAdapter.OnItemClickListener {
-                            override fun onItemClick(item: SmartOrderEntity) {
+                            override fun onItemDeleteClick(item: SmartOrderEntity) {
+                                viewModel.deleteSmartOrder(item)
+                            }
+
+                            override fun onItemChangeClick(item: SmartOrderEntity) {
+                                viewModel.changeSmartOrder(item)
+                            }
+
+                            override fun onItemPlusClick(item: SmartOrderEntity) {
+                                viewModel.plusSmartOrder(item)
+                            }
+
+                            override fun onItemMinusClick(item: SmartOrderEntity) {
+                                viewModel.minusSmartOrder(item)
                             }
                         },
                     )

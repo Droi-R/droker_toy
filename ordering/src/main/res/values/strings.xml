@@ -71,5 +71,12 @@
     <!--발주 리스트-->
     <string name="materials_order_list">발주 리스트</string>
 
+    <!--스마트오더-->
+    <string name="materials_delivery_cost">배송비</string>
+    <string name="materials_delivery_company">배송업체</string>
+    <string name="materials_stock">보유 수량</string>
+    <string name="materials_consumption_3days">3일간 예상 소모량</string>
+    <string name="materials_order_delete">주문 삭제</string>
+    <string name="materials_stock_change">보유수량 변경</string>
 
 </resources>

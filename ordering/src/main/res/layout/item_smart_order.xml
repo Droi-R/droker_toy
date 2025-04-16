@@ -14,39 +14,191 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/r15_f6f6f6"
-        android:padding="@dimen/d_2500">
+        android:paddingHorizontal="@dimen/d_2300"
+        android:paddingVertical="@dimen/d_2000">
 
-        <!-- 삭제 버튼 -->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_cart_delete"
-            android:layout_width="@dimen/d_2400"
-            android:layout_height="@dimen/d_2400"
-            android:src="@drawable/ic_close_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- 메뉴명 -->
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_menu_name"
+            android:id="@+id/tv_smart_order_desc1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="오늘 오후 4시 이내 결제 완료 시"
             android:textColor="@color/bvc_666E89"
-            android:textSize="@dimen/text_size_16"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/iv_cart_delete"
+            android:textSize="@dimen/text_size_10"
+            android:textStyle="normal"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="샌드위치 쿠바노" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_smart_order_desc2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=" 내일도착"
+            android:textColor="@color/bvc_main_color"
+            android:textSize="@dimen/text_size_10"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/tv_smart_order_desc1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- 이미지 -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_smart_thumb"
+            android:layout_width="@dimen/d_5000"
+            android:layout_height="@dimen/d_5000"
+            android:layout_marginTop="@dimen/d_3100"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_smart_order_desc1"
+            app:layout_constraintVertical_bias="1"
+            app:layout_goneMarginTop="@dimen/d_1100" />
 
         <LinearLayout
             android:id="@+id/ll_cart_option"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d_2800"
+            android:layout_marginStart="@dimen/d_800"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_menu_name" />
+            app:layout_constraintStart_toEndOf="@+id/iv_smart_thumb"
+            app:layout_constraintTop_toTopOf="@+id/iv_smart_thumb">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_smart_order_material"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold"
+                tools:text="목전지(돼지)" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_600"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_smart_order_origin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal"
+                    tools:text="재고 정보" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_smart_order_origin_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal"
+                    tools:text="5000원" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_600"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/materials_delivery_cost"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_smart_order_delivery_cost"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal"
+                    tools:text="5000원" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_600"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_smart_order_delivery_company"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal"
+                    tools:text="@string/materials_delivery_company" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_600"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/materials_stock"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_smart_order_stock"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal"
+                    tools:text="28kg" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_600"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/materials_consumption_3days"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_smart_order_consumption"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="normal"
+                    tools:text="28kg" />
+
+            </LinearLayout>
+        </LinearLayout>
         <!--        &lt;!&ndash; 필수 옵션 &ndash;&gt;-->
         <!--        <TextView-->
         <!--            android:id="@+id/tv_required_option"-->
@@ -69,30 +221,20 @@
         <!--            app:layout_constraintTop_toBottomOf="@+id/tv_required_option"-->
         <!--            tools:text="└ 옵션 선택 : 치즈 추가 (1,000원)" />-->
 
-        <!-- 이미지 -->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_menu_thumb"
-            android:layout_width="@dimen/d_5000"
-            android:layout_height="@dimen/d_5000"
-            android:layout_marginTop="@dimen/d_3100"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_cart_option"
-            app:layout_constraintVertical_bias="1" />
 
         <!-- 수량 조절 영역 -->
         <LinearLayout
             android:id="@+id/layout_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d_3100"
+            android:layout_marginTop="@dimen/d_1300"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_cart_option">
 
             <RelativeLayout
-                android:id="@+id/rl_cart_minus"
+                android:id="@+id/rl_smart_order_minus"
                 android:layout_width="@dimen/d_2500"
                 android:layout_height="@dimen/d_2500"
                 android:background="@drawable/r5_sto_666e89">
@@ -117,7 +259,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/rl_cart_plus"
+                android:id="@+id/rl_smart_order_plus"
                 android:layout_width="@dimen/d_2500"
                 android:layout_height="@dimen/d_2500"
                 android:background="@drawable/r5_sto_666e89">
@@ -134,17 +276,70 @@
 
         <!-- 금액 -->
         <TextView
-            android:id="@+id/tv_total_price"
+            android:id="@+id/tv_smart_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d_800"
-            android:textColor="@color/bvc_666E89"
-            android:textSize="@dimen/text_size_14"
+            android:layout_marginTop="@dimen/d_1300"
+            android:textColor="@color/bvc_main_color"
+            android:textSize="@dimen/text_size_12"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_quantity"
             tools:text="10,900원" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_item_smart_order_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/r20_ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_smart_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_smart_price">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/d_900"
+                android:layout_marginVertical="@dimen/d_700"
+                android:text="@string/materials_order_delete"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginStart="@dimen/d_500"
+            android:id="@+id/cl_item_smart_order_stock_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/r20_ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_smart_price"
+            app:layout_constraintStart_toEndOf="@+id/cl_item_smart_order_delete"
+            app:layout_constraintTop_toTopOf="@+id/tv_smart_price">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/d_900"
+                android:layout_marginVertical="@dimen/d_700"
+                android:text="@string/materials_stock_change"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

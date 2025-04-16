@@ -15,7 +15,13 @@ class SmartOrderAdapter(
     private val itemClickListener: OnItemClickListener,
 ) : ListAdapter<SmartOrderEntity, SmartOrderAdapter.ViewHolder>(DiffCallback()) {
     interface OnItemClickListener {
-        fun onItemClick(item: SmartOrderEntity)
+        fun onItemDeleteClick(item: SmartOrderEntity)
+
+        fun onItemChangeClick(item: SmartOrderEntity)
+
+        fun onItemPlusClick(item: SmartOrderEntity)
+
+        fun onItemMinusClick(item: SmartOrderEntity)
     }
 
     override fun onCreateViewHolder(
@@ -44,20 +50,26 @@ class SmartOrderAdapter(
                 this.item = item
                 executePendingBindings()
 
-                tvMenuName.text = item.material.materialName
-                ivCartDelete.setOnClickListener {
-                    clickListener.onItemClick(item)
+                tvSmartOrderMaterial.text = item.material.materialName
+                clItemSmartOrderDelete.setOnClickListener {
+                    clickListener.onItemDeleteClick(item)
+                }
+                clItemSmartOrderStockChange.setOnClickListener {
+                    clickListener.onItemChangeClick(item)
+                }
+                rlSmartOrderPlus.setOnClickListener {
+                    clickListener.onItemPlusClick(item)
+                }
+                rlSmartOrderMinus.setOnClickListener {
+                    clickListener.onItemMinusClick(item)
                 }
 
                 val requestOptions = RequestOptions().transform(RoundedCorners(5))
                 Glide
-                    .with(ivMenuThumb.context)
+                    .with(ivSmartThumb.context)
                     .load(item.material.imageUrl)
                     .apply(requestOptions)
-                    .into(ivMenuThumb)
-
-                // TODO: 옵션 뷰 동적 생성 필요 시 여기에서 처리
-                llCartOption.removeAllViews()
+                    .into(ivSmartThumb)
             }
         }
     }

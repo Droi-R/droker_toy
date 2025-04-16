@@ -8,11 +8,10 @@ data class SmartOrderEntity(
     val smartOrderId: String = "",
     // 발주 갯수
     val orderCount: Int = 0,
-    val safetyStock: Int = 0,
     val description: String = "",
     val deliveryCost: String = "",
     val logisticsCompany: String = "",
-    val expectedConsumption: String = "",
+    val expectedConsumptionCount: Int = 0,
     val origin: OriginEntity,
     val material: MaterialsEntity,
 ) : Parcelable

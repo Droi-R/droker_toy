@@ -539,11 +539,10 @@ class MaterialsViewModel
                             SmartOrderEntity(
                                 smartOrderId = "SO001",
                                 orderCount = 100,
-                                safetyStock = 50,
                                 description = "테스트 발주 설명",
                                 deliveryCost = "5000",
                                 logisticsCompany = "로지스틱스 A",
-                                expectedConsumption = "1000",
+                                expectedConsumptionCount = 1000,
                                 origin =
                                     OriginEntity(
                                         orignId = "O001",
@@ -565,11 +564,10 @@ class MaterialsViewModel
                             SmartOrderEntity(
                                 smartOrderId = "SO002",
                                 orderCount = 200,
-                                safetyStock = 100,
                                 description = "테스트 발주 설명 2",
                                 deliveryCost = "10000",
                                 logisticsCompany = "로지스틱스 B",
-                                expectedConsumption = "2000",
+                                expectedConsumptionCount = 2000,
                                 origin =
                                     OriginEntity(
                                         orignId = "O002",
@@ -621,5 +619,17 @@ class MaterialsViewModel
 
         fun setVisibleSmartOrder(visible: Boolean) {
             _visibleSmartOrder.value = visible
+        }
+
+        fun deleteSmartOrder(item: SmartOrderEntity) {
+        }
+
+        fun changeSmartOrder(item: SmartOrderEntity) {
+        }
+
+        fun plusSmartOrder(item: SmartOrderEntity) {
+        }
+
+        fun minusSmartOrder(item: SmartOrderEntity) {
         }
     }

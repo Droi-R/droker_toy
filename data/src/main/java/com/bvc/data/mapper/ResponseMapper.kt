@@ -276,11 +276,10 @@ object ResponseMapper {
     private fun SmartOrderResponse.toEntity(): SmartOrderEntity =
         SmartOrderEntity(
             smartOrderId = smartOrderId ?: "",
-            safetyStock = safetyStock ?: 0,
             description = description ?: "",
             deliveryCost = deliveryCost ?: "",
             logisticsCompany = logisticsCompany ?: "",
-            expectedConsumption = expectedConsumption ?: "",
+            expectedConsumptionCount = expectedConsumptionCount ?: 0,
             origin = origin?.toEntity() ?: OriginEntity.EMPTY,
             material = material?.toEntity() ?: MaterialsEntity.EMPTY,
         )
