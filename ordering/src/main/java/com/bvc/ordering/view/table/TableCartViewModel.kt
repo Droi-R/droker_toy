@@ -3,6 +3,7 @@ package com.bvc.ordering.view.table
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.log
+import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.model.calculateVatSummary
@@ -48,8 +49,8 @@ class TableCartViewModel
         private val _cartData = MutableStateFlow<List<ProductEntity>>(emptyList())
         val cartData: StateFlow<List<ProductEntity>> get() = _cartData
 
-        private val _requestTelegram = SingleLiveEvent<ByteArray>()
-        val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
+        private val _requestTelegram = SingleLiveEvent<Pair<ByteArray, PaymentEntity>>()
+        val requestTelegram: LiveData<Pair<ByteArray, PaymentEntity>> get() = _requestTelegram
 
         private val _tableInfo = SingleLiveEvent<TableEntity>()
         val tableInfo: LiveData<TableEntity> get() = _tableInfo

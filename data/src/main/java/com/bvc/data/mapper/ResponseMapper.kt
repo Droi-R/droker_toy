@@ -10,6 +10,7 @@ import com.bvc.data.remote.model.response.OptionResponse
 import com.bvc.data.remote.model.response.OrderMemoResponse
 import com.bvc.data.remote.model.response.OrderResponse
 import com.bvc.data.remote.model.response.OriginResponse
+import com.bvc.data.remote.model.response.PaymentResponse
 import com.bvc.data.remote.model.response.ProductResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
@@ -29,11 +30,12 @@ import com.bvc.domain.model.GithubEntity
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.Meta
-import com.bvc.domain.model.Options
+import com.bvc.domain.model.OptionsEntity
 import com.bvc.domain.model.OrderEntity
 import com.bvc.domain.model.OrderMemo
 import com.bvc.domain.model.OriginEntity
 import com.bvc.domain.model.Pagination
+import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
 import com.bvc.domain.model.SmartOrderEntity
@@ -200,6 +202,12 @@ object ResponseMapper {
             data = response?.data?.toEntity() ?: OrderEntity.EMPTY,
         )
 
+    fun mapPayment(response: ResData<PaymentResponse>?): ApiData<PaymentEntity> =
+        ApiData(
+            meta = mapMeta(response?.meta),
+            data = response?.data?.toEntity() ?: PaymentEntity.EMPTY,
+        )
+
     fun mapTables(response: ResDataList<TableResponse>?): ApiDataList<TableEntity> =
         ApiDataList(
             meta = mapMeta(response?.meta),
@@ -262,6 +270,11 @@ object ResponseMapper {
             quantity = quantity ?: 1,
         )
 
+    private fun PaymentResponse.toEntity(): PaymentEntity =
+        PaymentEntity(
+            pid = pid ?: "",
+        )
+
     private fun MaterialsResponse.toEntity(): MaterialsEntity =
         MaterialsEntity(
             materialId = materialId ?: "",
@@ -310,10 +323,10 @@ object ResponseMapper {
             options = options?.toEntities() ?: arrayListOf(),
         )
 
-    private fun List<OptionResponse>?.toEntities(): ArrayList<Options> =
+    private fun List<OptionResponse>?.toEntities(): ArrayList<OptionsEntity> =
         ArrayList(
             this?.map {
-                Options(
+                OptionsEntity(
                     productOptionsId = it.productOptionsId ?: "",
                     name = it.name ?: "",
                     price = it.price ?: "",

@@ -2,6 +2,7 @@ package com.bvc.ordering.view.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -21,8 +22,8 @@ class MainViewModel
         private val preferenceUseCase: PreferenceUseCase,
         private val mainUseCase: MainUseCase,
     ) : BaseViewModel() {
-        private val _requestTelegram = SingleLiveEvent<ByteArray>()
-        val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
+        private val _requestTelegram = SingleLiveEvent<Pair<ByteArray, PaymentEntity>>()
+        val requestTelegram: LiveData<Pair<ByteArray, PaymentEntity>> get() = _requestTelegram
 
         private val _affiliteType = SingleLiveEvent<String>()
         val affiliteType: LiveData<String> get() = _affiliteType
@@ -82,8 +83,8 @@ class MainViewModel
             )
         }
 
-        fun requestTelegram(data: ByteArray) {
-            _requestTelegram.value = data
+        fun requestTelegram(pair: Pair<ByteArray, PaymentEntity>) {
+            _requestTelegram.value = pair
         }
 
         fun sendTableEvent(table: TableEntity) {

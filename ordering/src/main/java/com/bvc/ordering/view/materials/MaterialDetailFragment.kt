@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bvc.domain.log
@@ -16,7 +15,7 @@ import com.bvc.domain.model.SmartOrderEntity
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
-import com.bvc.ordering.databinding.FragmentMaterialsBinding
+import com.bvc.ordering.databinding.FragmentMaterialDetailBinding
 import com.bvc.ordering.ui.HorizontalSpaceItemDecoration
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
 import com.bvc.ordering.ui.event.collectNonEmpty
@@ -29,10 +28,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
+class MaterialDetailFragment : BaseFragment<FragmentMaterialDetailBinding>() {
     override val layoutResourceId: Int
-        get() = R.layout.fragment_materials
-    private val viewModel: MaterialsViewModel by viewModels()
+        get() = R.layout.fragment_material_detail
+    private val viewModel: MaterialDetailViewModel by viewModels()
 
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
@@ -132,7 +131,6 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                 adapter =
                     GridAdapter {
                         onMaterialsClick { material ->
-                            findNavController().navigate(MaterialDetailFragment::class.java.name)
                         }
                     }
             }

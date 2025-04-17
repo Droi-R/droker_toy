@@ -2,10 +2,12 @@ package com.bvc.data.repository.remote.datasourceImpl
 
 import com.bvc.data.remote.api.MainApi
 import com.bvc.data.remote.model.request.OrderRequest
+import com.bvc.data.remote.model.request.PaymentRequest
 import com.bvc.data.remote.model.response.CategoryResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.MaterialsResponse
 import com.bvc.data.remote.model.response.OrderResponse
+import com.bvc.data.remote.model.response.PaymentResponse
 import com.bvc.data.remote.model.response.ProductResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
@@ -90,6 +92,14 @@ class MainDataSourceImpl
         ): ResData<OrderResponse>? =
             safeApiCall {
                 mainApi.postOrder(token, orderRequest)
+            }.body()
+
+        override suspend fun postPayment(
+            token: String,
+            paymentRequest: PaymentRequest,
+        ): ResData<PaymentResponse>? =
+            safeApiCall {
+                mainApi.postPayment(token, paymentRequest)
             }.body()
 
         override suspend fun getTables(

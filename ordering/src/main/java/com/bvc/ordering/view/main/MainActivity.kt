@@ -26,6 +26,8 @@ import com.bvc.ordering.databinding.ActivityMainBinding
 import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.view.cart.CartFragment
+import com.bvc.ordering.view.materials.ConsumptionFragment
+import com.bvc.ordering.view.materials.MaterialDetailFragment
 import com.bvc.ordering.view.materials.MaterialsFragment
 import com.bvc.ordering.view.order.OrderFragment
 import com.bvc.ordering.view.table.TableCartFragment
@@ -184,6 +186,8 @@ class MainActivity : BaseActivity() {
                     fragment<TableOrderFragment>(route = TableOrderFragment::class.java.name)
                     fragment<TableCartFragment>(route = TableCartFragment::class.java.name)
                     fragment<MaterialsFragment>(route = MaterialsFragment::class.java.name)
+                    fragment<MaterialDetailFragment>(route = MaterialDetailFragment::class.java.name)
+                    fragment<ConsumptionFragment>(route = ConsumptionFragment::class.java.name)
                 }
             navController.setGraph(
                 graph = navGraph,
@@ -204,7 +208,7 @@ class MainActivity : BaseActivity() {
                 }
             }
 
-            requestTelegram.observe(this@MainActivity) { mRequestTelegram ->
+            requestTelegram.observe(this@MainActivity) { (mRequestTelegram, paymentEntity) ->
                 // 결제 테스트
                 log.e("mRequestTelegram: ${String(mRequestTelegram)}")
                 val packageName = "com.ksnet.kscat_a"
@@ -280,7 +284,9 @@ class MainActivity : BaseActivity() {
                 System.arraycopy(recvByte, 49, apprDate, 0, 6)
 
                 log.e("String(apprNo) : ${String(apprNo)}")
-                log.e("String(apprNo) : ${String(apprDate)}")
+                log.e("String(apprDate) : ${String(apprDate)}")
+
+                // TODO 여기서 캡쳐 날리자
 
                 //            val intent: Intent = Intent(this@CardActivity, ResultActivity::class.java)
                 //            intent.putExtra("PayType", "CARD")

@@ -4,6 +4,8 @@ import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.repository.MainRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentMethod
+import com.bvc.domain.type.PaymentStatus
 import javax.inject.Inject
 
 class MainUseCase
@@ -76,6 +78,26 @@ class MainUseCase
             supplyPrice,
             vatPrice,
             discountPrice,
+        )
+
+        suspend fun postPayment(
+            token: String,
+            userId: String,
+            storeId: String,
+            orderProductIds: List<String>,
+            totalPrice: Int,
+            paymentMethod: PaymentMethod,
+            paymentChannel: String,
+            paymentStatus: PaymentStatus,
+        ) = mainRepository.postPayment(
+            token = token,
+            userId = userId,
+            storeId = storeId,
+            orderProductIds = orderProductIds,
+            totalPrice = totalPrice,
+            paymentMethod = paymentMethod,
+            paymentChannel = paymentChannel,
+            paymentStatus = paymentStatus,
         )
 
         suspend fun getTables(

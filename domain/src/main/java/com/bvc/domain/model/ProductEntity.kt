@@ -45,7 +45,7 @@ data class ProductOptionEntity(
     var minOptionCountLimit: Int,
     var maxOptionCountLimit: Int,
     var position: Int,
-    var options: List<Options>,
+    var options: List<OptionsEntity>,
 ) : Parcelable
 
 @Parcelize
@@ -64,7 +64,7 @@ data class Images(
 )
 
 @Parcelize
-data class Options(
+data class OptionsEntity(
     val productOptionsId: String,
     var name: String,
     var price: String,

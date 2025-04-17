@@ -27,7 +27,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class MaterialsViewModel
+class MaterialDetailViewModel
     @Inject
     constructor(
         private val preferenceUseCase: PreferenceUseCase,

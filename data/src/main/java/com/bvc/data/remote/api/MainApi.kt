@@ -1,10 +1,12 @@
 package com.bvc.data.remote.api
 
 import com.bvc.data.remote.model.request.OrderRequest
+import com.bvc.data.remote.model.request.PaymentRequest
 import com.bvc.data.remote.model.response.CategoryResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.MaterialsResponse
 import com.bvc.data.remote.model.response.OrderResponse
+import com.bvc.data.remote.model.response.PaymentResponse
 import com.bvc.data.remote.model.response.ProductResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
@@ -73,6 +75,12 @@ interface MainApi {
         @Header("Authorization") token: String,
         @Body orderRequest: OrderRequest,
     ): Response<ResData<OrderResponse>>
+
+    @POST("payments")
+    suspend fun postPayment(
+        @Header("Authorization") token: String,
+        @Body paymentRequest: PaymentRequest,
+    ): Response<ResData<PaymentResponse>>
 
     @GET("users/{token}/repos")
     suspend fun getTables(

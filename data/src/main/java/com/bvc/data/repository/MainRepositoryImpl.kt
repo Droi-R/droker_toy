@@ -4,6 +4,7 @@ import com.bvc.data.mapper.ResponseMapper
 import com.bvc.data.mapper.toRequest
 import com.bvc.data.remote.model.request.OrderInfoRequest
 import com.bvc.data.remote.model.request.OrderRequest
+import com.bvc.data.remote.model.request.PaymentRequest
 import com.bvc.data.repository.remote.datasource.MainDataSource
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
@@ -11,6 +12,7 @@ import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.OrderEntity
+import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.SmartOrderEntity
 import com.bvc.domain.model.Store
@@ -19,6 +21,8 @@ import com.bvc.domain.model.TableEntity
 import com.bvc.domain.repository.MainRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentMethod
+import com.bvc.domain.type.PaymentStatus
 import javax.inject.Inject
 
 class MainRepositoryImpl
@@ -134,6 +138,31 @@ class MainRepositoryImpl
                                 ),
                             productItems = productItems.map { it.toRequest() },
                         ),
+                ),
+            )
+
+        override suspend fun postPayment(
+            token: String,
+            userId: String,
+            storeId: String,
+            orderProductIds: List<String>,
+            totalPrice: Int,
+            paymentMethod: PaymentMethod,
+            paymentChannel: String,
+            paymentStatus: PaymentStatus,
+        ): ApiData<PaymentEntity> =
+            ResponseMapper.mapPayment(
+                mainDataSource.postPayment(
+                    token,
+                    PaymentRequest(
+                        userId = userId.toInt(),
+                        storeId = storeId.toInt(),
+                        orderProductIds = orderProductIds,
+                        totalPrice = totalPrice,
+                        paymentMethod = paymentMethod,
+                        paymentChannel = paymentChannel,
+                        paymentStatus = paymentStatus,
+                    ),
                 ),
             )
 
