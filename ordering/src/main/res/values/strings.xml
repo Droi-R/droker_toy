@@ -79,4 +79,8 @@
     <string name="materials_order_delete">주문 삭제</string>
     <string name="materials_stock_change">보유수량 변경</string>
 
+    <!--소모량 설정 / 재료별 소모량-->
+    <string name="materials_detail_title">&lt;   소모량 설정 / 재료별 소모량</string>
+    <string name="materials_detail_desc">재료로 사용하는 메뉴 입니다.</string>
+
 </resources>

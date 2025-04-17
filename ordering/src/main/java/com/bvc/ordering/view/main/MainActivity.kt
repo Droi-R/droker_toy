@@ -159,6 +159,7 @@ class MainActivity : BaseActivity() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.route) {
+                MaterialDetailFragment::class.java.name,
                 TableOrderFragment::class.java.name,
                 TableCartFragment::class.java.name,
                 CartFragment::class.java.name,

@@ -35,6 +35,32 @@ data class ProductEntity(
                 .sumOf { it.price.toInt() }
         return (productPrice + selectedOptionsPrice) * quantity
     }
+
+    companion object {
+        val EMPTY =
+            ProductEntity(
+                productId = "",
+                storeId = "",
+                mainCategoryId = "",
+                subCategoryId = "",
+                name = "",
+                descriptions = "",
+                isVat = false,
+                selected = false,
+                stock = Stock("", false, 0),
+                color = "",
+                useStock = false,
+                optionGroups = emptyList(),
+                position = 0,
+                quantity = 0,
+                imageUrl = "",
+                basePrice = "0",
+                isSoldOut = false,
+                isVatIncluded = false,
+                barcode = "",
+                dailyLimit = 0,
+            )
+    }
 }
 
 @Parcelize

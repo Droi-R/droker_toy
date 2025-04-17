@@ -18,134 +18,63 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_material_top"
+            android:id="@+id/cl_material_deteil_topbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/d_4000"
-            android:visibility="visible"
+            android:background="@drawable/r12_bot_f6f6f6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_material_top_icon"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_material_deteil_topbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:layout_marginVertical="@dimen/d_2800"
+                android:layout_marginStart="@dimen/d_3100"
+                android:text="@string/materials_detail_title"
+                android:textSize="@dimen/text_size_14"
+                android:textColor="@color/bvc_666E89"
+                android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_materials"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/d_300"
-                    android:layout_marginEnd="@dimen/d_700"
-                    android:src="@drawable/ic_materials"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_materials_alarm"
-                    android:layout_width="@dimen/d_1300"
-                    android:layout_height="@dimen/d_1300"
-                    android:background="@drawable/r_17c2c9"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_materials_alarm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_9"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_top_category"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/d_1600"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/cl_material_top_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            gone_visibility="@{vm.visibleSmartOrder}"
-            android:id="@+id/tv_materials_sub_title"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_materials_detail_sub"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/d_2900"
-            android:layout_marginTop="@dimen/d_1200"
-            android:gravity="start"
-            tools:text="@string/cart_card_payment"
-            android:textColor="@color/bvc_666E89"
-            android:textSize="@dimen/text_size_12"
-            android:textStyle="normal"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_material_top" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            gone_visibility="@{vm.visibleSmartOrder}"
             android:layout_marginTop="@dimen/d_2500"
-            android:layout_marginHorizontal="@dimen/d_2900"
-            android:id="@+id/cl_materials_sub"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_materials_sub_title"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_materials_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:text="@{vm.smartOrderDate}"
-                tools:text="2025-03-01"
-                android:textColor="@color/bvc_666E89"
-                android:textSize="@dimen/text_size_14"
-                android:textStyle="bold"
-                android:visibility="visible"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/cl_material_deteil_topbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_material_stock_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/r15_f6f6f6"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_material_stock_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/bvc_666E89"
-                    android:layout_marginVertical="@dimen/d_700"
                     android:layout_marginHorizontal="@dimen/d_2000"
+                    android:layout_marginVertical="@dimen/d_700"
+                    android:text="@string/materials_stock_in"
+                    android:textColor="@color/bvc_666E89"
                     android:textSize="@dimen/text_size_10"
                     android:textStyle="normal"
-                    android:text="@string/materials_stock_in"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -154,69 +83,79 @@
                 android:id="@+id/cl_materials_order_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/r15_17c2c9"
-                app:layout_constraintEnd_toStartOf="@+id/cl_material_stock_in"
                 android:layout_marginEnd="@dimen/d_800"
+                android:background="@drawable/r15_17c2c9"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cl_material_stock_in"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_materials_order_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:layout_marginVertical="@dimen/d_700"
                     android:layout_marginHorizontal="@dimen/d_2000"
+                    android:layout_marginVertical="@dimen/d_700"
+                    android:text="@string/materials_order_list"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/text_size_10"
                     android:textStyle="normal"
-                    android:text="@string/materials_order_list"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_material_deteil_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_3000"
+            android:text="@{vm.materialName}"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_25"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_materials_detail_sub"
+            tools:text="‘목전지’를" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_material_deteil_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_1400"
+            android:text="@string/materials_detail_desc"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_18"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_material_deteil_title" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:paddingHorizontal="@dimen/d_2900"
-            gone_visibility="@{vm.visibleSmartOrder}"
-            android:id="@+id/rv_smart_order"
+            android:id="@+id/rv_material_deteil"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="@dimen/d_3200"
+            android:layout_weight="1"
+            android:paddingHorizontal="@dimen/d_2900"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_materials_sub" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_material_deteil_sub" />
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            gone_visibility="@{!vm.visibleSmartOrder}"
-            android:id="@+id/cl_materials_inflate"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/d_3300"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_material_top">
-
-            <include
-                android:id="@+id/ic_order"
-                layout="@layout/inflate_menu" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.compose.ui.platform.ComposeView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/compose_dialog_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
