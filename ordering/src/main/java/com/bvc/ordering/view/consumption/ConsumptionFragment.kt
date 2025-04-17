@@ -68,6 +68,9 @@ class ConsumptionFragment : BaseFragment<FragmentConsumptionBinding>() {
                                     }
                                 }
                             }
+
+                            override fun onDeleteClick(item: ProductEntity) {
+                            }
                         },
                     )
             }

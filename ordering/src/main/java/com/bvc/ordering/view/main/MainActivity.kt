@@ -28,6 +28,7 @@ import com.bvc.ordering.databinding.ActivityMainBinding
 import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.view.cart.CartFragment
+import com.bvc.ordering.view.consumption.ConsumptionFragment
 import com.bvc.ordering.view.materialdetail.MaterialDetailFragment
 import com.bvc.ordering.view.materials.MaterialsFragment
 import com.bvc.ordering.view.order.OrderFragment
@@ -159,9 +160,11 @@ class MainActivity : BaseActivity() {
         }
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            val layoutParams = binding.mainContainerView.layoutParams as ViewGroup.MarginLayoutParams
+            val layoutParams =
+                binding.mainContainerView.layoutParams as ViewGroup.MarginLayoutParams
             when (destination.route) {
                 MaterialDetailFragment::class.java.name,
+                ConsumptionFragment::class.java.name,
                 TableOrderFragment::class.java.name,
                 TableCartFragment::class.java.name,
                 CartFragment::class.java.name,

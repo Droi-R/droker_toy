@@ -223,7 +223,6 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                             else -> {
                             }
                         }
-                        // TODO 여기서 상품과 재료현황 나누자
                     }
                     subCategory.collectNonEmpty(viewLifecycleOwner) { subCategory ->
                         log.e("subCategory: $subCategory")

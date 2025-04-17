@@ -6,20 +6,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bvc.domain.model.ProductEntity
-import com.bvc.ordering.databinding.ItemMaterialDetailBinding
+import com.bvc.ordering.databinding.ItemConsumptionBinding
 
 class ConsumptionAdapter(
     private val itemClickListener: OnItemClickListener,
 ) : ListAdapter<ProductEntity, ConsumptionAdapter.ViewHolder>(DiffCallback()) {
     interface OnItemClickListener {
         fun onItemClick(item: ProductEntity)
+
+        fun onDeleteClick(item: ProductEntity)
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): ViewHolder {
-        val binding = ItemMaterialDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemConsumptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -31,7 +33,7 @@ class ConsumptionAdapter(
     }
 
     class ViewHolder(
-        private val binding: ItemMaterialDetailBinding,
+        private val binding: ItemConsumptionBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             item: ProductEntity,
@@ -42,8 +44,11 @@ class ConsumptionAdapter(
                 executePendingBindings()
 
 //                tvSmartOrderMaterial.text = item.material.materialName
-                clItemSmartOrderDelete.setOnClickListener {
+                clItemConsumptionChange.setOnClickListener {
                     clickListener.onItemClick(item)
+                }
+                clItemConsumptionDelete.setOnClickListener {
+                    clickListener.onDeleteClick(item)
                 }
 
 //                val requestOptions = RequestOptions().transform(RoundedCorners(5))

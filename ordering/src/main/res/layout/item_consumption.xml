@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.bvc.domain.model.ProductEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/r15_f6f6f6"
+        android:paddingHorizontal="@dimen/d_2300"
+        android:paddingVertical="@dimen/d_2000">
+
+
+        <!-- 메뉴명 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_consumption_desc1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="오늘 오후 4시 이내 결제 완료 시"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_10"
+            android:textStyle="normal"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_consumption_desc2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=" 내일도착"
+            android:textColor="@color/bvc_main_color"
+            android:textSize="@dimen/text_size_10"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/tv_consumption_desc1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- 이미지 -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_smart_thumb"
+            android:layout_width="@dimen/d_5000"
+            android:layout_height="@dimen/d_5000"
+            android:layout_marginTop="@dimen/d_3100"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_consumption_desc1"
+            app:layout_constraintVertical_bias="1"
+            app:layout_goneMarginTop="@dimen/d_1100" />
+
+        <LinearLayout
+            android:id="@+id/ll_cart_option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/d_800"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_smart_thumb"
+            app:layout_constraintTop_toTopOf="@+id/iv_smart_thumb">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:id="@+id/tv_consumption_material"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bvc_main_color"
+                    android:textSize="@dimen/text_size_16"
+                    android:textStyle="bold"
+                    tools:text="목전지(돼지)" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:gravity="end"
+                    android:id="@+id/tv_consumption_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold"
+                    tools:text="1" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_marginStart="@dimen/d_1000"
+                    android:gravity="end"
+                    android:id="@+id/tv_consumption_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_16"
+                    android:textStyle="bold"
+                    tools:text="ea" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_600"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_consumption_recommended"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="normal"
+                    tools:text="재고 정보" />
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/tv_consumption_origin_price"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:gravity="end"-->
+<!--                    android:textColor="@color/bvc_666E89"-->
+<!--                    android:textSize="@dimen/text_size_14"-->
+<!--                    android:textStyle="normal"-->
+<!--                    tools:text="5000원" />-->
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_item_consumption_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_2700"
+            android:background="@drawable/r20_17c2c9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_cart_option">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/d_900"
+                android:layout_marginVertical="@dimen/d_700"
+                android:text="@string/materials_detail_consumption"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/cl_item_consumption_recommended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/r20_ffffff"
+            android:layout_marginEnd="@dimen/d_600"
+            app:layout_constraintBottom_toBottomOf="@+id/cl_item_consumption_change"
+            app:layout_constraintEnd_toStartOf="@+id/cl_item_consumption_change"
+            app:layout_constraintTop_toTopOf="@+id/cl_item_consumption_change">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/d_900"
+                android:layout_marginVertical="@dimen/d_700"
+                android:text="@string/materials_detail_recommendation"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_item_consumption_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d_2700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_cart_option">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:src="@drawable/ic_trash"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="@dimen/d_400"
+                app:layout_constraintEnd_toStartOf="@+id/tv_item_consumption_delete"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_item_consumption_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/d_900"
+                android:layout_marginVertical="@dimen/d_700"
+                android:text="@string/materials_detail_not_use"
+                android:textColor="@color/bvc_main_color"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
