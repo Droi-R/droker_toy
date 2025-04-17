@@ -57,7 +57,7 @@ class MaterialDetailFragment : BaseFragment<FragmentMaterialDetailBinding>() {
                                                 setContent {}
                                                 visibility = View.GONE
                                             },
-                                            onConfirm = { newStock ->
+                                            onConfirm = { newStock,unit ->
                                                 log.e("onConfirm: $newStock")
 //                                                viewModel.changeSmartOrder(item, newStock)
                                                 setContent {}

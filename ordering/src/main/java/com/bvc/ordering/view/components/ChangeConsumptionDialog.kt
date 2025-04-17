@@ -51,7 +51,7 @@ fun ChangeConsumptionDialogPreview() {
     ChangeConsumptionDialog(
         productEntity = ProductEntity.EMPTY,
         onDismiss = {},
-        onConfirm = {},
+        onConfirm = { stock, unit -> },
     )
 }
 
@@ -60,9 +60,10 @@ fun ChangeConsumptionDialogPreview() {
 fun ChangeConsumptionDialog(
     productEntity: ProductEntity,
     onDismiss: () -> Unit,
-    onConfirm: (Int) -> Unit,
+    onConfirm: (Int, Int) -> Unit,
 ) {
     var stockText by remember { mutableStateOf("${productEntity.stock.count}") }
+    var unit by remember { mutableStateOf("${productEntity.stock.count}") }
     Dialog(onDismissRequest = { onDismiss() }) {
         Box(
             modifier =
@@ -125,7 +126,7 @@ fun ChangeConsumptionDialog(
                     fontSize = dimensionResource(R.dimen.text_size_12).value.sp,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start, // 왼쪽 정렬
-                    modifier = Modifier.fillMaxWidth() // 텍스트가 전체 너비를 차지하도록 설정
+                    modifier = Modifier.fillMaxWidth(), // 텍스트가 전체 너비를 차지하도록 설정
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.d_1300)))
                 TextField(
@@ -166,14 +167,14 @@ fun ChangeConsumptionDialog(
                     fontSize = dimensionResource(R.dimen.text_size_12).value.sp,
                     fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Start, // 왼쪽 정렬
-                    modifier = Modifier.fillMaxWidth() // 텍스트가 전체 너비를 차지하도록 설정
+                    modifier = Modifier.fillMaxWidth(), // 텍스트가 전체 너비를 차지하도록 설정
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.d_1300)))
                 TextField(
-                    value = stockText,
+                    value = unit,
                     onValueChange = { newText ->
                         if (newText.all { it.isDigit() }) {
-                            stockText = newText
+                            unit = newText
                         }
                     },
                     singleLine = true,
@@ -205,7 +206,8 @@ fun ChangeConsumptionDialog(
                 Button(
                     onClick = {
                         val stock = stockText.toIntOrNull() ?: productEntity.stock.count
-                        onConfirm(stock)
+                        val unit = unit.toIntOrNull() ?: productEntity.stock.count
+                        onConfirm(stock, unit)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors =
