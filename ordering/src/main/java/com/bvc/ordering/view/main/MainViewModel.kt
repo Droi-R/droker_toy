@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.PaymentEntity
+import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -61,6 +62,9 @@ class MainViewModel
         private val _matarialEventFlow = MutableSharedFlow<Event<MaterialsEntity>>(replay = 1)
         val matarialEventFlow = _matarialEventFlow.asSharedFlow()
 
+        private val _productEventFlow = MutableSharedFlow<Event<ProductEntity>>(replay = 1)
+        val productEventFlow = _productEventFlow.asSharedFlow()
+
         init {
             getStore()
         }
@@ -113,6 +117,13 @@ class MainViewModel
             val copiedMaterial = material.copy()
             viewModelScope.launch {
                 _matarialEventFlow.emit(Event(copiedMaterial))
+            }
+        }
+
+        fun sendProductEvent(product: ProductEntity) {
+            val copiedProduct = product.copy()
+            viewModelScope.launch {
+                _productEventFlow.emit(Event(copiedProduct))
             }
         }
     }

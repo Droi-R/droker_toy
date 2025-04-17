@@ -1,4 +1,4 @@
-package com.bvc.ordering.view.materials
+package com.bvc.ordering.view.materialdetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

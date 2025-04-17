@@ -28,8 +28,7 @@ import com.bvc.ordering.databinding.ActivityMainBinding
 import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.view.cart.CartFragment
-import com.bvc.ordering.view.materials.ConsumptionFragment
-import com.bvc.ordering.view.materials.MaterialDetailFragment
+import com.bvc.ordering.view.materialdetail.MaterialDetailFragment
 import com.bvc.ordering.view.materials.MaterialsFragment
 import com.bvc.ordering.view.order.OrderFragment
 import com.bvc.ordering.view.table.TableCartFragment

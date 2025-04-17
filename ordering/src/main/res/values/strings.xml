@@ -85,4 +85,7 @@
     <string name="materials_detail_consumption">소모량 변경</string>
     <string name="materials_detail_unit">단위 변경</string>
 
+    <string name="consumption_desc">1개 만들기 위해 필요한 재료의 정보가 아래와\n같은지 확인해주세요.\n
+앞으로 아주 편한 재료관리 도와드릴게요.</string>
+
 </resources>

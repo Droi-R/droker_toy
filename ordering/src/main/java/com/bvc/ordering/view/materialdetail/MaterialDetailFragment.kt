@@ -1,4 +1,4 @@
-package com.bvc.ordering.view.materials
+package com.bvc.ordering.view.materialdetail
 
 import android.os.Bundle
 import android.view.View
@@ -18,6 +18,7 @@ import com.bvc.ordering.databinding.FragmentMaterialDetailBinding
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
 import com.bvc.ordering.view.components.ChangeConsumptionDialog
 import com.bvc.ordering.view.main.MainViewModel
+import com.bvc.ordering.view.materials.MaterialsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -57,7 +58,7 @@ class MaterialDetailFragment : BaseFragment<FragmentMaterialDetailBinding>() {
                                                 setContent {}
                                                 visibility = View.GONE
                                             },
-                                            onConfirm = { newStock,unit ->
+                                            onConfirm = { newStock, unit ->
                                                 log.e("onConfirm: $newStock")
 //                                                viewModel.changeSmartOrder(item, newStock)
                                                 setContent {}

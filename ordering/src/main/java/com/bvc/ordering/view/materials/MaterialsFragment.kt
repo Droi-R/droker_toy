@@ -22,11 +22,13 @@ import com.bvc.ordering.ui.HorizontalSpaceItemDecoration
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
 import com.bvc.ordering.ui.event.collectNonEmpty
 import com.bvc.ordering.view.components.ChangeStockDialog
+import com.bvc.ordering.view.consumption.ConsumptionFragment
 import com.bvc.ordering.view.inflate.CategoryAdapter
 import com.bvc.ordering.view.inflate.GridAdapter
 import com.bvc.ordering.view.inflate.SubCategoryAdapter
 import com.bvc.ordering.view.inflate.TopCategoryAdapter
 import com.bvc.ordering.view.main.MainViewModel
+import com.bvc.ordering.view.materialdetail.MaterialDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -137,6 +139,10 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                         onMaterialsClick { material ->
                             findNavController().navigate(MaterialDetailFragment::class.java.name)
                             mainViewModel.sendMaterialEvent(material)
+                        }
+                        onProductClick { product ->
+                            findNavController().navigate(ConsumptionFragment::class.java.name)
+                            mainViewModel.sendProductEvent(product)
                         }
                     }
             }

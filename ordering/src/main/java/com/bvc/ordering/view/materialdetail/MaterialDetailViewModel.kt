@@ -1,4 +1,4 @@
-package com.bvc.ordering.view.materials
+package com.bvc.ordering.view.materialdetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
