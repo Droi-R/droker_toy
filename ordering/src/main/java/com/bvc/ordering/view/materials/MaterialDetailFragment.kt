@@ -1,6 +1,8 @@
 package com.bvc.ordering.view.materials
 
 import android.os.Bundle
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,6 +16,7 @@ import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentMaterialDetailBinding
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
+import com.bvc.ordering.view.components.ChangeConsumptionDialog
 import com.bvc.ordering.view.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -39,7 +42,30 @@ class MaterialDetailFragment : BaseFragment<FragmentMaterialDetailBinding>() {
                     MaterialDetailAdapter(
                         object : MaterialDetailAdapter.OnItemClickListener {
                             override fun onItemClick(item: ProductEntity) {
-                                log.e("item: $item")
+                                binding?.composeDialogContainer?.apply {
+                                    layoutParams =
+                                        ConstraintLayout.LayoutParams(
+                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                        )
+                                    visibility = View.VISIBLE
+                                    setContent {
+                                        ChangeConsumptionDialog(
+                                            productEntity = item,
+                                            onDismiss = {
+                                                log.e("onDismiss")
+                                                setContent {}
+                                                visibility = View.GONE
+                                            },
+                                            onConfirm = { newStock ->
+                                                log.e("onConfirm: $newStock")
+//                                                viewModel.changeSmartOrder(item, newStock)
+                                                setContent {}
+                                                visibility = View.GONE
+                                            },
+                                        )
+                                    }
+                                }
                             }
                         },
                     )
