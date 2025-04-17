@@ -7,6 +7,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -158,17 +160,34 @@ class MainActivity : BaseActivity() {
         }
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            val layoutParams = binding.mainContainerView.layoutParams as ViewGroup.MarginLayoutParams
             when (destination.route) {
                 MaterialDetailFragment::class.java.name,
                 TableOrderFragment::class.java.name,
                 TableCartFragment::class.java.name,
                 CartFragment::class.java.name,
                 -> {
+                    layoutParams.topMargin =
+                        TypedValue
+                            .applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP,
+                                0f,
+                                resources.displayMetrics,
+                            ).toInt()
+                    binding.mainContainerView.layoutParams = layoutParams
                     binding.clMainTop.isVisible = false
                     binding.tlMainBottom.isVisible = false
                 }
 
                 else -> {
+                    layoutParams.topMargin =
+                        TypedValue
+                            .applyDimension(
+                                TypedValue.COMPLEX_UNIT_DIP,
+                                25f,
+                                resources.displayMetrics,
+                            ).toInt()
+                    binding.mainContainerView.layoutParams = layoutParams
                     binding.clMainTop.isVisible = true
                     binding.tlMainBottom.isVisible = true
                 }

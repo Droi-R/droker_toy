@@ -30,7 +30,7 @@
                 android:id="@+id/tv_material_deteil_topbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/d_2800"
+                android:paddingVertical="@dimen/d_2800"
                 android:layout_marginStart="@dimen/d_3100"
                 android:text="@string/materials_detail_title"
                 android:textSize="@dimen/text_size_14"
