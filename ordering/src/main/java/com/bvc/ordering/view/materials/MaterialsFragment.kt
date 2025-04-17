@@ -3,6 +3,7 @@ package com.bvc.ordering.view.materials
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +26,7 @@ import com.bvc.ordering.view.inflate.CategoryAdapter
 import com.bvc.ordering.view.inflate.GridAdapter
 import com.bvc.ordering.view.inflate.SubCategoryAdapter
 import com.bvc.ordering.view.inflate.TopCategoryAdapter
+import com.bvc.ordering.view.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,6 +35,7 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
     override val layoutResourceId: Int
         get() = R.layout.fragment_materials
     private val viewModel: MaterialsViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
@@ -133,6 +136,7 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                     GridAdapter {
                         onMaterialsClick { material ->
                             findNavController().navigate(MaterialDetailFragment::class.java.name)
+                            mainViewModel.sendMaterialEvent(material)
                         }
                     }
             }

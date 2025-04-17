@@ -72,7 +72,7 @@ class SmartOrderAdapter(
                     .into(ivSmartThumb)
 
                 tvQuantity.text = "${item.orderCount}"
-                tvSmartOrderStock.text = "${item.material.stock}개"
+                tvSmartOrderStock.text = "${item.material.unitCount}개"
             }
         }
     }

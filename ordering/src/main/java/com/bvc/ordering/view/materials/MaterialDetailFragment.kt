@@ -2,28 +2,23 @@ package com.bvc.ordering.view.materials
 
 import android.os.Bundle
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bvc.domain.log
 import com.bvc.domain.model.CategoryEntity
-import com.bvc.domain.model.SmartOrderEntity
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseFragment
 import com.bvc.ordering.databinding.FragmentMaterialDetailBinding
-import com.bvc.ordering.ui.HorizontalSpaceItemDecoration
-import com.bvc.ordering.ui.VerticalSpaceItemDecoration
 import com.bvc.ordering.ui.event.collectNonEmpty
-import com.bvc.ordering.view.components.ChangeStockDialog
 import com.bvc.ordering.view.inflate.CategoryAdapter
 import com.bvc.ordering.view.inflate.GridAdapter
 import com.bvc.ordering.view.inflate.SubCategoryAdapter
 import com.bvc.ordering.view.inflate.TopCategoryAdapter
+import com.bvc.ordering.view.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -32,6 +27,7 @@ class MaterialDetailFragment : BaseFragment<FragmentMaterialDetailBinding>() {
     override val layoutResourceId: Int
         get() = R.layout.fragment_material_detail
     private val viewModel: MaterialDetailViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
@@ -39,110 +35,110 @@ class MaterialDetailFragment : BaseFragment<FragmentMaterialDetailBinding>() {
             vm = viewModel
 
             // 최상단 카테고리
-            rvTopCategory.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_600)))
-                adapter =
-                    TopCategoryAdapter(
-                        object : TopCategoryAdapter.OnItemClickListener<SubCategoryEntity> {
-                            override fun onItemClick(item: SubCategoryEntity) {
-                                viewModel.updateTopCategory(item)
-                            }
-                        },
-                    )
-            }
-
-            rvSmartOrder.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
-                adapter =
-                    SmartOrderAdapter(
-                        object : SmartOrderAdapter.OnItemClickListener {
-                            override fun onItemDeleteClick(item: SmartOrderEntity) {
-                                viewModel.deleteSmartOrder(item)
-                            }
-
-                            override fun onItemChangeClick(item: SmartOrderEntity) {
-                                binding?.composeDialogContainer?.apply {
-                                    layoutParams =
-                                        ConstraintLayout.LayoutParams(
-                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
-                                        )
-                                    visibility = View.VISIBLE
-                                    setContent {
-                                        ChangeStockDialog(
-                                            materialsEntity = item.material,
-                                            onDismiss = {
-                                                log.e("onDismiss")
-                                                setContent {}
-                                                visibility = View.GONE
-                                            },
-                                            onConfirm = { newStock ->
-                                                log.e("onConfirm: $newStock")
-                                                viewModel.changeSmartOrder(item, newStock)
-                                                setContent {}
-                                                visibility = View.GONE
-                                            },
-                                        )
-                                    }
-                                }
-                            }
-
-                            override fun onItemPlusClick(item: SmartOrderEntity) {
-                                viewModel.plusSmartOrder(item)
-                            }
-
-                            override fun onItemMinusClick(item: SmartOrderEntity) {
-                                viewModel.minusSmartOrder(item)
-                            }
-                        },
-                    )
-            }
-
-            icOrder.rvInflateCategory.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_3200)))
-                adapter =
-                    CategoryAdapter(
-                        object : CategoryAdapter.OnItemClickListener<CategoryEntity> {
-                            override fun onItemClick(item: CategoryEntity) {
-                                viewModel.updateCategory(item)
-                            }
-                        },
-                    )
-            }
-            icOrder.rvInflateSubCategory.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_600)))
-                adapter =
-                    SubCategoryAdapter(
-                        object : SubCategoryAdapter.OnItemClickListener<SubCategoryEntity> {
-                            override fun onItemClick(item: SubCategoryEntity) {
-//                                viewModel.updateSubCategory(item)
-                            }
-                        },
-                    )
-            }
-            icOrder.rvInflateGrid.apply {
-                layoutManager = GridLayoutManager(context, 3)
-                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
-                addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
-                adapter =
-                    GridAdapter {
-                        onMaterialsClick { material ->
-                        }
-                    }
-            }
-            clMaterialsOrderList.setOnClickListener {
-                viewModel.selectSmartOrder(true)
-            }
-            clMaterialStockIn.setOnClickListener {
-                viewModel.selectSmartOrder(false)
-            }
-
-            icOrder.ivInflate.visibility = View.GONE
-            icOrder.rvInflateSubCategory.visibility = View.GONE
+//            rvTopCategory.apply {
+//                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_600)))
+//                adapter =
+//                    TopCategoryAdapter(
+//                        object : TopCategoryAdapter.OnItemClickListener<SubCategoryEntity> {
+//                            override fun onItemClick(item: SubCategoryEntity) {
+//                                viewModel.updateTopCategory(item)
+//                            }
+//                        },
+//                    )
+//            }
+//
+//            rvSmartOrder.apply {
+//                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//                addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
+//                adapter =
+//                    SmartOrderAdapter(
+//                        object : SmartOrderAdapter.OnItemClickListener {
+//                            override fun onItemDeleteClick(item: SmartOrderEntity) {
+//                                viewModel.deleteSmartOrder(item)
+//                            }
+//
+//                            override fun onItemChangeClick(item: SmartOrderEntity) {
+//                                binding?.composeDialogContainer?.apply {
+//                                    layoutParams =
+//                                        ConstraintLayout.LayoutParams(
+//                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+//                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+//                                        )
+//                                    visibility = View.VISIBLE
+//                                    setContent {
+//                                        ChangeStockDialog(
+//                                            materialsEntity = item.material,
+//                                            onDismiss = {
+//                                                log.e("onDismiss")
+//                                                setContent {}
+//                                                visibility = View.GONE
+//                                            },
+//                                            onConfirm = { newStock ->
+//                                                log.e("onConfirm: $newStock")
+//                                                viewModel.changeSmartOrder(item, newStock)
+//                                                setContent {}
+//                                                visibility = View.GONE
+//                                            },
+//                                        )
+//                                    }
+//                                }
+//                            }
+//
+//                            override fun onItemPlusClick(item: SmartOrderEntity) {
+//                                viewModel.plusSmartOrder(item)
+//                            }
+//
+//                            override fun onItemMinusClick(item: SmartOrderEntity) {
+//                                viewModel.minusSmartOrder(item)
+//                            }
+//                        },
+//                    )
+//            }
+//
+//            icOrder.rvInflateCategory.apply {
+//                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_3200)))
+//                adapter =
+//                    CategoryAdapter(
+//                        object : CategoryAdapter.OnItemClickListener<CategoryEntity> {
+//                            override fun onItemClick(item: CategoryEntity) {
+//                                viewModel.updateCategory(item)
+//                            }
+//                        },
+//                    )
+//            }
+//            icOrder.rvInflateSubCategory.apply {
+//                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_600)))
+//                adapter =
+//                    SubCategoryAdapter(
+//                        object : SubCategoryAdapter.OnItemClickListener<SubCategoryEntity> {
+//                            override fun onItemClick(item: SubCategoryEntity) {
+// //                                viewModel.updateSubCategory(item)
+//                            }
+//                        },
+//                    )
+//            }
+//            icOrder.rvInflateGrid.apply {
+//                layoutManager = GridLayoutManager(context, 3)
+//                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
+//                addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
+//                adapter =
+//                    GridAdapter {
+//                        onMaterialsClick { material ->
+//                        }
+//                    }
+//            }
+//            clMaterialsOrderList.setOnClickListener {
+//                viewModel.selectSmartOrder(true)
+//            }
+//            clMaterialStockIn.setOnClickListener {
+//                viewModel.selectSmartOrder(false)
+//            }
+//
+//            icOrder.ivInflate.visibility = View.GONE
+//            icOrder.rvInflateSubCategory.visibility = View.GONE
         }
     }
 
@@ -153,6 +149,8 @@ class MaterialDetailFragment : BaseFragment<FragmentMaterialDetailBinding>() {
     override fun handleViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.apply {
+                }
                 viewModel.apply {
                     topCategory.collectNonEmpty(viewLifecycleOwner) { list ->
                         // 카테고리 UI 갱신

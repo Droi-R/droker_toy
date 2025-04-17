@@ -64,8 +64,8 @@ fun MaterialsEntity.toRequest(): MaterialsRequest =
     MaterialsRequest(
         materialId = materialId,
         materialName = materialName,
-        stock = stock,
-        safetyStock = safetyStock,
+        unitCount = unitCount,
+        unitSafetyCount = unitSafetyCount,
         imageUrl = imageUrl,
         unit = unit,
     )

@@ -61,7 +61,7 @@ fun ChangeStockDialog(
     onDismiss: () -> Unit,
     onConfirm: (Int) -> Unit,
 ) {
-    var stockText by remember { mutableStateOf("${materialsEntity.stock}") }
+    var stockText by remember { mutableStateOf("${materialsEntity.unitCount}") }
     Dialog(onDismissRequest = { onDismiss() }) {
         Box(
             modifier =
@@ -110,7 +110,7 @@ fun ChangeStockDialog(
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.d_3400)))
 
                 Text(
-                    text = "'${materialsEntity.materialName}'를\n'${materialsEntity.stock}${materialsEntity.unit}'보유하고 계신것으로\n계산됩니다. 아니실까요",
+                    text = "'${materialsEntity.materialName}'를\n'${materialsEntity.unitCount}${materialsEntity.unit}'보유하고 계신것으로\n계산됩니다. 아니실까요",
                     color = colorResource(R.color.bvc_666E89),
                     fontSize = dimensionResource(R.dimen.text_size_16).value.sp,
                     fontWeight = FontWeight.Bold,
@@ -154,7 +154,7 @@ fun ChangeStockDialog(
 
                 Button(
                     onClick = {
-                        val stock = stockText.toIntOrNull() ?: materialsEntity.stock
+                        val stock = stockText.toIntOrNull() ?: materialsEntity.unitCount
                         onConfirm(stock)
                     },
                     modifier = Modifier.fillMaxWidth(),

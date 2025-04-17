@@ -279,8 +279,8 @@ object ResponseMapper {
         MaterialsEntity(
             materialId = materialId ?: "",
             materialName = materialName ?: "",
-            stock = stock ?: 0,
-            safetyStock = safetyStock ?: 0,
+            unitCount = stock ?: 0,
+            unitSafetyCount = safetyStock ?: 0,
             imageUrl = imageUrl ?: "",
             unit = unit ?: "",
         )

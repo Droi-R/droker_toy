@@ -2,6 +2,7 @@ package com.bvc.ordering.view.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.usecase.MainUseCase
@@ -57,6 +58,9 @@ class MainViewModel
         private val _tableEventFlow = MutableSharedFlow<Event<TableEntity>>(replay = 1)
         val tableEventFlow = _tableEventFlow.asSharedFlow()
 
+        private val _matarialEventFlow = MutableSharedFlow<Event<MaterialsEntity>>(replay = 1)
+        val matarialEventFlow = _matarialEventFlow.asSharedFlow()
+
         init {
             getStore()
         }
@@ -64,7 +68,10 @@ class MainViewModel
         private fun getStore() {
             requestApi(
                 request = {
-                    mainUseCase.getStore(preferenceUseCase.getToken(), "${preferenceUseCase.getStoreId()}")
+                    mainUseCase.getStore(
+                        preferenceUseCase.getToken(),
+                        "${preferenceUseCase.getStoreId()}",
+                    )
                 },
                 successAction = {
                     _affiliteName.value = it.data.name
@@ -99,6 +106,13 @@ class MainViewModel
                 )
             viewModelScope.launch {
                 _tableEventFlow.emit(Event(copiedTable))
+            }
+        }
+
+        fun sendMaterialEvent(material: MaterialsEntity) {
+            val copiedMaterial = material.copy()
+            viewModelScope.launch {
+                _matarialEventFlow.emit(Event(copiedMaterial))
             }
         }
     }
