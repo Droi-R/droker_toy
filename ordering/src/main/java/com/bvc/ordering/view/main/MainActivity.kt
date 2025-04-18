@@ -281,14 +281,6 @@ class MainActivity : BaseActivity() {
 
                 log.e("String(apprNo) : ${String(apprNo)}")
                 log.e("String(apprNo) : ${String(apprDate)}")
-
-                //            val intent: Intent = Intent(this@CardActivity, ResultActivity::class.java)
-                //            intent.putExtra("PayType", "CARD")
-                //            intent.putExtra("resData", recvByte)
-                //            intent.putExtra("totAmt", mTotAmt)
-                //            intent.putExtra("VAT", mVat)
-                //            intent.putExtra("supplyAmt", mSupAmt)
-                //            startActivity(intent)
             } else if (resultCode == RESULT_CANCELED) {
                 if (data != null) {
                     log.e("result" + data.getIntExtra("result", 1).toString())
