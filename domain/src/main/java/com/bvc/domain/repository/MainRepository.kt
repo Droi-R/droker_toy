@@ -83,7 +83,7 @@ interface MainRepository {
         userId: String,
         storeId: String,
         orderProductIds: List<String>,
-        totalPrice: Int,
+        totalPrice: String,
         paymentMethod: PaymentMethod,
         paymentChannel: PaymentChannel,
         paymentStatus: PaymentStatus,
@@ -93,7 +93,7 @@ interface MainRepository {
     suspend fun requestCapture(
         token: String,
         paymentId: String,
-        amount: Double,
+        amount: String,
         deviceId: String,
         approvedId: String,
         approvedDate: String,
@@ -102,10 +102,12 @@ interface MainRepository {
     suspend fun requestRefund(
         token: String,
         paymentId: String,
-        amount: Double,
+        amount: String,
         deviceId: String,
         approvedId: String,
         approvedDate: String,
+        refundApprovedId: String,
+        refundApprovedDate: String,
     ): ApiData<EmptyEntity>
 
     suspend fun getTables(

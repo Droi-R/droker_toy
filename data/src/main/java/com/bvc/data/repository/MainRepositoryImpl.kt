@@ -161,7 +161,7 @@ class MainRepositoryImpl
             userId: String,
             storeId: String,
             orderProductIds: List<String>,
-            totalPrice: Int,
+            totalPrice: String,
             paymentMethod: PaymentMethod,
             paymentChannel: PaymentChannel,
             paymentStatus: PaymentStatus,
@@ -171,8 +171,8 @@ class MainRepositoryImpl
                 mainDataSource.postPayment(
                     token,
                     PaymentRequest(
-                        userId = userId.toInt(),
-                        storeId = storeId.toInt(),
+                        userId = userId,
+                        storeId = storeId,
                         orderProductIds = orderProductIds,
                         totalPrice = totalPrice,
                         paymentMethod = paymentMethod,
@@ -186,7 +186,7 @@ class MainRepositoryImpl
         override suspend fun requestCapture(
             token: String,
             paymentId: String,
-            amount: Double,
+            amount: String,
             deviceId: String,
             approvedId: String,
             approvedDate: String,
@@ -208,10 +208,12 @@ class MainRepositoryImpl
         override suspend fun requestRefund(
             token: String,
             paymentId: String,
-            amount: Double,
+            amount: String,
             deviceId: String,
             approvedId: String,
             approvedDate: String,
+            refundApprovedId: String,
+            refundApprovedDate: String,
         ): ApiData<EmptyEntity> =
             ResponseMapper.mapEmpty(
                 mainDataSource.requestRefund(
@@ -223,6 +225,8 @@ class MainRepositoryImpl
                             deviceId = deviceId,
                             approvedId = approvedId,
                             approvedDate = approvedDate,
+                            refundApprovedId = refundApprovedId,
+                            refundApprovedDate = refundApprovedDate,
                         ),
                 ),
             )

@@ -92,7 +92,7 @@ class MainUseCase
             userId: String,
             storeId: String,
             orderProductIds: List<String>,
-            totalPrice: Int,
+            totalPrice: String,
             paymentMethod: PaymentMethod,
             paymentChannel: PaymentChannel,
             paymentStatus: PaymentStatus,
@@ -112,7 +112,7 @@ class MainUseCase
         suspend fun requestCapture(
             token: String,
             paymentId: String,
-            amount: Double,
+            amount: String,
             deviceId: String,
             approvedId: String,
             approvedDate: String,
@@ -128,10 +128,12 @@ class MainUseCase
         suspend fun reqeustRefund(
             token: String,
             paymentId: String,
-            amount: Double,
+            amount: String,
             deviceId: String,
             approvedId: String,
             approvedDate: String,
+            refundApprovedId: String,
+            refundApprovedDate: String,
         ) = mainRepository.requestRefund(
             token = token,
             paymentId = paymentId,
@@ -139,6 +141,8 @@ class MainUseCase
             deviceId = deviceId,
             approvedId = approvedId,
             approvedDate = approvedDate,
+            refundApprovedId = refundApprovedId,
+            refundApprovedDate = refundApprovedDate,
         )
 
         suspend fun getTables(

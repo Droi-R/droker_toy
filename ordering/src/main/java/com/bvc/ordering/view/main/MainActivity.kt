@@ -424,10 +424,9 @@ class MainActivity : BaseActivity() {
             val data = result.data
             if (resultCode == RESULT_OK && data != null) {
                 Toast.makeText(this, "성공", Toast.LENGTH_LONG).show()
-                log.e("data: $data")
                 val recvByte: ByteArray =
                     data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
-                log.e("Recv Telegram \n ${KsnetUtil.HexDump.dumpHexString(recvByte)}")
+//                log.e("Recv Telegram \n ${KsnetUtil.HexDump.dumpHexString(recvByte)}")
                 viewModel.requestRefund(
                     recvByte,
                 )

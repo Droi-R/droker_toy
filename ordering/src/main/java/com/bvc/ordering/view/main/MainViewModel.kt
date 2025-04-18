@@ -109,6 +109,9 @@ class MainViewModel
             )
         }
 
+        var orgApprNo = ""
+        var orgDate = ""
+
         fun requestCapture(recvByte: ByteArray) {
             requestApi(
                 request = {
@@ -118,12 +121,12 @@ class MainViewModel
                         token = preferenceUseCase.getToken(),
                         paymentId = requestCaptureTelegram.value?.second?.paymentId ?: throw IllegalStateException("Payment ID is null"),
                         amount =
-                            requestCaptureTelegram.value
+                            "${requestCaptureTelegram.value
                                 ?.second
                                 ?.paymentAmout
                                 ?.toDouble() ?: throw IllegalStateException(
                                 "Payment Amount is null",
-                            ),
+                            )}",
                         deviceId = String(trData.deviceNumber),
                         approvedId = String(trData.approvalNumber),
                         approvedDate = String(trData.transferDate),
@@ -137,6 +140,8 @@ class MainViewModel
                         // 환불 테스트
                         val trData = TransactionData()
                         trData.SetData(recvByte)
+                        orgApprNo = String(trData.approvalNumber)
+                        orgDate = String(trData.transferDate)
                         requestRefundTelegram(
                             Pair(
                                 Telegram.makeTelegramIC(
@@ -144,8 +149,8 @@ class MainViewModel
                                     mDeviceNo = String(trData.deviceNumber),
                                     quota = "00",
                                     totAmt = "${requestCaptureTelegram.value?.second?.paymentAmout}",
-                                    orgApprNo = String(trData.approvalNumber),
-                                    orgDate = String(trData.transferDate),
+                                    orgApprNo = orgApprNo,
+                                    orgDate = orgDate,
                                     taxFree = "${requestCaptureTelegram.value?.second?.supAmt}",
                                 ),
                                 PaymentEntity(
@@ -179,15 +184,17 @@ class MainViewModel
                         token = preferenceUseCase.getToken(),
                         paymentId = requestCaptureTelegram.value?.second?.paymentId ?: throw IllegalStateException("Payment ID is null"),
                         amount =
-                            requestCaptureTelegram.value
+                            "${requestCaptureTelegram.value
                                 ?.second
                                 ?.paymentAmout
                                 ?.toDouble() ?: throw IllegalStateException(
                                 "Payment Amount is null",
-                            ),
+                            )}",
                         deviceId = String(trData.deviceNumber),
-                        approvedId = String(trData.approvalNumber),
-                        approvedDate = String(trData.transferDate),
+                        approvedId = orgApprNo,
+                        approvedDate = orgDate,
+                        refundApprovedId = String(trData.approvalNumber),
+                        refundApprovedDate = String(trData.transferDate),
                     )
                 },
                 successAction = {

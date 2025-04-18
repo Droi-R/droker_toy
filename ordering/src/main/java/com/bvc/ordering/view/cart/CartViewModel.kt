@@ -151,7 +151,7 @@ class CartViewModel
                             userId = preferenceUseCase.getUserId(),
                             storeId = "${preferenceUseCase.getStoreId()}",
                             orderProductIds = listOf(response.data.orderID),
-                            totalPrice = totalAmount.value,
+                            totalPrice = "${totalAmount.value}",
                             paymentMethod = PaymentMethod.CARD,
                             paymentChannel = PaymentChannel.KAKAO,
                             paymentStatus = PaymentStatus.READY,
