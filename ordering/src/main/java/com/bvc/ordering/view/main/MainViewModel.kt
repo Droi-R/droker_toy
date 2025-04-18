@@ -10,6 +10,7 @@ import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
+import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.ui.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -127,19 +128,24 @@ class MainViewModel
             }
         }
 
-        fun postCapture(
-            apprNo: String,
-            apprDate: String,
-        ) {
+        fun postCapture(recvByte: ByteArray) {
             requestApi(
                 request = {
+                    val trData = TransactionData()
+                    trData.SetData(recvByte)
                     mainUseCase.postCapture(
                         token = preferenceUseCase.getToken(),
                         paymentId = requestTelegram.value?.second?.paymentId ?: throw IllegalStateException("Payment ID is null"),
-                        amount = 0.0,
-                        deviceId = "",
-                        approvedId = apprNo,
-                        approvedDate = apprDate,
+                        amount =
+                            requestTelegram.value
+                                ?.second
+                                ?.paymentAmout
+                                ?.toDouble() ?: throw IllegalStateException(
+                                "Payment Amount is null",
+                            ),
+                        deviceId = String(trData.deviceNumber),
+                        approvedId = String(trData.approvalNumber),
+                        approvedDate = String(trData.transferDate),
                     )
                 },
                 successAction = {

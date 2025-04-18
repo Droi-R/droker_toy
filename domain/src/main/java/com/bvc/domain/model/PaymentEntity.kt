@@ -6,6 +6,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PaymentEntity(
     val paymentId: String,
+    val paymentAmout: String = "0",
+    val vat: String = "",
+    val supAmt: String = "",
 //    val orderName: String,
 //    var orderItems: List<ProductEntity>,
 //    val buyerName: String,

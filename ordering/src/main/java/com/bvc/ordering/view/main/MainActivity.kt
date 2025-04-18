@@ -25,7 +25,6 @@ import com.bvc.domain.log
 import com.bvc.ordering.R
 import com.bvc.ordering.base.BaseActivity
 import com.bvc.ordering.databinding.ActivityMainBinding
-import com.bvc.ordering.ksnet.KSNETResponseData
 import com.bvc.ordering.ksnet.KsnetUtil
 import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.view.cart.CartFragment
@@ -292,12 +291,18 @@ class MainActivity : BaseActivity() {
             val data = result.data
             if (resultCode == RESULT_OK && data != null) {
                 Toast.makeText(this, "성공", Toast.LENGTH_LONG).show()
+                log.e("data: $data")
                 val recvByte: ByteArray =
                     data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
 //                KsnetUtil.byteTo20ByteLog(recvByte, "")
                 log.e("Recv Telegram \n ${KsnetUtil.HexDump.dumpHexString(recvByte)}")
-                val responseData = KSNETResponseData.from(recvByte)
-                log.e("responseData: $responseData")
+
+//                val trData = TransactionData()
+//                trData.SetData(recvByte)
+//                log.e("trData: $trData")
+
+//                val responseData = KSNETResponseData.from(recvByte)
+//                log.e("responseData: $responseData")
 
 //                val str: String = KsnetUtil.HexDump.dumpHexString(recvByte)
 //                log.e("str : $str")
@@ -311,10 +316,10 @@ class MainActivity : BaseActivity() {
 //                log.e("String(apprDate) : ${String(apprDate)}")
 
                 // TODO 여기서 캡쳐 날리자
-//                viewModel.postCapture(
-//                    apprNo = String(apprNo),
-//                    apprDate = String(apprDate),
-//                )
+                viewModel.postCapture(
+                    apprNo = String(apprNo),
+                    apprDate = String(apprDate),
+                )
             } else if (resultCode == RESULT_CANCELED) {
                 if (data != null) {
                     log.e("result" + data.getIntExtra("result", 1).toString())
