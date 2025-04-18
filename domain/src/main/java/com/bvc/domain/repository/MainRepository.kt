@@ -94,6 +94,15 @@ interface MainRepository {
         approvedDate: String,
     ): ApiData<EmptyEntity>
 
+    suspend fun postRefund(
+        token: String,
+        paymentId: String,
+        amount: Double,
+        deviceId: String,
+        approvedId: String,
+        approvedDate: String,
+    ): ApiData<EmptyEntity>
+
     suspend fun getTables(
         token: String,
         id: String,

@@ -279,7 +279,7 @@ object ResponseMapper {
 
     private fun PaymentResponse.toEntity(): PaymentEntity =
         PaymentEntity(
-            pid = pid ?: "",
+            paymentId = paymentId ?: "",
         )
 
     private fun MaterialsResponse.toEntity(): MaterialsEntity =

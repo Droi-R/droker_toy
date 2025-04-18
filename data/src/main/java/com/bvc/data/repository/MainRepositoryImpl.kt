@@ -2,7 +2,7 @@ package com.bvc.data.repository
 
 import com.bvc.data.mapper.ResponseMapper
 import com.bvc.data.mapper.toRequest
-import com.bvc.data.remote.model.request.CaptureRequest
+import com.bvc.data.remote.model.request.ApproveRequest
 import com.bvc.data.remote.model.request.OrderInfoRequest
 import com.bvc.data.remote.model.request.OrderRequest
 import com.bvc.data.remote.model.request.PaymentRequest
@@ -184,7 +184,29 @@ class MainRepositoryImpl
                 mainDataSource.postCapture(
                     token = token,
                     captureRequest =
-                        CaptureRequest(
+                        ApproveRequest(
+                            paymentId = paymentId,
+                            amount = amount,
+                            deviceId = deviceId,
+                            approvedId = approvedId,
+                            approvedDate = approvedDate,
+                        ),
+                ),
+            )
+
+        override suspend fun postRefund(
+            token: String,
+            paymentId: String,
+            amount: Double,
+            deviceId: String,
+            approvedId: String,
+            approvedDate: String,
+        ): ApiData<EmptyEntity> =
+            ResponseMapper.mapEmpty(
+                mainDataSource.postRefund(
+                    token = token,
+                    refundRequest =
+                        ApproveRequest(
                             paymentId = paymentId,
                             amount = amount,
                             deviceId = deviceId,

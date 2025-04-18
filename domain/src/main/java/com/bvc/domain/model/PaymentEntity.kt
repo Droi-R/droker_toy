@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PaymentEntity(
-    val pid: String,
+    val paymentId: String,
 //    val orderName: String,
 //    var orderItems: List<ProductEntity>,
 //    val buyerName: String,
@@ -21,7 +21,7 @@ data class PaymentEntity(
     companion object {
         val EMPTY =
             PaymentEntity(
-                pid = "",
+                paymentId = "",
 //                orderName = "",
 //                orderItems = emptyList(),
 //                buyerName = "",

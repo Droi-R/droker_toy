@@ -127,14 +127,19 @@ class MainViewModel
             }
         }
 
-        fun requestCapture(
+        fun postCapture(
             apprNo: String,
             apprDate: String,
         ) {
             requestApi(
                 request = {
-                    mainUseCase.requestCapture(
-                        preferenceUseCase.getToken(),
+                    mainUseCase.postCapture(
+                        token = preferenceUseCase.getToken(),
+                        paymentId = requestTelegram.value?.second?.paymentId ?: throw IllegalStateException("Payment ID is null"),
+                        amount = 0.0,
+                        deviceId = "",
+                        approvedId = apprNo,
+                        approvedDate = apprDate,
                     )
                 },
                 successAction = {

@@ -2,7 +2,7 @@ package com.bvc.data.remote.model.request
 
 import com.google.gson.annotations.SerializedName
 
-data class CaptureRequest(
+data class ApproveRequest(
     @SerializedName("payment_id") val paymentId: String,
     @SerializedName("amount") val amount: Double,
     @SerializedName("device_id") val deviceId: String,

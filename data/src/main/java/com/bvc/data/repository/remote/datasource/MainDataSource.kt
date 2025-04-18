@@ -1,6 +1,6 @@
 package com.bvc.data.repository.remote.datasource
 
-import com.bvc.data.remote.model.request.CaptureRequest
+import com.bvc.data.remote.model.request.ApproveRequest
 import com.bvc.data.remote.model.request.OrderRequest
 import com.bvc.data.remote.model.request.PaymentRequest
 import com.bvc.data.remote.model.response.CategoryResponse
@@ -67,7 +67,12 @@ interface MainDataSource {
 
     suspend fun postCapture(
         token: String,
-        captureRequest: CaptureRequest,
+        captureRequest: ApproveRequest,
+    ): ResData<EmptyResponse>?
+
+    suspend fun postRefund(
+        token: String,
+        refundRequest: ApproveRequest,
     ): ResData<EmptyResponse>?
 
     suspend fun getTables(

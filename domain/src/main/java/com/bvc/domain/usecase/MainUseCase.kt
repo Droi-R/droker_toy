@@ -120,6 +120,22 @@ class MainUseCase
             approvedDate = approvedDate,
         )
 
+        suspend fun postRefund(
+            token: String,
+            paymentId: String,
+            amount: Double,
+            deviceId: String,
+            approvedId: String,
+            approvedDate: String,
+        ) = mainRepository.postRefund(
+            token = token,
+            paymentId = paymentId,
+            amount = amount,
+            deviceId = deviceId,
+            approvedId = approvedId,
+            approvedDate = approvedDate,
+        )
+
         suspend fun getTables(
             token: String,
             id: String,
