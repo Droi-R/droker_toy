@@ -153,6 +153,9 @@ class CartViewModel
                 },
                 successAction = { response ->
                     log.e("response: $response")
+                    response.data.vat = "${vatAmount.value}"
+                    response.data.supAmt = "${supplyAmount.value}"
+                    response.data.paymentAmout = "${totalAmount.value}"
                     _requestTelegram.value =
                         Pair(
                             Telegram.makeTelegramIC(

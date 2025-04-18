@@ -317,8 +317,7 @@ class MainActivity : BaseActivity() {
 
                 // TODO 여기서 캡쳐 날리자
                 viewModel.postCapture(
-                    apprNo = String(apprNo),
-                    apprDate = String(apprDate),
+                    recvByte,
                 )
             } else if (resultCode == RESULT_CANCELED) {
                 if (data != null) {
