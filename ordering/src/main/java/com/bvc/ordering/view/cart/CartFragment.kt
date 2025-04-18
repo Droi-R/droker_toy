@@ -100,7 +100,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>() {
         }
         viewModel.apply {
             requestTelegram.observe(viewLifecycleOwner) {
-                mainViewModel.requestTelegram(it)
+                mainViewModel.requestCaptureTelegram(it)
             }
         }
     }

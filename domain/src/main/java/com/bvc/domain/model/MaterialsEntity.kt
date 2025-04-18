@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 data class MaterialsEntity(
     val materialId: String,
     val materialName: String,
-    val stock: Int,
-    val safetyStock: Int,
+    val unitCount: Int,
+    val unitSafetyCount: Int,
     val imageUrl: String,
     val unit: String,
 ) : Parcelable {

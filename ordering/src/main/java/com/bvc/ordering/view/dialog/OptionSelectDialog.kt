@@ -13,7 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.bvc.domain.log
-import com.bvc.domain.model.Options
+import com.bvc.domain.model.OptionsEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.ordering.R
 import com.bvc.ordering.databinding.DialogOptionSelectBinding
@@ -285,7 +285,7 @@ class OptionSelectDialog(
                     options =
                         option.options.map { opt ->
                             opt.copy(isSelected = selectedOptions[option.optionGroupId]?.contains(opt.productOptionsId) == true)
-                        } as ArrayList<Options>,
+                        } as ArrayList<OptionsEntity>,
                 )
             }
 

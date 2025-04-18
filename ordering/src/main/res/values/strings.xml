@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ordering</string>
+    <string name="app_name">droker_toy</string>
     <string name="action_settings">Settings</string>
 
     <!--commen-->
@@ -71,5 +71,25 @@
     <!--발주 리스트-->
     <string name="materials_order_list">발주 리스트</string>
 
+    <!--스마트오더-->
+    <string name="materials_delivery_cost">배송비</string>
+    <string name="materials_delivery_company">배송업체</string>
+    <string name="materials_stock">보유 수량</string>
+    <string name="materials_consumption_3days">3일간 예상 소모량</string>
+    <string name="materials_order_delete">주문 삭제</string>
+    <string name="materials_stock_change">보유수량 변경</string>
+
+    <!--소모량 설정 / 재료별 소모량-->
+    <string name="materials_detail_title">&lt;   소모량 설정 / 재료별 소모량</string>
+    <string name="materials_detail_desc">재료로 사용하는 메뉴 입니다.</string>
+    <string name="materials_detail_consumption">소모량 변경</string>
+    <string name="materials_detail_unit">단위 변경</string>
+
+    <string name="consumption_desc">1개 만들기 위해 필요한 재료의 정보가 아래와\n같은지 확인해주세요.\n
+앞으로 아주 편한 재료관리 도와드릴게요.</string>
+    <!--추천상품 변경-->
+    <string name="materials_detail_recommendation">추천상품 변경</string>
+    <!--안써요-->
+    <string name="materials_detail_not_use">안써요</string>
 
 </resources>

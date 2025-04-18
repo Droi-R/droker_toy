@@ -19,8 +19,6 @@ class Event<out T>(
             hasBeenHandled = true
             content
         }
-
-    fun peekContent(): T = content
 }
 
 // StateFlow.collect는 LifecycleScope.launch 블록 안에서 사용해야 함

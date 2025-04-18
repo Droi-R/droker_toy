@@ -3,8 +3,6 @@ package com.bvc.data.remote.model.response
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
-    @SerializedName("external_key")
-    val externalKey: String? = null,
     @SerializedName("product_id")
     val productId: String? = null,
     @SerializedName("store_id")
@@ -22,7 +20,7 @@ data class ProductResponse(
     @SerializedName("selected")
     val selected: Boolean? = null,
     @SerializedName("stock")
-    val stock: StockResponse? = null,
+    val stock: Int? = null,
     @SerializedName("color")
     var color: String? = null,
     @SerializedName("image")
@@ -47,6 +45,8 @@ data class ProductResponse(
     val useStock: Boolean? = null, // 추가
     @SerializedName("quantity")
     val quantity: Int? = null, // 추가
+    @SerializedName("product_recipes")
+    val productRecipes: List<RecipeResponse>? = null, // 추가
 )
 
 data class OptionGroupsResponse(
@@ -103,10 +103,14 @@ data class OptionResponse(
     val position: Int? = null,
     @SerializedName("use_stock")
     val useStock: Boolean? = null,
+    @SerializedName("stock")
+    val stock: Int? = null,
     @SerializedName("is_sold_out")
     val isSoldOut: Boolean? = null,
     @SerializedName("is_selected")
     var isSelected: Boolean? = null,
     @SerializedName("materials")
     val materials: List<MaterialsResponse>? = null,
+    @SerializedName("option_recipes")
+    val optionRecipes: List<RecipeResponse>? = null, // 추가
 )

@@ -1,34 +1,16 @@
 package com.bvc.ordering.base
 
-import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.type.ApiStatus
-import com.bvc.domain.type.ErrorType
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.utils.Constant
-import com.bvc.domain.utils.RemoteErrorEmitter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class BaseViewModel :
-    ViewModel(),
-    RemoteErrorEmitter {
-    val mutableProgress = MutableLiveData<Int>(View.GONE)
+abstract class BaseViewModel : ViewModel() {
     val mutableScreenState = SingleLiveEvent<ScreenState>()
-    val mutableErrorMessage = SingleLiveEvent<String>()
-    val mutableSuccessMessage = MutableLiveData<String>()
-    val mutableErrorType = SingleLiveEvent<ErrorType>()
-
-    override fun onError(errorType: ErrorType) {
-        mutableErrorType.postValue(errorType)
-    }
-
-    override fun onError(msg: String) {
-        mutableErrorMessage.postValue(msg)
-    }
 
     fun <T> requestApi(
         request: suspend () -> T?,

@@ -7,10 +7,10 @@ import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
+import com.bvc.domain.model.calculateVatSummary
 import com.bvc.domain.repository.TableStoreRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
-import com.bvc.domain.type.PaymentStatus
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -43,6 +43,15 @@ class TableOrderViewModel
         private val _cartData = MutableStateFlow<List<ProductEntity>>(emptyList())
         val cartData: StateFlow<List<ProductEntity>> get() = _cartData
 
+        private val _supplyAmount = MutableStateFlow(0)
+        val supplyAmount: StateFlow<Int> get() = _supplyAmount
+
+        private val _vatAmount = MutableStateFlow(0)
+        val vatAmount: StateFlow<Int> get() = _vatAmount
+
+        private val _totalAmount = MutableStateFlow(0)
+        val totalAmount: StateFlow<Int> get() = _totalAmount
+
         private val _tableInfo = SingleLiveEvent<TableEntity>()
         val tableInfo: LiveData<TableEntity> get() = _tableInfo
 
@@ -72,17 +81,21 @@ class TableOrderViewModel
         fun postOrder() {
             requestApi(
                 request = {
-                    mainUseCase.postOrder(
-                        this@TableOrderViewModel,
-                        preferenceUseCase.getToken(),
-                        id = "",
-                        productItems = cartData.value,
-                        orderStatus = OrderStatus.PENDING,
-                        paymentStatus = PaymentStatus.READY,
-                        orderFrom = OrderFrom.POS,
-                        tableNumber = "${tableInfo.value?.tableNumber}",
-                        tableExternalKey = tableInfo.value?.tableExternalKey ?: "",
-                    )
+                    mainUseCase
+                        .postOrder(
+                            token = preferenceUseCase.getToken(),
+                            userId = preferenceUseCase.getUserId(),
+                            storeId = "${preferenceUseCase.getStoreId()}",
+                            productItems = cartData.value,
+                            orderStatus = OrderStatus.PENDING,
+                            orderFrom = OrderFrom.POS,
+                            tablesId = 0,
+                            itemMemo = "",
+                            totalPrice = totalAmount.value,
+                            supplyPrice = supplyAmount.value,
+                            vatPrice = vatAmount.value,
+                            discountPrice = 0,
+                        )
                 },
                 successAction = {
                     log.e("success: $it")
@@ -97,7 +110,7 @@ class TableOrderViewModel
 //                val response =
 //                    getMainUseCase
 //                        .postOrder(
-//                            remoteErrorEmitter = this@TableOrderViewModel,
+//
 //                            token = preferenceUseCase.getToken(),
 //                            id = "",
 //                            productItems = cartData.value,
@@ -114,7 +127,6 @@ class TableOrderViewModel
             requestApi(
                 request = {
                     mainUseCase.getMenuCategory(
-                        this@TableOrderViewModel,
                         preferenceUseCase.getToken(),
                         "${preferenceUseCase.getStoreId()}",
                     )
@@ -152,7 +164,6 @@ class TableOrderViewModel
             requestApi(
                 request = {
                     mainUseCase.getSubCategory(
-                        this@TableOrderViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = mainCategoryId,
@@ -193,7 +204,6 @@ class TableOrderViewModel
             requestApi(
                 request = {
                     mainUseCase.getProducts(
-                        this@TableOrderViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = "${subCategoryEntity?.mainCategoryId}",
@@ -214,6 +224,22 @@ class TableOrderViewModel
                     Utils.showToast(message)
                 },
             )
+        }
+
+        fun getCartStore() {
+            viewModelScope.launch {
+                _cartData.value = cartStoreRepository.getItems()
+                calculateAmounts(cartData.value)
+            }
+        }
+
+        private fun calculateAmounts(items: List<ProductEntity>) {
+            val result = items.calculateVatSummary()
+
+            _supplyAmount.value = result.supplyAmount
+            _vatAmount.value = result.vat
+            _totalAmount.value = result.totalAmount
+            log.e("taxFree: ${result.taxFree}")
         }
 
         fun updateCategory(item: CategoryEntity) {

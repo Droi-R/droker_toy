@@ -5,7 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ProductEntity(
-    val externalKey: String,
     val productId: String,
     val storeId: String,
     val mainCategoryId: String,
@@ -14,7 +13,7 @@ data class ProductEntity(
     val descriptions: String,
     var isVat: Boolean,
     val selected: Boolean,
-    val stock: Stock,
+    val stock: Int,
     var color: String,
     val useStock: Boolean,
     val optionGroups: List<ProductOptionEntity>,
@@ -26,6 +25,7 @@ data class ProductEntity(
     val isVatIncluded: Boolean,
     val barcode: String,
     val dailyLimit: Int,
+    val productRecipes: List<RecipeEntity>,
 ) : Parcelable {
     fun getTotalPrice(): Int {
         val productPrice = basePrice.toInt()
@@ -35,6 +35,33 @@ data class ProductEntity(
                 .filter { it.isSelected }
                 .sumOf { it.price.toInt() }
         return (productPrice + selectedOptionsPrice) * quantity
+    }
+
+    companion object {
+        val EMPTY =
+            ProductEntity(
+                productId = "",
+                storeId = "",
+                mainCategoryId = "",
+                subCategoryId = "",
+                name = "",
+                descriptions = "",
+                isVat = false,
+                selected = false,
+                stock = 0,
+                color = "",
+                useStock = false,
+                optionGroups = emptyList(),
+                position = 0,
+                quantity = 0,
+                imageUrl = "",
+                basePrice = "0",
+                isSoldOut = false,
+                isVatIncluded = false,
+                barcode = "",
+                dailyLimit = 0,
+                productRecipes = emptyList(),
+            )
     }
 }
 
@@ -46,15 +73,15 @@ data class ProductOptionEntity(
     var minOptionCountLimit: Int,
     var maxOptionCountLimit: Int,
     var position: Int,
-    var options: List<Options>,
+    var options: List<OptionsEntity>,
 ) : Parcelable
 
-@Parcelize
-data class Stock(
-    val externalKey: String,
-    var useStock: Boolean,
-    var count: Int,
-) : Parcelable
+// @Parcelize
+// data class Stock(
+//    val externalKey: String,
+//    var useStock: Boolean,
+//    var count: Int,
+// ) : Parcelable
 
 data class Images(
     val id: Long,
@@ -65,15 +92,17 @@ data class Images(
 )
 
 @Parcelize
-data class Options(
+data class OptionsEntity(
     val productOptionsId: String,
     var name: String,
     var price: String,
     val position: Int,
     val useStock: Boolean,
+    val stock: Int,
     val isSoldOut: Boolean,
     val materials: List<MaterialsEntity>,
     var isSelected: Boolean,
+    val optionRecipes: List<RecipeEntity>,
 ) : Parcelable
 
 data class VatResult(

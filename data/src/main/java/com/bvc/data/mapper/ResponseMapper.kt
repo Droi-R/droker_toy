@@ -10,15 +10,17 @@ import com.bvc.data.remote.model.response.OptionResponse
 import com.bvc.data.remote.model.response.OrderMemoResponse
 import com.bvc.data.remote.model.response.OrderResponse
 import com.bvc.data.remote.model.response.OriginResponse
+import com.bvc.data.remote.model.response.PaymentResponse
 import com.bvc.data.remote.model.response.ProductResponse
+import com.bvc.data.remote.model.response.RecipeResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
 import com.bvc.data.remote.model.response.ResMeta
 import com.bvc.data.remote.model.response.ResPagination
 import com.bvc.data.remote.model.response.SmartOrderResponse
-import com.bvc.data.remote.model.response.StockResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
+import com.bvc.data.remote.model.response.TableAresResponse
 import com.bvc.data.remote.model.response.TableResponse
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
@@ -29,15 +31,16 @@ import com.bvc.domain.model.GithubEntity
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.Meta
-import com.bvc.domain.model.Options
+import com.bvc.domain.model.OptionsEntity
 import com.bvc.domain.model.OrderEntity
 import com.bvc.domain.model.OrderMemo
 import com.bvc.domain.model.OriginEntity
 import com.bvc.domain.model.Pagination
+import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
+import com.bvc.domain.model.RecipeEntity
 import com.bvc.domain.model.SmartOrderEntity
-import com.bvc.domain.model.Stock
 import com.bvc.domain.model.Store
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
@@ -71,7 +74,7 @@ object ResponseMapper {
             nextCursor = pagination?.nextCursor ?: "",
         )
 
-    fun mapSendSms(response: ResData<EmptyResponse>?): ApiData<EmptyEntity> =
+    fun mapEmpty(response: ResData<EmptyResponse>?): ApiData<EmptyEntity> =
         ApiData(
             meta = mapMeta(response?.meta),
             data =
@@ -157,6 +160,21 @@ object ResponseMapper {
                 response?.data?.map { it.toEntity() },
         )
 
+    fun mapTableArea(response: ResDataList<TableAresResponse>?): ApiDataList<CategoryEntity> =
+        ApiDataList(
+            meta = mapMeta(response?.meta),
+            pagination = mapPagination(response?.pagination),
+            data =
+                response?.data?.map {
+                    CategoryEntity(
+                        mainCategoryId = it.tableAreaId ?: "",
+                        storeId = it.storeId ?: "",
+                        name = it.areaName ?: "",
+                        selected = it.selected ?: false,
+                    )
+                },
+        )
+
     fun mapSubCategory(response: ResDataList<SubCategoryResponse>?): ApiDataList<SubCategoryEntity> =
         ApiDataList(
             meta = mapMeta(response?.meta),
@@ -200,6 +218,12 @@ object ResponseMapper {
             data = response?.data?.toEntity() ?: OrderEntity.EMPTY,
         )
 
+    fun mapPayment(response: ResData<PaymentResponse>?): ApiData<PaymentEntity> =
+        ApiData(
+            meta = mapMeta(response?.meta),
+            data = response?.data?.toEntity() ?: PaymentEntity.EMPTY,
+        )
+
     fun mapTables(response: ResDataList<TableResponse>?): ApiDataList<TableEntity> =
         ApiDataList(
             meta = mapMeta(response?.meta),
@@ -239,7 +263,6 @@ object ResponseMapper {
 
     private fun ProductResponse.toEntity(): ProductEntity =
         ProductEntity(
-            externalKey = externalKey ?: "",
             productId = productId ?: "", // 추가
             storeId = storeId ?: "", // 추가
             mainCategoryId = mainCategoryId ?: "", // 추가
@@ -248,7 +271,7 @@ object ResponseMapper {
             descriptions = descriptions ?: "",
             isVat = isVat ?: true,
             selected = selected ?: false,
-            stock = stock?.toEntity() ?: Stock("", false, 0),
+            stock = stock ?: 0,
             color = color ?: "#ffffff",
 //            image = image ?: "",
             optionGroups = optionGroups?.map { it.toEntity() } ?: emptyList(),
@@ -261,14 +284,26 @@ object ResponseMapper {
             dailyLimit = dailyLimit ?: 0,
             useStock = useStock ?: false,
             quantity = quantity ?: 1,
+            productRecipes = productRecipes?.map { it.toEntity() } ?: emptyList(),
+        )
+
+    private fun RecipeResponse.toEntity(): RecipeEntity =
+        RecipeEntity(
+            materialId = materialId ?: "",
+            name = name ?: "",
+        )
+
+    private fun PaymentResponse.toEntity(): PaymentEntity =
+        PaymentEntity(
+            paymentId = paymentId ?: "",
         )
 
     private fun MaterialsResponse.toEntity(): MaterialsEntity =
         MaterialsEntity(
             materialId = materialId ?: "",
             materialName = materialName ?: "",
-            stock = stock ?: 0,
-            safetyStock = safetyStock ?: 0,
+            unitCount = stock ?: 0,
+            unitSafetyCount = safetyStock ?: 0,
             imageUrl = imageUrl ?: "",
             unit = unit ?: "",
         )
@@ -276,11 +311,10 @@ object ResponseMapper {
     private fun SmartOrderResponse.toEntity(): SmartOrderEntity =
         SmartOrderEntity(
             smartOrderId = smartOrderId ?: "",
-            safetyStock = safetyStock ?: 0,
             description = description ?: "",
             deliveryCost = deliveryCost ?: "",
             logisticsCompany = logisticsCompany ?: "",
-            expectedConsumption = expectedConsumption ?: "",
+            expectedConsumptionCount = expectedConsumptionCount ?: 0,
             origin = origin?.toEntity() ?: OriginEntity.EMPTY,
             material = material?.toEntity() ?: MaterialsEntity.EMPTY,
         )
@@ -294,13 +328,6 @@ object ResponseMapper {
             supplier = supplier ?: "",
         )
 
-    private fun StockResponse.toEntity(): Stock =
-        Stock(
-            externalKey = externalKey ?: "",
-            useStock = useStock ?: false,
-            count = count ?: 0,
-        )
-
     private fun OptionGroupsResponse.toEntity(): ProductOptionEntity =
         ProductOptionEntity(
             optionGroupId = optionGroupId ?: "",
@@ -312,10 +339,10 @@ object ResponseMapper {
             options = options?.toEntities() ?: arrayListOf(),
         )
 
-    private fun List<OptionResponse>?.toEntities(): ArrayList<Options> =
+    private fun List<OptionResponse>?.toEntities(): ArrayList<OptionsEntity> =
         ArrayList(
             this?.map {
-                Options(
+                OptionsEntity(
                     productOptionsId = it.productOptionsId ?: "",
                     name = it.name ?: "",
                     price = it.price ?: "",
@@ -324,6 +351,8 @@ object ResponseMapper {
                     isSoldOut = it.isSoldOut ?: false,
                     isSelected = it.isSelected ?: false,
                     materials = it.materials?.map { it.toEntity() } ?: emptyList(),
+                    optionRecipes = it.optionRecipes?.map { it.toEntity() } ?: emptyList(),
+                    stock = it.stock ?: 0,
                 )
             } ?: emptyList(),
         )
@@ -348,7 +377,7 @@ object ResponseMapper {
 
     private fun OrderResponse.toEntity(): OrderEntity =
         OrderEntity(
-            oid = oid ?: "",
+            orderID = orderId ?: "",
             orderName = orderName ?: "",
             orderItems = orderItems?.map { it.toEntity() }?.let { ArrayList(it) } ?: arrayListOf(),
             buyerName = buyerName ?: "",

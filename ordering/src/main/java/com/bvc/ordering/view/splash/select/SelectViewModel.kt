@@ -37,7 +37,6 @@ class SelectViewModel
             requestApi(
                 request = {
                     splashUseCase.getStore(
-                        this@SelectViewModel,
                         preferenceUseCase.getToken(),
                         preferenceUseCase.getUserId(),
                     )

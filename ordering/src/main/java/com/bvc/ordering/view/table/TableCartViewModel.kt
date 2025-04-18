@@ -3,18 +3,17 @@ package com.bvc.ordering.view.table
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.log
+import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.model.calculateVatSummary
 import com.bvc.domain.repository.TableStoreRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
-import com.bvc.domain.type.PaymentStatus
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
-import com.bvc.ordering.ksnet.Telegram
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,8 +49,8 @@ class TableCartViewModel
         private val _cartData = MutableStateFlow<List<ProductEntity>>(emptyList())
         val cartData: StateFlow<List<ProductEntity>> get() = _cartData
 
-        private val _requestTelegram = SingleLiveEvent<ByteArray>()
-        val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
+        private val _requestTelegram = SingleLiveEvent<Pair<ByteArray, PaymentEntity>>()
+        val requestTelegram: LiveData<Pair<ByteArray, PaymentEntity>> get() = _requestTelegram
 
         private val _tableInfo = SingleLiveEvent<TableEntity>()
         val tableInfo: LiveData<TableEntity> get() = _tableInfo
@@ -110,28 +109,31 @@ class TableCartViewModel
                 val response =
                     getMainUseCase
                         .postOrder(
-                            remoteErrorEmitter = this@TableCartViewModel,
                             token = preferenceUseCase.getToken(),
-                            id = "",
+                            userId = preferenceUseCase.getUserId(),
+                            storeId = "${preferenceUseCase.getStoreId()}",
                             productItems = cartData.value,
                             orderStatus = OrderStatus.PENDING,
-                            paymentStatus = PaymentStatus.READY,
                             orderFrom = OrderFrom.POS,
-                            tableNumber = "",
-                            tableExternalKey = "",
+                            tablesId = 0,
+                            itemMemo = "",
+                            totalPrice = totalAmount.value,
+                            supplyPrice = supplyAmount.value,
+                            vatPrice = vatAmount.value,
+                            discountPrice = 0,
                         )
                 log.e("response: ${cartData.value}")
                 // TODO 여기서 페이먼트 생성
-                _requestTelegram.value =
-                    Telegram.makeTelegramIC(
-                        apprCode = "1",
-                        mDeviceNo = "DPT0TEST03",
-                        quota = "00",
-                        totAmt = "${totalAmount.value}",
-                        orgApprNo = "",
-                        orgDate = "",
-                        taxFree = "${taxFreeAmount.value}",
-                    )
+//                _requestTelegram.value =
+//                    Telegram.makeTelegramIC(
+//                        apprCode = "1",
+//                        mDeviceNo = "DPT0TEST03",
+//                        quota = "00",
+//                        totAmt = "${totalAmount.value}",
+//                        orgApprNo = "",
+//                        orgDate = "",
+//                        taxFree = "${taxFreeAmount.value}",
+//                    )
             }
         }
 

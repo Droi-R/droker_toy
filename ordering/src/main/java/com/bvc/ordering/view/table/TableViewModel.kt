@@ -6,16 +6,18 @@ import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.OrderEntity
 import com.bvc.domain.model.OrderMemo
 import com.bvc.domain.model.ProductEntity
-import com.bvc.domain.model.Stock
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
+import com.bvc.domain.type.ApiStatus
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
 import com.bvc.domain.type.PaymentStatus
 import com.bvc.domain.type.ScreenState
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
+import com.bvc.domain.utils.Constant
 import com.bvc.ordering.base.BaseViewModel
+import com.bvc.ordering.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +29,7 @@ class TableViewModel
     @Inject
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
-        private val getMainUseCase: MainUseCase,
+        private val mainUseCase: MainUseCase,
     ) : BaseViewModel() {
         private val _category = MutableStateFlow<List<CategoryEntity>>(emptyList())
         val category: StateFlow<List<CategoryEntity>> get() = _category
@@ -42,105 +44,109 @@ class TableViewModel
 //        val cartData: StateFlow<List<CartEntity>> get() = _cartData
 
         init {
-            getCategory()
+            getTableArea()
         }
 
-        private fun getCategory() {
-            viewModelScope.launch {
-                val response =
-                    getMainUseCase.getMenuCategory(
-                        remoteErrorEmitter = this@TableViewModel,
+        private fun getTableArea() {
+            requestApi(
+                request = {
+                    mainUseCase.getTableArea(
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                     )
-                val selectId = category.value?.find { it.selected }?.mainCategoryId
-                _category.value =
-                    (
-                        listOf(
-                            CategoryEntity(mainCategoryId = "1", name = "홀", selected = false),
-                            CategoryEntity(mainCategoryId = "2", name = "2층", selected = false),
-                        )
-                    ).let { list ->
-                        // selected 가 하나도 없으면 첫번째 selected = true
-                        if (list.none { it.selected } && list.isNotEmpty()) {
-                            list.mapIndexed { index, item ->
-                                item.copy(selected = index == 0)
-                            }
-                        } else {
-                            list
-                        }
+                },
+                successAction = { response ->
+                    if (Constant.getStatus(response.meta.code) == ApiStatus.SUCCESS) {
+                        val selectId = category.value.find { it.selected }?.mainCategoryId
+                        _category.value =
+                            (
+                                response.data?.map {
+                                    CategoryEntity(
+                                        mainCategoryId = it.mainCategoryId,
+                                        name = it.name,
+                                        selected = selectId == it.mainCategoryId,
+                                    )
+                                }
+                            )?.let { list ->
+                                // selected 없으면 첫번째 선택 처리
+                                if (list.none { it.selected } && list.isNotEmpty()) {
+                                    list.mapIndexed { index, item ->
+                                        item.copy(selected = index == 0)
+                                    }
+                                } else {
+                                    list
+                                }
+                            } ?: emptyList()
                     }
-
-                if (response == null) {
-                    mutableScreenState.postValue(ScreenState.ERROR)
-                } else {
-                    mutableScreenState.postValue(ScreenState.RENDER)
-                }
-            }
+                },
+                errorAction = { code, message ->
+                    log.e("getTableArea: $code, $message")
+                    Utils.showToast(message)
+                },
+            )
         }
 
-        fun getSubCategory(id: String) {
-            viewModelScope.launch {
-                val response =
-                    getMainUseCase.getSubCategory(
-                        remoteErrorEmitter = this@TableViewModel,
-                        token = preferenceUseCase.getToken(),
-                        storeId = "${preferenceUseCase.getStoreId()}",
-                        mainCategoryId = id,
-                    )
-                //                val selectId = subCategory.value?.find { it.selected }?.id
-                _subCategory.value = (
-//                    response?.data?.map {
+//        fun getSubCategory(id: String) {
+//            viewModelScope.launch {
+//                val response =
+//                    mainUseCase.getSubCategory(
+//                        token = preferenceUseCase.getToken(),
+//                        storeId = "${preferenceUseCase.getStoreId()}",
+//                        mainCategoryId = id,
+//                    )
+//                //                val selectId = subCategory.value?.find { it.selected }?.id
+//                _subCategory.value = (
+// //                    response?.data?.map {
+// //                        SubCategoryEntity(
+// //                            subCategoryId = it.subCategoryId,
+// //                            name = it.name,
+// //                            selected = false,
+// //                        )
+// //                    } ?:
+//                    listOf(
 //                        SubCategoryEntity(
-//                            subCategoryId = it.subCategoryId,
-//                            name = it.name,
+//                            subCategoryId = "1",
+//                            name = "결합결제",
 //                            selected = false,
-//                        )
-//                    } ?:
-                    listOf(
-                        SubCategoryEntity(
-                            subCategoryId = "1",
-                            name = "결합결제",
-                            selected = false,
-                        ),
-                        SubCategoryEntity(
-                            subCategoryId = "2",
-                            name = "이동/합석",
-                            selected = false,
-                        ),
-                        SubCategoryEntity(
-                            subCategoryId = "3",
-                            name = "좌석정보",
-                            selected = false,
-                        ),
-                        SubCategoryEntity(
-                            subCategoryId = "4",
-                            name = "예약",
-                            selected = false,
-                        ),
-                    )
-                )
-                //                log.e("_subCategory: ${subCategory.value}")
-                //                val selectedCategory = subCategory.value?.find { it.selected }
-                //                if (selectedCategory == null && subCategory.value?.isNotEmpty() == true) {
-                //                    _subCategory.value =
-                //                        subCategory.value.mapIndexed { index, item ->
-                //                            if (index == 0) item.copy(selected = true) else item.copy(selected = false)
-                //                        }
-                //                }
-
-                if (response == null) {
-                    mutableScreenState.postValue(ScreenState.ERROR)
-                } else {
-                    mutableScreenState.postValue(ScreenState.RENDER)
-                }
-            }
-        }
+//                        ),
+//                        SubCategoryEntity(
+//                            subCategoryId = "2",
+//                            name = "이동/합석",
+//                            selected = false,
+//                        ),
+//                        SubCategoryEntity(
+//                            subCategoryId = "3",
+//                            name = "좌석정보",
+//                            selected = false,
+//                        ),
+//                        SubCategoryEntity(
+//                            subCategoryId = "4",
+//                            name = "예약",
+//                            selected = false,
+//                        ),
+//                    )
+//                )
+//                //                log.e("_subCategory: ${subCategory.value}")
+//                //                val selectedCategory = subCategory.value?.find { it.selected }
+//                //                if (selectedCategory == null && subCategory.value?.isNotEmpty() == true) {
+//                //                    _subCategory.value =
+//                //                        subCategory.value.mapIndexed { index, item ->
+//                //                            if (index == 0) item.copy(selected = true) else item.copy(selected = false)
+//                //                        }
+//                //                }
+//
+//                if (response == null) {
+//                    mutableScreenState.postValue(ScreenState.ERROR)
+//                } else {
+//                    mutableScreenState.postValue(ScreenState.RENDER)
+//                }
+//            }
+//        }
 
         fun getTables(externalKey: String) {
             viewModelScope.launch {
                 val response =
-                    getMainUseCase.getTables(this@TableViewModel, preferenceUseCase.getToken(), externalKey)
+                    mainUseCase.getTables(preferenceUseCase.getToken(), externalKey)
                 _tables.value = (
                     //                    response.data ?:
                     listOf(
@@ -157,23 +163,17 @@ class TableViewModel
                             orders =
                                 arrayListOf(
                                     OrderEntity(
-                                        oid = "1",
+                                        orderID = "1",
                                         orderName = "테스트 주문",
                                         orderItems =
                                             arrayListOf(
                                                 ProductEntity(
-                                                    externalKey = "101",
                                                     name = "콜라",
                                                     mainCategoryId = "C001",
                                                     descriptions = "시원한 콜라",
                                                     isVat = true,
                                                     selected = false,
-                                                    stock =
-                                                        Stock(
-                                                            externalKey = "S001",
-                                                            useStock = true,
-                                                            count = 50,
-                                                        ),
+                                                    stock = 0,
                                                     color = "#000000",
                                                     imageUrl = "https://example.com/images/coke.png",
                                                     basePrice = "1500",
@@ -188,6 +188,7 @@ class TableViewModel
                                                     productId = "P001",
                                                     storeId = "S001",
                                                     subCategoryId = "SC001",
+                                                    productRecipes = emptyList(),
                                                 ),
                                             ),
                                         buyerName = "홍길동",

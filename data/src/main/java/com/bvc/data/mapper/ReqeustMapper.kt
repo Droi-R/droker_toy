@@ -1,32 +1,29 @@
 package com.bvc.data.mapper
 
+import com.bvc.data.remote.model.request.MaterialsRequest
 import com.bvc.data.remote.model.request.OptionsRequest
 import com.bvc.data.remote.model.request.ProductItemsRequest
 import com.bvc.data.remote.model.request.ProductOptionRequest
-import com.bvc.data.remote.model.request.StockRequest
-import com.bvc.domain.model.Options
+import com.bvc.domain.model.MaterialsEntity
+import com.bvc.domain.model.OptionsEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
 
 fun ProductEntity.toRequest(): ProductItemsRequest =
     ProductItemsRequest(
-        externalKey = externalKey,
+        productId = productId,
+        mainCategoryId = mainCategoryId,
+        subCategoryId = subCategoryId,
         name = name,
         descriptions = descriptions,
         isVat = isVat,
         selected = selected,
-        stock =
-            StockRequest(
-                externalKey = stock.externalKey,
-                useStock = stock.useStock,
-                count = stock.count,
-            ),
+        stock = stock,
         color = color,
-//        image = image,
+        imageUrl = imageUrl,
         productOption = optionGroups.map { it.toRequest() },
         position = position,
         quantity = quantity,
-        imageUrl = imageUrl, // 추가
         basePrice = basePrice, // 추가
         isSoldOut = isSoldOut, // 추가
         isVatIncluded = isVatIncluded, // 추가
@@ -36,7 +33,7 @@ fun ProductEntity.toRequest(): ProductItemsRequest =
 
 fun ProductOptionEntity.toRequest(): ProductOptionRequest =
     ProductOptionRequest(
-        id = optionGroupId,
+        optionGroupId = optionGroupId,
         name = name,
         required = required,
         minOptionCountLimit = minOptionCountLimit,
@@ -45,7 +42,7 @@ fun ProductOptionEntity.toRequest(): ProductOptionRequest =
         options = ArrayList(options.map { it.toRequest() }),
     )
 
-fun Options.toRequest(): OptionsRequest =
+fun OptionsEntity.toRequest(): OptionsRequest =
     OptionsRequest(
         id = productOptionsId,
         name = name,
@@ -54,4 +51,15 @@ fun Options.toRequest(): OptionsRequest =
         useStock = useStock,
         isSoldOut = isSoldOut,
         isSelected = isSelected,
+        materials = materials.map { it.toRequest() },
+    )
+
+fun MaterialsEntity.toRequest(): MaterialsRequest =
+    MaterialsRequest(
+        materialId = materialId,
+        materialName = materialName,
+        unitCount = unitCount,
+        unitSafetyCount = unitSafetyCount,
+        imageUrl = imageUrl,
+        unit = unit,
     )

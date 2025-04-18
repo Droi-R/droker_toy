@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class OrderEntity(
-    val oid: String,
+    val orderID: String,
     val orderName: String,
     var orderItems: List<ProductEntity>,
     val buyerName: String,
@@ -24,7 +24,7 @@ data class OrderEntity(
     companion object {
         val EMPTY =
             OrderEntity(
-                oid = "",
+                orderID = "",
                 orderName = "",
                 orderItems = emptyList(),
                 buyerName = "",

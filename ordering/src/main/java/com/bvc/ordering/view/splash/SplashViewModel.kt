@@ -3,7 +3,6 @@ package com.bvc.ordering.view.splash
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.model.GithubEntity
-import com.bvc.domain.usecase.GetUserRepoUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.domain.usecase.SplashUseCase
 import com.bvc.ordering.base.BaseViewModel
@@ -17,7 +16,6 @@ class SplashViewModel
     @Inject
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
-        private val getUserRepoUseCase: GetUserRepoUseCase,
         private val splashUseCase: SplashUseCase,
     ) : BaseViewModel() {
         val eventUserRepo: LiveData<List<GithubEntity>> get() = _eventUserRepo

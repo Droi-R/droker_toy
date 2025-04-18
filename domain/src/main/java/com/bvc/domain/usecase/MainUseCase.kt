@@ -4,8 +4,10 @@ import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.repository.MainRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentChannel
+import com.bvc.domain.type.PaymentMethod
 import com.bvc.domain.type.PaymentStatus
-import com.bvc.domain.utils.RemoteErrorEmitter
+import com.bvc.domain.type.PaymentType
 import javax.inject.Inject
 
 class MainUseCase
@@ -13,79 +15,138 @@ class MainUseCase
     constructor(
         private val mainRepository: MainRepository,
     ) {
-        suspend fun refreshToken(
-            remoteErrorEmitter: RemoteErrorEmitter,
-            refreshToken: String,
-        ) = mainRepository.refreshToken(remoteErrorEmitter, refreshToken)
+        suspend fun refreshToken(refreshToken: String) = mainRepository.refreshToken(refreshToken)
 
         suspend fun getStore(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
-        ) = mainRepository.getStore(remoteErrorEmitter, token, storeId)
+        ) = mainRepository.getStore(token, storeId)
 
         suspend fun getMenuCategory(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
-        ) = mainRepository.getMenuCategory(remoteErrorEmitter, token, storeId)
+        ) = mainRepository.getMenuCategory(token, storeId)
+
+        suspend fun getTableArea(
+            token: String,
+            storeId: String,
+        ) = mainRepository.getTableArea(token, storeId)
 
         suspend fun getSubCategory(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
             mainCategoryId: String,
-        ) = mainRepository.getSubCategory(remoteErrorEmitter, token, storeId, mainCategoryId)
+        ) = mainRepository.getSubCategory(token, storeId, mainCategoryId)
 
         suspend fun getProducts(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
             mainCategoryId: String,
             subCategoryId: String,
-        ) = mainRepository.getProducts(remoteErrorEmitter, token, storeId, mainCategoryId, subCategoryId)
+        ) = mainRepository.getProducts(token, storeId, mainCategoryId, subCategoryId)
 
         suspend fun getMaterials(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
             mainCategoryId: String,
             subCategoryId: String,
-        ) = mainRepository.getMaterials(remoteErrorEmitter, token, storeId, mainCategoryId, subCategoryId)
+        ) = mainRepository.getMaterials(token, storeId, mainCategoryId, subCategoryId)
 
         suspend fun getSmartOrder(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             storeId: String,
             mainCategoryId: String,
             subCategoryId: String,
-        ) = mainRepository.getSmartOrder(remoteErrorEmitter, token, storeId)
+        ) = mainRepository.getSmartOrder(token, storeId)
 
         suspend fun postOrder(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
-            id: String,
+            userId: String,
+            storeId: String,
             productItems: List<ProductEntity>,
-            orderStatus: OrderStatus,
-            paymentStatus: PaymentStatus,
             orderFrom: OrderFrom,
-            tableNumber: String,
-            tableExternalKey: String,
+            orderStatus: OrderStatus,
+            tablesId: Int,
+            itemMemo: String,
+            totalPrice: Int,
+            supplyPrice: Int,
+            vatPrice: Int,
+            discountPrice: Int,
         ) = mainRepository.postOrder(
-            remoteErrorEmitter = remoteErrorEmitter,
+            token,
+            userId,
+            storeId,
+            productItems,
+            orderFrom,
+            orderStatus,
+            tablesId,
+            itemMemo,
+            totalPrice,
+            supplyPrice,
+            vatPrice,
+            discountPrice,
+        )
+
+        suspend fun postPayment(
+            token: String,
+            userId: String,
+            storeId: String,
+            orderProductIds: List<String>,
+            totalPrice: String,
+            paymentMethod: PaymentMethod,
+            paymentChannel: PaymentChannel,
+            paymentStatus: PaymentStatus,
+            paymentType: PaymentType,
+        ) = mainRepository.postPayment(
             token = token,
-            id = id,
-            productItems = productItems,
-            orderStatus = orderStatus,
+            userId = userId,
+            storeId = storeId,
+            orderProductIds = orderProductIds,
+            totalPrice = totalPrice,
+            paymentMethod = paymentMethod,
+            paymentChannel = paymentChannel,
             paymentStatus = paymentStatus,
-            orderFrom = orderFrom,
-            tableNumber = tableNumber,
-            tableExternalKey = tableExternalKey,
+            paymentType = paymentType,
+        )
+
+        suspend fun requestCapture(
+            token: String,
+            paymentId: String,
+            amount: String,
+            deviceId: String,
+            approvedId: String,
+            approvedDate: String,
+        ) = mainRepository.requestCapture(
+            token = token,
+            paymentId = paymentId,
+            amount = amount,
+            deviceId = deviceId,
+            approvedId = approvedId,
+            approvedDate = approvedDate,
+        )
+
+        suspend fun reqeustRefund(
+            token: String,
+            paymentId: String,
+            amount: String,
+            deviceId: String,
+            approvedId: String,
+            approvedDate: String,
+            refundApprovedId: String,
+            refundApprovedDate: String,
+        ) = mainRepository.requestRefund(
+            token = token,
+            paymentId = paymentId,
+            amount = amount,
+            deviceId = deviceId,
+            approvedId = approvedId,
+            approvedDate = approvedDate,
+            refundApprovedId = refundApprovedId,
+            refundApprovedDate = refundApprovedDate,
         )
 
         suspend fun getTables(
-            remoteErrorEmitter: RemoteErrorEmitter,
             token: String,
             id: String,
-        ) = mainRepository.getTables(remoteErrorEmitter, token, id)
+        ) = mainRepository.getTables(token, id)
     }

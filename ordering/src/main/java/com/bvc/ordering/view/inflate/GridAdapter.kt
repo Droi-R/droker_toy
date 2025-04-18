@@ -228,9 +228,9 @@ class GridAdapter(
                         }
                         tvGridMaterialTitle.text = item.materialName
                         circularDonutView.progress =
-                            item.stock.toFloat() / item.safetyStock.toFloat()
+                            item.unitCount.toFloat() / item.unitSafetyCount.toFloat()
                         tvGridMaterialCount.text =
-                            "${item.stock} / ${item.safetyStock}"
+                            "${item.unitCount} / ${item.unitSafetyCount}"
                         clGrid.apply {
                             background =
                                 ContextCompat.getDrawable(root.context, R.drawable.r12_f6f6f6)

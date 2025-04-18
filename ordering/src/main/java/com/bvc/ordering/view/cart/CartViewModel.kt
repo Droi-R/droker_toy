@@ -3,17 +3,26 @@ package com.bvc.ordering.view.cart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.bvc.domain.log
+import com.bvc.domain.model.ApiData
+import com.bvc.domain.model.OrderEntity
+import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.calculateVatSummary
 import com.bvc.domain.repository.ProductStoreRepository
+import com.bvc.domain.type.ApiStatus
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentChannel
+import com.bvc.domain.type.PaymentMethod
 import com.bvc.domain.type.PaymentStatus
+import com.bvc.domain.type.PaymentType
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
+import com.bvc.domain.utils.Constant
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
 import com.bvc.ordering.ksnet.Telegram
+import com.bvc.ordering.util.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +35,7 @@ class CartViewModel
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
         private val getMainUseCase: MainUseCase,
-        private val cartStoreRepository: ProductStoreRepository,
+        private val productStoreRepository: ProductStoreRepository,
     ) : BaseViewModel() {
         private val _affiliteType = SingleLiveEvent<String>()
         val affiliteType: LiveData<String> get() = _affiliteType
@@ -49,8 +58,8 @@ class CartViewModel
         private val _cartData = MutableStateFlow<List<ProductEntity>>(emptyList())
         val cartData: StateFlow<List<ProductEntity>> get() = _cartData
 
-        private val _requestTelegram = SingleLiveEvent<ByteArray>()
-        val requestTelegram: LiveData<ByteArray> get() = _requestTelegram
+        private val _requestTelegram = SingleLiveEvent<Pair<ByteArray, PaymentEntity>>()
+        val requestTelegram: LiveData<Pair<ByteArray, PaymentEntity>> get() = _requestTelegram
 
         init {
 
@@ -63,7 +72,7 @@ class CartViewModel
 
         fun getCartStore() {
             viewModelScope.launch {
-                _cartData.value = cartStoreRepository.getItems()
+                _cartData.value = productStoreRepository.getItems()
                 calculateAmounts(cartData.value)
             }
         }
@@ -79,52 +88,102 @@ class CartViewModel
 
         fun deleteItem(item: ProductEntity) {
             viewModelScope.launch {
-                cartStoreRepository.removeItem(item)
+                productStoreRepository.removeItem(item)
                 getCartStore()
             }
         }
 
         fun minusItem(item: ProductEntity) {
             viewModelScope.launch {
-                cartStoreRepository.minusItem(item)
+                productStoreRepository.minusItem(item)
                 getCartStore()
             }
         }
 
         fun plusItem(item: ProductEntity) {
             viewModelScope.launch {
-                cartStoreRepository.addItem(item)
+                productStoreRepository.addItem(item)
                 getCartStore()
             }
         }
 
         fun postOrder() {
-            viewModelScope.launch {
-                val response =
+            requestApi(
+                request = {
                     getMainUseCase
                         .postOrder(
-                            remoteErrorEmitter = this@CartViewModel,
                             token = preferenceUseCase.getToken(),
-                            id = "",
+                            userId = preferenceUseCase.getUserId(),
+                            storeId = "${preferenceUseCase.getStoreId()}",
                             productItems = cartData.value,
                             orderStatus = OrderStatus.PENDING,
-                            paymentStatus = PaymentStatus.READY,
                             orderFrom = OrderFrom.POS,
-                            tableNumber = "",
-                            tableExternalKey = "",
+                            tablesId = 0,
+                            itemMemo = "",
+                            totalPrice = totalAmount.value,
+                            supplyPrice = supplyAmount.value,
+                            vatPrice = vatAmount.value,
+                            discountPrice = 0,
                         )
-                log.e("response: ${cartData.value}")
-                // TODO 여기서 페이먼트 생성
-                _requestTelegram.value =
-                    Telegram.makeTelegramIC(
-                        apprCode = "1",
-                        mDeviceNo = "DPT0TEST03",
-                        quota = "00",
-                        totAmt = "${totalAmount.value}",
-                        orgApprNo = "",
-                        orgDate = "",
-                        taxFree = "${taxFreeAmount.value}",
-                    )
-            }
+                },
+                successAction = { response ->
+                    log.e("response: $response")
+                    if (response.meta.code == 200) {
+                        Utils.showToast("주문이 완료되었습니다.")
+                    } else {
+                        Utils.showToast("주문에 실패하였습니다.")
+                    }
+                    postPayment(response)
+                },
+                errorAction = { code, message ->
+                    log.e("code: $code, message: $message")
+                    Utils.showToast(message)
+                },
+            )
+        }
+
+        fun postPayment(response: ApiData<OrderEntity>) {
+            requestApi(
+                request = {
+                    getMainUseCase
+                        .postPayment(
+                            token = preferenceUseCase.getToken(),
+                            userId = preferenceUseCase.getUserId(),
+                            storeId = "${preferenceUseCase.getStoreId()}",
+                            orderProductIds = listOf(response.data.orderID),
+                            totalPrice = "${totalAmount.value}",
+                            paymentMethod = PaymentMethod.CARD,
+                            paymentChannel = PaymentChannel.KAKAO,
+                            paymentStatus = PaymentStatus.READY,
+                            paymentType = PaymentType.PREPAID,
+                        )
+                },
+                successAction = { response ->
+                    if (Constant.getStatus(response.meta.code) == ApiStatus.SUCCESS) {
+                        response.data.vat = "${vatAmount.value}"
+                        response.data.supAmt = "${supplyAmount.value}"
+                        response.data.paymentAmout = "${totalAmount.value}"
+                        response.data.taxFreeAmt = "${taxFreeAmount.value}"
+                        _requestTelegram.value =
+                            Pair(
+                                Telegram.makeTelegramIC(
+                                    apprCode = "1",
+                                    mDeviceNo = "DPT0TEST03",
+                                    quota = "00",
+                                    totAmt = "${totalAmount.value}",
+                                    orgApprNo = "",
+                                    orgDate = "",
+                                    taxFree = "${taxFreeAmount.value}",
+                                ),
+                                response.data,
+                            )
+                    }
+//            }
+                },
+                errorAction = { code, message ->
+                    log.e("code: $code, message: $message")
+                    Utils.showToast(message)
+                },
+            )
         }
     }

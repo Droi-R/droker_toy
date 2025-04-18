@@ -42,7 +42,6 @@ class OrderViewModel
             requestApi(
                 request = {
                     mainUseCase.getMenuCategory(
-                        this@OrderViewModel,
                         preferenceUseCase.getToken(),
                         "${preferenceUseCase.getStoreId()}",
                     )
@@ -80,7 +79,6 @@ class OrderViewModel
             requestApi(
                 request = {
                     mainUseCase.getSubCategory(
-                        this@OrderViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = mainCategoryId,
@@ -121,7 +119,6 @@ class OrderViewModel
             requestApi(
                 request = {
                     mainUseCase.getProducts(
-                        this@OrderViewModel,
                         token = preferenceUseCase.getToken(),
                         storeId = "${preferenceUseCase.getStoreId()}",
                         mainCategoryId = "${subCategoryEntity?.mainCategoryId}",
@@ -129,13 +126,6 @@ class OrderViewModel
                     )
                 },
                 successAction = { response ->
-                    log.e("response: $response")
-//                    _product.value =
-//                        (
-//                            buildList {
-//                                addAll(response.data.orEmpty().map { it.copy() })
-//                            }
-//                        )
                     _product.value = response.data.orEmpty().toList()
                 },
                 errorAction = { code, message ->

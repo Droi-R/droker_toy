@@ -3,98 +3,98 @@ package com.bvc.data.remote.model.request
 import com.google.gson.annotations.SerializedName
 
 data class ProductItemsRequest(
-    @SerializedName("external_key")
-    val externalKey: String = "",
+    @SerializedName("product_id")
+    val productId: String,
     @SerializedName("name")
-    val name: String = "",
-    @SerializedName("category_key")
-    var categoryKey: String = "",
-    @SerializedName("category_name")
-    var categoryName: String = "",
+    val name: String,
+    @SerializedName("main_category_id")
+    var mainCategoryId: String,
+    @SerializedName("sub_category_id")
+    var subCategoryId: String,
     @SerializedName("descriptions")
-    val descriptions: String = "",
+    val descriptions: String,
     @SerializedName("is_vat")
-    var isVat: Boolean = true,
+    var isVat: Boolean,
     @SerializedName("selected")
-    val selected: Boolean = false,
+    val selected: Boolean,
     @SerializedName("stock")
-    val stock: StockRequest = StockRequest(),
+    val stock: Int,
     @SerializedName("color")
-    var color: String = "#ffffff",
-    @SerializedName("image")
-    val image: String = "",
-    @SerializedName("product_option")
-    val productOption: List<ProductOptionRequest> = emptyList(),
+    var color: String,
+    @SerializedName("option_groups")
+    val productOption: List<ProductOptionRequest>,
     @SerializedName("position")
-    val position: Int = 0,
+    val position: Int,
     @SerializedName("quantity")
-    val quantity: Int = 0,
+    val quantity: Int,
     @SerializedName("image_url")
-    val imageUrl: String = "", // 추가
+    val imageUrl: String,
     @SerializedName("base_price")
-    val basePrice: String = "", // 추가
+    val basePrice: String,
     @SerializedName("is_sold_out")
-    val isSoldOut: Boolean = false, // 추가
+    val isSoldOut: Boolean,
     @SerializedName("is_vat_included")
-    val isVatIncluded: Boolean = true, // 추가
+    val isVatIncluded: Boolean,
     @SerializedName("barcode")
-    val barcode: String = "", // 추가
+    val barcode: String,
     @SerializedName("daily_limit")
-    val dailyLimit: Int = 0, // 추가
+    val dailyLimit: Int,
 )
 
 data class ProductOptionRequest(
-    @SerializedName("id")
-    val id: String = "",
+    @SerializedName("option_group_id")
+    val optionGroupId: String,
     @SerializedName("name")
-    val name: String = "",
+    val name: String,
     @SerializedName("required")
-    val required: Boolean = false,
+    val required: Boolean,
     @SerializedName("min_option_count_limit")
-    var minOptionCountLimit: Int = 0,
+    var minOptionCountLimit: Int,
     @SerializedName("max_option_count_limit")
-    var maxOptionCountLimit: Int = 0,
+    var maxOptionCountLimit: Int,
     @SerializedName("position")
-    var position: Int = 0,
+    var position: Int,
     @SerializedName("options")
-    var options: ArrayList<OptionsRequest> = ArrayList(),
+    var options: ArrayList<OptionsRequest>,
 )
 
 data class StockRequest(
     @SerializedName("external_key")
-    val externalKey: String = "",
+    val externalKey: String,
     @SerializedName("use_stock")
-    var useStock: Boolean = false,
+    var useStock: Boolean,
     @SerializedName("count")
-    var count: Int = 0,
+    var count: Int,
 )
 
 data class ImagesRequest(
     @SerializedName("id")
-    val id: Long = 0L,
+    val id: Long,
     @SerializedName("external_key")
-    val externalKey: String = "",
+    val externalKey: String,
     @SerializedName("url")
-    var url: String = "",
+    var url: String,
     @SerializedName("is_representative_image")
-    var isRepresentativeImage: Boolean = false,
+    var isRepresentativeImage: Boolean,
     @SerializedName("position")
-    var position: Int = 0,
+    var position: Int,
 )
 
 data class OptionsRequest(
-    @SerializedName("id")
-    val id: String = "",
+    @SerializedName("product_options_id")
+    val id: String,
     @SerializedName("name")
-    var name: String = "",
+    var name: String,
     @SerializedName("price")
-    var price: String = "",
+    var price: String,
     @SerializedName("position")
-    val position: Int = 0,
+    val position: Int,
     @SerializedName("use_stock")
-    val useStock: Boolean = false,
+    val useStock: Boolean,
     @SerializedName("is_sold_out")
-    val isSoldOut: Boolean = false,
+    val isSoldOut: Boolean,
     @SerializedName("is_selected")
-    var isSelected: Boolean = false,
+    var isSelected: Boolean,
+    @SerializedName("materials")
+    val materials: List<MaterialsRequest>,
 )

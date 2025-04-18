@@ -1,21 +1,27 @@
 package com.bvc.data.remote.api
 
+import com.bvc.data.remote.model.request.ApproveRequest
 import com.bvc.data.remote.model.request.OrderRequest
+import com.bvc.data.remote.model.request.PaymentRequest
 import com.bvc.data.remote.model.response.CategoryResponse
+import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.MaterialsResponse
 import com.bvc.data.remote.model.response.OrderResponse
+import com.bvc.data.remote.model.response.PaymentResponse
 import com.bvc.data.remote.model.response.ProductResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
 import com.bvc.data.remote.model.response.SmartOrderResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
+import com.bvc.data.remote.model.response.TableAresResponse
 import com.bvc.data.remote.model.response.TableResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -38,6 +44,12 @@ interface MainApi {
         @Header("Authorization") token: String,
         @Path("store_id") storeId: String,
     ): Response<ResDataList<CategoryResponse>>
+
+    @GET("tables/area")
+    suspend fun getTableArea(
+        @Header("Authorization") token: String,
+        @Query("store_id") storeId: String,
+    ): Response<ResDataList<TableAresResponse>>
 
     @GET("/stores/{store_id}/main-categories/{main_category_id}/sub-categories")
     suspend fun getSubCategory(
@@ -68,12 +80,30 @@ interface MainApi {
         @Path("store_id") storeId: String,
     ): Response<ResDataList<SmartOrderResponse>>
 
-    @POST("users/{sid}/repos")
+    @POST("orders")
     suspend fun postOrder(
         @Header("Authorization") token: String,
-        @Path("sid") sid: String,
         @Body orderRequest: OrderRequest,
     ): Response<ResData<OrderResponse>>
+
+    @POST("payments")
+    suspend fun postPayment(
+        @Header("Authorization") token: String,
+        @Body paymentRequest: PaymentRequest,
+    ): Response<ResData<PaymentResponse>>
+
+    @PATCH("payments/capture")
+    suspend fun requestCapture(
+        @Header("Authorization") token: String,
+        @Body captureRequest: ApproveRequest,
+    ): Response<ResData<EmptyResponse>>
+
+    @PATCH("payments/{payment_id}/refund")
+    suspend fun requestRefund(
+        @Header("Authorization") token: String,
+        @Path("payment_id") paymentId: String,
+        @Body refundRequest: ApproveRequest,
+    ): Response<ResData<EmptyResponse>>
 
     @GET("users/{token}/repos")
     suspend fun getTables(

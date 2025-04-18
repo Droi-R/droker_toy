@@ -2,10 +2,13 @@ package com.bvc.ordering.view.materials
 
 import android.os.Bundle
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bvc.domain.log
@@ -18,10 +21,14 @@ import com.bvc.ordering.databinding.FragmentMaterialsBinding
 import com.bvc.ordering.ui.HorizontalSpaceItemDecoration
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
 import com.bvc.ordering.ui.event.collectNonEmpty
+import com.bvc.ordering.view.components.ChangeStockDialog
+import com.bvc.ordering.view.consumption.ConsumptionFragment
 import com.bvc.ordering.view.inflate.CategoryAdapter
 import com.bvc.ordering.view.inflate.GridAdapter
 import com.bvc.ordering.view.inflate.SubCategoryAdapter
 import com.bvc.ordering.view.inflate.TopCategoryAdapter
+import com.bvc.ordering.view.main.MainViewModel
+import com.bvc.ordering.view.materialdetail.MaterialDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,6 +37,7 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
     override val layoutResourceId: Int
         get() = R.layout.fragment_materials
     private val viewModel: MaterialsViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun init(savedInstanceState: Bundle?) {
         binding?.apply {
@@ -51,12 +59,48 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
             }
 
             rvSmartOrder.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                addItemDecoration(HorizontalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_3200)))
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                addItemDecoration(VerticalSpaceItemDecoration(resources.getDimensionPixelSize(R.dimen.d_1000)))
                 adapter =
                     SmartOrderAdapter(
                         object : SmartOrderAdapter.OnItemClickListener {
-                            override fun onItemClick(item: SmartOrderEntity) {
+                            override fun onItemDeleteClick(item: SmartOrderEntity) {
+                                viewModel.deleteSmartOrder(item)
+                            }
+
+                            override fun onItemChangeClick(item: SmartOrderEntity) {
+                                binding?.composeDialogContainer?.apply {
+                                    layoutParams =
+                                        ConstraintLayout.LayoutParams(
+                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                                        )
+                                    visibility = View.VISIBLE
+                                    setContent {
+                                        ChangeStockDialog(
+                                            materialsEntity = item.material,
+                                            onDismiss = {
+                                                log.e("onDismiss")
+                                                setContent {}
+                                                visibility = View.GONE
+                                            },
+                                            onConfirm = { newStock ->
+                                                log.e("onConfirm: $newStock")
+                                                viewModel.changeSmartOrder(item, newStock)
+                                                setContent {}
+                                                visibility = View.GONE
+                                            },
+                                        )
+                                    }
+                                }
+                            }
+
+                            override fun onItemPlusClick(item: SmartOrderEntity) {
+                                viewModel.plusSmartOrder(item)
+                            }
+
+                            override fun onItemMinusClick(item: SmartOrderEntity) {
+                                viewModel.minusSmartOrder(item)
                             }
                         },
                     )
@@ -93,6 +137,12 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                 adapter =
                     GridAdapter {
                         onMaterialsClick { material ->
+                            findNavController().navigate(MaterialDetailFragment::class.java.name)
+                            mainViewModel.sendMaterialEvent(material)
+                        }
+                        onProductClick { product ->
+                            findNavController().navigate(ConsumptionFragment::class.java.name)
+                            mainViewModel.sendProductEvent(product)
                         }
                     }
             }
@@ -161,7 +211,7 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                                 )
                             }
                         }
-                        val item = category.find { it.selected }
+                        val item = topCategory.value.find { it.selected }
                         when (item?.name) {
                             getString(R.string.materials_status) -> {
                                 viewModel.getMaterials(item.mainCategoryId)
@@ -173,7 +223,6 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                             else -> {
                             }
                         }
-                        // TODO 여기서 상품과 재료현황 나누자
                     }
                     subCategory.collectNonEmpty(viewLifecycleOwner) { subCategory ->
                         log.e("subCategory: $subCategory")
@@ -185,10 +234,11 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                                 )
                             }
                         }
-//                        getProducts(subCategory.find { it.selected })
+                        getProducts(subCategory.find { it.selected })
                     }
 
                     material.collectNonEmpty(viewLifecycleOwner) { materials ->
+                        log.e("materials: $materials")
                         binding?.icOrder?.rvInflateGrid?.adapter?.let { adapter ->
                             if (adapter is GridAdapter) {
                                 adapter.submitList(materials.toList())
@@ -197,7 +247,7 @@ class MaterialsFragment : BaseFragment<FragmentMaterialsBinding>() {
                     }
 
                     smartOrder.collectNonEmpty(viewLifecycleOwner) { materials ->
-
+                        log.e("smartOrder: $materials")
                         binding?.rvSmartOrder?.adapter?.let { adapter ->
                             if (adapter is SmartOrderAdapter) {
                                 adapter.submitList(materials.toList())
