@@ -62,8 +62,8 @@ fun ChangeConsumptionDialog(
     onDismiss: () -> Unit,
     onConfirm: (Int, Int) -> Unit,
 ) {
-    var stockText by remember { mutableStateOf("${productEntity.stock.count}") }
-    var unit by remember { mutableStateOf("${productEntity.stock.count}") }
+    var stockText by remember { mutableStateOf("${productEntity.stock}") }
+    var unit by remember { mutableStateOf("${productEntity.stock}") }
     Dialog(onDismissRequest = { onDismiss() }) {
         Box(
             modifier =
@@ -112,7 +112,7 @@ fun ChangeConsumptionDialog(
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.d_3400)))
 
                 Text(
-                    text = "'${productEntity.stock.count}'를\n'${productEntity.stock.count}${productEntity.stock.count}'보유하고 계신것으로\n계산됩니다. 아니실까요",
+                    text = "'${productEntity.stock}'를\n'${productEntity.stock}${productEntity.stock}'보유하고 계신것으로\n계산됩니다. 아니실까요",
                     color = colorResource(R.color.bvc_666E89),
                     fontSize = dimensionResource(R.dimen.text_size_16).value.sp,
                     fontWeight = FontWeight.Bold,
@@ -205,8 +205,8 @@ fun ChangeConsumptionDialog(
 
                 Button(
                     onClick = {
-                        val stock = stockText.toIntOrNull() ?: productEntity.stock.count
-                        val unit = unit.toIntOrNull() ?: productEntity.stock.count
+                        val stock = stockText.toIntOrNull() ?: productEntity.stock
+                        val unit = unit.toIntOrNull() ?: productEntity.stock
                         onConfirm(stock, unit)
                     },
                     modifier = Modifier.fillMaxWidth(),

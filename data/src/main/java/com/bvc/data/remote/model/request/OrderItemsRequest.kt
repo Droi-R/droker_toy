@@ -18,7 +18,7 @@ data class ProductItemsRequest(
     @SerializedName("selected")
     val selected: Boolean,
     @SerializedName("stock")
-    val stock: StockRequest,
+    val stock: Int,
     @SerializedName("color")
     var color: String,
     @SerializedName("option_groups")

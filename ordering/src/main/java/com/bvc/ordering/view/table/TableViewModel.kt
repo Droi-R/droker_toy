@@ -6,7 +6,6 @@ import com.bvc.domain.model.CategoryEntity
 import com.bvc.domain.model.OrderEntity
 import com.bvc.domain.model.OrderMemo
 import com.bvc.domain.model.ProductEntity
-import com.bvc.domain.model.Stock
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.type.OrderFrom
@@ -165,12 +164,7 @@ class TableViewModel
                                                     descriptions = "시원한 콜라",
                                                     isVat = true,
                                                     selected = false,
-                                                    stock =
-                                                        Stock(
-                                                            externalKey = "S001",
-                                                            useStock = true,
-                                                            count = 50,
-                                                        ),
+                                                    stock = 0,
                                                     color = "#000000",
                                                     imageUrl = "https://example.com/images/coke.png",
                                                     basePrice = "1500",
@@ -185,6 +179,7 @@ class TableViewModel
                                                     productId = "P001",
                                                     storeId = "S001",
                                                     subCategoryId = "SC001",
+                                                    productRecipes = emptyList(),
                                                 ),
                                             ),
                                         buyerName = "홍길동",

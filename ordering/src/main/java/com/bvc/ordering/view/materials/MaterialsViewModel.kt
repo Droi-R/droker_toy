@@ -10,7 +10,6 @@ import com.bvc.domain.model.OriginEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
 import com.bvc.domain.model.SmartOrderEntity
-import com.bvc.domain.model.Stock
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
@@ -447,12 +446,7 @@ class MaterialsViewModel
                                 descriptions = "테스트 상품 설명",
                                 isVat = true,
                                 selected = false,
-                                stock =
-                                    Stock(
-                                        externalKey = "ST001",
-                                        useStock = true,
-                                        count = 100,
-                                    ),
+                                stock = 0,
                                 color = "#FF5733",
                                 useStock = true,
                                 optionGroups =
@@ -475,6 +469,8 @@ class MaterialsViewModel
                                                         isSoldOut = false,
                                                         materials = emptyList(),
                                                         isSelected = false,
+                                                        optionRecipes = emptyList(),
+                                                        stock = 0,
                                                     ),
                                                 ),
                                         ),
@@ -487,6 +483,7 @@ class MaterialsViewModel
                                 isVatIncluded = true,
                                 barcode = "1234567890123",
                                 dailyLimit = 10,
+                                productRecipes = emptyList(),
                             ),
                         )
                 },

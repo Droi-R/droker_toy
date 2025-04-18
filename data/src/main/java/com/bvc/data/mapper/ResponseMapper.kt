@@ -1,5 +1,6 @@
 package com.bvc.data.mapper
 
+import com.bvc.data.mapper.ResponseMapper.toEntity
 import com.bvc.data.remote.model.response.CategoryResponse
 import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.GithubResponse
@@ -12,12 +13,12 @@ import com.bvc.data.remote.model.response.OrderResponse
 import com.bvc.data.remote.model.response.OriginResponse
 import com.bvc.data.remote.model.response.PaymentResponse
 import com.bvc.data.remote.model.response.ProductResponse
+import com.bvc.data.remote.model.response.RecipeResponse
 import com.bvc.data.remote.model.response.ResData
 import com.bvc.data.remote.model.response.ResDataList
 import com.bvc.data.remote.model.response.ResMeta
 import com.bvc.data.remote.model.response.ResPagination
 import com.bvc.data.remote.model.response.SmartOrderResponse
-import com.bvc.data.remote.model.response.StockResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
 import com.bvc.data.remote.model.response.TableResponse
@@ -38,8 +39,8 @@ import com.bvc.domain.model.Pagination
 import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.ProductOptionEntity
+import com.bvc.domain.model.RecipeEntity
 import com.bvc.domain.model.SmartOrderEntity
-import com.bvc.domain.model.Stock
 import com.bvc.domain.model.Store
 import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
@@ -255,7 +256,7 @@ object ResponseMapper {
             descriptions = descriptions ?: "",
             isVat = isVat ?: true,
             selected = selected ?: false,
-            stock = stock?.toEntity() ?: Stock("", false, 0),
+            stock = stock ?: 0,
             color = color ?: "#ffffff",
 //            image = image ?: "",
             optionGroups = optionGroups?.map { it.toEntity() } ?: emptyList(),
@@ -268,6 +269,13 @@ object ResponseMapper {
             dailyLimit = dailyLimit ?: 0,
             useStock = useStock ?: false,
             quantity = quantity ?: 1,
+            productRecipes = productRecipes?.map { it.toEntity() } ?: emptyList(),
+        )
+
+    private fun RecipeResponse.toEntity(): RecipeEntity =
+        RecipeEntity(
+            materialId = materialId ?: "",
+            name = name ?: "",
         )
 
     private fun PaymentResponse.toEntity(): PaymentEntity =
@@ -305,13 +313,6 @@ object ResponseMapper {
             supplier = supplier ?: "",
         )
 
-    private fun StockResponse.toEntity(): Stock =
-        Stock(
-            externalKey = externalKey ?: "",
-            useStock = useStock ?: false,
-            count = count ?: 0,
-        )
-
     private fun OptionGroupsResponse.toEntity(): ProductOptionEntity =
         ProductOptionEntity(
             optionGroupId = optionGroupId ?: "",
@@ -335,6 +336,8 @@ object ResponseMapper {
                     isSoldOut = it.isSoldOut ?: false,
                     isSelected = it.isSelected ?: false,
                     materials = it.materials?.map { it.toEntity() } ?: emptyList(),
+                    optionRecipes = it.optionRecipes?.map { it.toEntity() } ?: emptyList(),
+                    stock = it.stock ?: 0,
                 )
             } ?: emptyList(),
         )

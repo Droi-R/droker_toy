@@ -4,7 +4,6 @@ import com.bvc.data.remote.model.request.MaterialsRequest
 import com.bvc.data.remote.model.request.OptionsRequest
 import com.bvc.data.remote.model.request.ProductItemsRequest
 import com.bvc.data.remote.model.request.ProductOptionRequest
-import com.bvc.data.remote.model.request.StockRequest
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.OptionsEntity
 import com.bvc.domain.model.ProductEntity
@@ -19,12 +18,7 @@ fun ProductEntity.toRequest(): ProductItemsRequest =
         descriptions = descriptions,
         isVat = isVat,
         selected = selected,
-        stock =
-            StockRequest(
-                externalKey = stock.externalKey,
-                useStock = stock.useStock,
-                count = stock.count,
-            ),
+        stock = stock,
         color = color,
         imageUrl = imageUrl,
         productOption = optionGroups.map { it.toRequest() },

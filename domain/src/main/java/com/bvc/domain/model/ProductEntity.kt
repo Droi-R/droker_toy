@@ -13,7 +13,7 @@ data class ProductEntity(
     val descriptions: String,
     var isVat: Boolean,
     val selected: Boolean,
-    val stock: Stock,
+    val stock: Int,
     var color: String,
     val useStock: Boolean,
     val optionGroups: List<ProductOptionEntity>,
@@ -25,6 +25,7 @@ data class ProductEntity(
     val isVatIncluded: Boolean,
     val barcode: String,
     val dailyLimit: Int,
+    val productRecipes: List<RecipeEntity>,
 ) : Parcelable {
     fun getTotalPrice(): Int {
         val productPrice = basePrice.toInt()
@@ -47,7 +48,7 @@ data class ProductEntity(
                 descriptions = "",
                 isVat = false,
                 selected = false,
-                stock = Stock("", false, 0),
+                stock = 0,
                 color = "",
                 useStock = false,
                 optionGroups = emptyList(),
@@ -59,6 +60,7 @@ data class ProductEntity(
                 isVatIncluded = false,
                 barcode = "",
                 dailyLimit = 0,
+                productRecipes = emptyList(),
             )
     }
 }
@@ -74,12 +76,12 @@ data class ProductOptionEntity(
     var options: List<OptionsEntity>,
 ) : Parcelable
 
-@Parcelize
-data class Stock(
-    val externalKey: String,
-    var useStock: Boolean,
-    var count: Int,
-) : Parcelable
+// @Parcelize
+// data class Stock(
+//    val externalKey: String,
+//    var useStock: Boolean,
+//    var count: Int,
+// ) : Parcelable
 
 data class Images(
     val id: Long,
@@ -96,9 +98,11 @@ data class OptionsEntity(
     var price: String,
     val position: Int,
     val useStock: Boolean,
+    val stock: Int,
     val isSoldOut: Boolean,
     val materials: List<MaterialsEntity>,
     var isSelected: Boolean,
+    val optionRecipes: List<RecipeEntity>,
 ) : Parcelable
 
 data class VatResult(
