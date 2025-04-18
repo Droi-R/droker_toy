@@ -9,6 +9,7 @@ data class PaymentEntity(
     var paymentAmout: String = "0",
     var vat: String = "",
     var supAmt: String = "",
+    var taxFreeAmt: String = "",
 //    val orderName: String,
 //    var orderItems: List<ProductEntity>,
 //    val buyerName: String,

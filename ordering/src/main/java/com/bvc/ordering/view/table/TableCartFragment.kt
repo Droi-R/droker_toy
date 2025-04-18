@@ -118,7 +118,7 @@ class TableCartFragment : BaseFragment<FragmentTableCartBinding>() {
                         }
                     }
                     requestTelegram.observe(viewLifecycleOwner) {
-                        mainViewModel.requestTelegram(it)
+                        mainViewModel.requestCaptureTelegram(it)
                     }
                 }
             }

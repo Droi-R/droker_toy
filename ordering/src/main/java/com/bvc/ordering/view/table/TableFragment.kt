@@ -92,20 +92,20 @@ class TableFragment : BaseFragment<FragmentTableBinding>() {
                                 (adapter as CategoryAdapter<CategoryEntity>).submitList(list.toList())
                             }
                         }
-                        getSubCategory(list.find { it.selected }?.mainCategoryId ?: "")
+                        getTables(list.find { it.selected }?.mainCategoryId ?: "")
                     }
 
-                    subCategory.collectNonEmpty(viewLifecycleOwner) { subCategory ->
-                        // 상품 UI 갱신
-                        binding?.icTable?.rvInflateSubCategory?.adapter?.let { adapter ->
-                            if (adapter is SubCategoryAdapter<*>) {
-                                (adapter as SubCategoryAdapter<SubCategoryEntity>).submitList(
-                                    subCategory.toList(),
-                                )
-                            }
-                        }
-                        getTables(subCategory.find { it.selected }?.subCategoryId ?: "")
-                    }
+//                    subCategory.collectNonEmpty(viewLifecycleOwner) { subCategory ->
+//                        // 상품 UI 갱신
+//                        binding?.icTable?.rvInflateSubCategory?.adapter?.let { adapter ->
+//                            if (adapter is SubCategoryAdapter<*>) {
+//                                (adapter as SubCategoryAdapter<SubCategoryEntity>).submitList(
+//                                    subCategory.toList(),
+//                                )
+//                            }
+//                        }
+//                        getTables(subCategory.find { it.selected }?.subCategoryId ?: "")
+//                    }
 
                     tables.collectNonEmpty(viewLifecycleOwner) { tables ->
                         // 장바구니 UI 갱신

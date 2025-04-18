@@ -15,6 +15,7 @@ import com.bvc.data.remote.model.response.ResDataList
 import com.bvc.data.remote.model.response.SmartOrderResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
+import com.bvc.data.remote.model.response.TableAresResponse
 import com.bvc.data.remote.model.response.TableResponse
 
 interface MainDataSource {
@@ -29,6 +30,11 @@ interface MainDataSource {
         token: String,
         storeId: String,
     ): ResDataList<CategoryResponse>?
+
+    suspend fun getTableArea(
+        token: String,
+        storeId: String,
+    ): ResDataList<TableAresResponse>?
 
     suspend fun getSubCategory(
         token: String,

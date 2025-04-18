@@ -27,6 +27,11 @@ class MainUseCase
             storeId: String,
         ) = mainRepository.getMenuCategory(token, storeId)
 
+        suspend fun getTableArea(
+            token: String,
+            storeId: String,
+        ) = mainRepository.getTableArea(token, storeId)
+
         suspend fun getSubCategory(
             token: String,
             storeId: String,
@@ -120,7 +125,7 @@ class MainUseCase
             approvedDate = approvedDate,
         )
 
-        suspend fun postRefund(
+        suspend fun reqeustRefund(
             token: String,
             paymentId: String,
             amount: Double,

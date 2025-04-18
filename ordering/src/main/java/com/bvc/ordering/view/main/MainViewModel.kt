@@ -14,6 +14,7 @@ import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.domain.utils.Constant
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
+import com.bvc.ordering.ksnet.Telegram
 import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.ui.event.Event
 import com.bvc.ordering.util.Utils
@@ -32,8 +33,11 @@ class MainViewModel
         private val mainUseCase: MainUseCase,
         private val productStoreRepository: ProductStoreRepository,
     ) : BaseViewModel() {
-        private val _requestTelegram = SingleLiveEvent<Pair<ByteArray, PaymentEntity>>()
-        val requestTelegram: LiveData<Pair<ByteArray, PaymentEntity>> get() = _requestTelegram
+        private val _requestCaptureTelegram = SingleLiveEvent<Pair<ByteArray, PaymentEntity>>()
+        val requestCaptureTelegram: LiveData<Pair<ByteArray, PaymentEntity>> get() = _requestCaptureTelegram
+
+        private val _requestRefundTelegram = SingleLiveEvent<Pair<ByteArray, PaymentEntity>>()
+        val requestRefundTelegram: LiveData<Pair<ByteArray, PaymentEntity>> get() = _requestRefundTelegram
 
         private val _affiliteType = SingleLiveEvent<String>()
         val affiliteType: LiveData<String> get() = _affiliteType
@@ -105,8 +109,108 @@ class MainViewModel
             )
         }
 
-        fun requestTelegram(pair: Pair<ByteArray, PaymentEntity>) {
-            _requestTelegram.value = pair
+        fun requestCapture(recvByte: ByteArray) {
+            requestApi(
+                request = {
+                    val trData = TransactionData()
+                    trData.SetData(recvByte)
+                    mainUseCase.requestCapture(
+                        token = preferenceUseCase.getToken(),
+                        paymentId = requestCaptureTelegram.value?.second?.paymentId ?: throw IllegalStateException("Payment ID is null"),
+                        amount =
+                            requestCaptureTelegram.value
+                                ?.second
+                                ?.paymentAmout
+                                ?.toDouble() ?: throw IllegalStateException(
+                                "Payment Amount is null",
+                            ),
+                        deviceId = String(trData.deviceNumber),
+                        approvedId = String(trData.approvalNumber),
+                        approvedDate = String(trData.transferDate),
+                    )
+                },
+                successAction = {
+                    if (Constant.getStatus(it.meta.code) == ApiStatus.SUCCESS) {
+//                        productStoreRepository.clearCart()
+                        _captureAfterAction.value = OrderFragment::class.java.name
+
+                        // 환불 테스트
+                        val trData = TransactionData()
+                        trData.SetData(recvByte)
+                        requestRefundTelegram(
+                            Pair(
+                                Telegram.makeTelegramIC(
+                                    apprCode = "1",
+                                    mDeviceNo = String(trData.deviceNumber),
+                                    quota = "00",
+                                    totAmt = "${requestCaptureTelegram.value?.second?.paymentAmout}",
+                                    orgApprNo = String(trData.approvalNumber),
+                                    orgDate = String(trData.transferDate),
+                                    taxFree = "${requestCaptureTelegram.value?.second?.supAmt}",
+                                ),
+                                PaymentEntity(
+                                    paymentId =
+                                        requestCaptureTelegram.value?.second?.paymentId ?: throw IllegalStateException(
+                                            "Payment ID is null",
+                                        ),
+                                    paymentAmout = "${requestCaptureTelegram.value?.second?.paymentAmout ?: 0}",
+                                    vat = "${requestCaptureTelegram.value?.second?.vat}",
+                                    supAmt = "${requestCaptureTelegram.value?.second?.supAmt}",
+                                ),
+                            ),
+                        )
+                    } else {
+                        Utils.showToast(it.meta.message)
+                    }
+                },
+                errorAction = { code, message ->
+                    log.e("code: $code, message: $message")
+                    Utils.showToast(message)
+                },
+            )
+        }
+
+        fun requestRefund(recvByte: ByteArray) {
+            requestApi(
+                request = {
+                    val trData = TransactionData()
+                    trData.SetData(recvByte)
+                    mainUseCase.reqeustRefund(
+                        token = preferenceUseCase.getToken(),
+                        paymentId = requestCaptureTelegram.value?.second?.paymentId ?: throw IllegalStateException("Payment ID is null"),
+                        amount =
+                            requestCaptureTelegram.value
+                                ?.second
+                                ?.paymentAmout
+                                ?.toDouble() ?: throw IllegalStateException(
+                                "Payment Amount is null",
+                            ),
+                        deviceId = String(trData.deviceNumber),
+                        approvedId = String(trData.approvalNumber),
+                        approvedDate = String(trData.transferDate),
+                    )
+                },
+                successAction = {
+                    if (Constant.getStatus(it.meta.code) == ApiStatus.SUCCESS) {
+                        productStoreRepository.clearCart()
+                        _captureAfterAction.value = OrderFragment::class.java.name
+                    } else {
+                        Utils.showToast(it.meta.message)
+                    }
+                },
+                errorAction = { code, message ->
+                    log.e("code: $code, message: $message")
+                    Utils.showToast(message)
+                },
+            )
+        }
+
+        fun requestCaptureTelegram(pair: Pair<ByteArray, PaymentEntity>) {
+            _requestCaptureTelegram.value = pair
+        }
+
+        fun requestRefundTelegram(pair: Pair<ByteArray, PaymentEntity>) {
+            _requestRefundTelegram.value = pair
         }
 
         fun sendTableEvent(table: TableEntity) {
@@ -136,40 +240,5 @@ class MainViewModel
             viewModelScope.launch {
                 _productEventFlow.emit(Event(copiedProduct))
             }
-        }
-
-        fun postCapture(recvByte: ByteArray) {
-            requestApi(
-                request = {
-                    val trData = TransactionData()
-                    trData.SetData(recvByte)
-                    mainUseCase.requestCapture(
-                        token = preferenceUseCase.getToken(),
-                        paymentId = requestTelegram.value?.second?.paymentId ?: throw IllegalStateException("Payment ID is null"),
-                        amount =
-                            requestTelegram.value
-                                ?.second
-                                ?.paymentAmout
-                                ?.toDouble() ?: throw IllegalStateException(
-                                "Payment Amount is null",
-                            ),
-                        deviceId = String(trData.deviceNumber),
-                        approvedId = String(trData.approvalNumber),
-                        approvedDate = String(trData.transferDate),
-                    )
-                },
-                successAction = {
-                    if (Constant.getStatus(it.meta.code) == ApiStatus.SUCCESS) {
-                        productStoreRepository.clearCart()
-                        _captureAfterAction.value = OrderFragment::class.java.name
-                    } else {
-                        Utils.showToast(it.meta.message)
-                    }
-                },
-                errorAction = { code, message ->
-                    log.e("code: $code, message: $message")
-                    Utils.showToast(message)
-                },
-            )
         }
     }

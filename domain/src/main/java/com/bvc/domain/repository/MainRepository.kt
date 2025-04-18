@@ -33,6 +33,11 @@ interface MainRepository {
         storeId: String,
     ): ApiDataList<CategoryEntity>
 
+    suspend fun getTableArea(
+        token: String,
+        storeId: String,
+    ): ApiDataList<CategoryEntity>
+
     suspend fun getSubCategory(
         token: String,
         storeId: String,

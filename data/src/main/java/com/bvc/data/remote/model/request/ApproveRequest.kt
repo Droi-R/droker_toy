@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class ApproveRequest(
     @SerializedName("payment_id") val paymentId: String,
     @SerializedName("amount") val amount: Double,
-    @SerializedName("device_id") val deviceId: String,
-    @SerializedName("approved_id") val approvedId: String,
-    @SerializedName("approved_date") val approvedDate: String,
+    @SerializedName("device_number") val deviceId: String,
+    @SerializedName("qouta") val qouta: String = "00",
+    @SerializedName("original_approved_id") val approvedId: String,
+    @SerializedName("original_approved_date") val approvedDate: String,
 )

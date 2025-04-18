@@ -53,6 +53,17 @@ class MainRepositoryImpl
                 ),
             )
 
+        override suspend fun getTableArea(
+            token: String,
+            storeId: String,
+        ): ApiDataList<CategoryEntity> =
+            ResponseMapper.mapTableArea(
+                mainDataSource.getTableArea(
+                    token,
+                    storeId,
+                ),
+            )
+
         override suspend fun getSubCategory(
             token: String,
             storeId: String,

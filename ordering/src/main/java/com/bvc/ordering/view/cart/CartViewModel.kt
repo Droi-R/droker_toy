@@ -163,6 +163,7 @@ class CartViewModel
                         response.data.vat = "${vatAmount.value}"
                         response.data.supAmt = "${supplyAmount.value}"
                         response.data.paymentAmout = "${totalAmount.value}"
+                        response.data.taxFreeAmt = "${taxFreeAmount.value}"
                         _requestTelegram.value =
                             Pair(
                                 Telegram.makeTelegramIC(

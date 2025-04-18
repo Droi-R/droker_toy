@@ -20,6 +20,7 @@ import com.bvc.data.remote.model.response.ResPagination
 import com.bvc.data.remote.model.response.SmartOrderResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
+import com.bvc.data.remote.model.response.TableAresResponse
 import com.bvc.data.remote.model.response.TableResponse
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
@@ -157,6 +158,21 @@ object ResponseMapper {
             pagination = mapPagination(response?.pagination),
             data =
                 response?.data?.map { it.toEntity() },
+        )
+
+    fun mapTableArea(response: ResDataList<TableAresResponse>?): ApiDataList<CategoryEntity> =
+        ApiDataList(
+            meta = mapMeta(response?.meta),
+            pagination = mapPagination(response?.pagination),
+            data =
+                response?.data?.map {
+                    CategoryEntity(
+                        mainCategoryId = it.tableAreaId ?: "",
+                        storeId = it.storeId ?: "",
+                        name = it.areaName ?: "",
+                        selected = it.selected ?: false,
+                    )
+                },
         )
 
     fun mapSubCategory(response: ResDataList<SubCategoryResponse>?): ApiDataList<SubCategoryEntity> =

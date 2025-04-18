@@ -15,6 +15,7 @@ import com.bvc.data.remote.model.response.ResDataList
 import com.bvc.data.remote.model.response.SmartOrderResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
+import com.bvc.data.remote.model.response.TableAresResponse
 import com.bvc.data.remote.model.response.TableResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -43,6 +44,12 @@ interface MainApi {
         @Header("Authorization") token: String,
         @Path("store_id") storeId: String,
     ): Response<ResDataList<CategoryResponse>>
+
+    @GET("tables/area")
+    suspend fun getTableArea(
+        @Header("Authorization") token: String,
+        @Query("store_id") storeId: String,
+    ): Response<ResDataList<TableAresResponse>>
 
     @GET("/stores/{store_id}/main-categories/{main_category_id}/sub-categories")
     suspend fun getSubCategory(
@@ -91,9 +98,10 @@ interface MainApi {
         @Body captureRequest: ApproveRequest,
     ): Response<ResData<EmptyResponse>>
 
-    @PATCH("payments/refund")
+    @PATCH("payments/{payment_id}/refund")
     suspend fun requestRefund(
         @Header("Authorization") token: String,
+        @Path("payment_id") paymentId: String,
         @Body refundRequest: ApproveRequest,
     ): Response<ResData<EmptyResponse>>
 

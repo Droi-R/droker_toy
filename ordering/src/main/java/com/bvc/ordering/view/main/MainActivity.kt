@@ -7,11 +7,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -42,6 +45,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity() {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
+
+    private var backPressedOnce = false
+    private val backPressHandler = Handler(Looper.getMainLooper())
 
     companion object {
         fun startActivity(activity: Activity?) {
@@ -218,6 +224,25 @@ class MainActivity : BaseActivity() {
         }
 
         handleViewModel()
+
+        // OnBackPressedDispatcher를 사용하여 백버튼 콜백 등록
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (backPressedOnce) {
+                        finish() // 앱 종료
+                    } else {
+                        backPressedOnce = true
+                        Toast.makeText(this@MainActivity, "한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+
+                        backPressHandler.postDelayed({
+                            backPressedOnce = false
+                        }, 2000) // 2초 후 초기화
+                    }
+                }
+            },
+        )
     }
 
     private fun handleViewModel() {
@@ -230,7 +255,7 @@ class MainActivity : BaseActivity() {
                 }
             }
 
-            requestTelegram.observe(this@MainActivity) { (mRequestTelegram, paymentEntity) ->
+            requestCaptureTelegram.observe(this@MainActivity) { (mRequestTelegram, paymentEntity) ->
                 // 결제 테스트
                 log.e("mRequestTelegram: ${String(mRequestTelegram)}")
                 val packageName = "com.ksnet.kscat_a"
@@ -247,7 +272,48 @@ class MainActivity : BaseActivity() {
                     mIntent.setComponent(ComponentName(packageName, className))
                     mIntent.putExtra("Telegram", mRequestTelegram)
                     mIntent.putExtra("TelegramLength", mRequestTelegram.size)
-                    startForResultForTelegram.launch(mIntent)
+                    resultForCaptureTelegram.launch(mIntent)
+                } else {
+                    // 앱이 설치되지 않은 경우 Play 스토어로 이동
+                    try {
+                        val storeIntent =
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=$packageName"),
+                            )
+                        storeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(storeIntent)
+                    } catch (e: java.lang.Exception) {
+                        // Play 스토어가 없을 경우 웹 브라우저로 이동
+                        val webIntent =
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=$packageName"),
+                            )
+                        webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(webIntent)
+                    }
+                }
+            }
+
+            requestRefundTelegram.observe(this@MainActivity) { (mRequestTelegram, paymentEntity) ->
+                // 결제 테스트
+                log.e("mRequestTelegram: ${String(mRequestTelegram)}")
+                val packageName = "com.ksnet.kscat_a"
+                val className = "com.ksnet.kscat_a.PaymentIntentActivity"
+                val packageManager: PackageManager = packageManager
+
+                val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
+                log.e("launchIntent: $launchIntent")
+                if (launchIntent != null) {
+                    // 앱이 설치된 경우 실행
+                    val mIntent = Intent(Intent.ACTION_MAIN)
+                    mIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    mIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+                    mIntent.setComponent(ComponentName(packageName, className))
+                    mIntent.putExtra("Telegram", mRequestTelegram)
+                    mIntent.putExtra("TelegramLength", mRequestTelegram.size)
+                    resultForRefundTelegram.launch(mIntent)
                 } else {
                     // 앱이 설치되지 않은 경우 Play 스토어로 이동
                     try {
@@ -290,7 +356,7 @@ class MainActivity : BaseActivity() {
         tab.customView = customView
     }
 
-    val startForResultForTelegram =
+    private val resultForCaptureTelegram =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val trData = TransactionData()
             val resultCode = result.resultCode
@@ -301,8 +367,68 @@ class MainActivity : BaseActivity() {
                 val recvByte: ByteArray =
                     data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
                 log.e("Recv Telegram \n ${KsnetUtil.HexDump.dumpHexString(recvByte)}")
-                // TODO 여기서 캡쳐 날리자
-                viewModel.postCapture(
+                viewModel.requestCapture(
+                    recvByte,
+                )
+            } else if (resultCode == RESULT_CANCELED) {
+                if (data != null) {
+                    log.e("result" + data.getIntExtra("result", 1).toString())
+                    val recvByte: ByteArray =
+                        data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
+                    log.e("recvByte : \n" + KsnetUtil.HexDump.dumpHexString(recvByte))
+                    trData.SetData(recvByte)
+
+                    try {
+                        val csMessage1 = String(trData.message1, charset("EUC-KR"))
+                        val csMessage2 = String(trData.message2, charset("EUC-KR"))
+                        val csNotice1 = String(trData.notice1, charset("EUC-KR"))
+                        val csNotice2 = String(trData.notice2, charset("EUC-KR"))
+
+                        val msg =
+                            """
+                            $csMessage1
+                            $csMessage2
+                            $csNotice1
+                            $csNotice2
+                            """.trimIndent()
+
+                        AlertDialog
+                            .Builder(this)
+                            .setTitle("KSCAT_TEST")
+                            .setMessage(msg)
+                            .setCancelable(false)
+                            .setPositiveButton(
+                                "확인",
+                            ) { dialog, which -> }
+                            .show()
+
+                        // Log.e("KSCAT_INTENT_RESULT", HexDump.dumpHexString(recvByte));
+                        // Log.e("Recv Telegram \n", KsnetUtil.HexDump.dumpHexString(recvByte));
+                        //                    val tv = findViewById<TextView>(R.id.cardsvtv2)
+                        val str: String = KsnetUtil.HexDump.dumpHexString(recvByte)
+                        log.e("str: $str")
+                        //                    tv.text = str
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    Toast.makeText(this, "앱 호출 실패", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+    private val resultForRefundTelegram =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val trData = TransactionData()
+            val resultCode = result.resultCode
+            val data = result.data
+            if (resultCode == RESULT_OK && data != null) {
+                Toast.makeText(this, "성공", Toast.LENGTH_LONG).show()
+                log.e("data: $data")
+                val recvByte: ByteArray =
+                    data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
+                log.e("Recv Telegram \n ${KsnetUtil.HexDump.dumpHexString(recvByte)}")
+                viewModel.requestRefund(
                     recvByte,
                 )
             } else if (resultCode == RESULT_CANCELED) {

@@ -16,6 +16,7 @@ import com.bvc.data.remote.model.response.ResDataList
 import com.bvc.data.remote.model.response.SmartOrderResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
+import com.bvc.data.remote.model.response.TableAresResponse
 import com.bvc.data.remote.model.response.TableResponse
 import com.bvc.data.repository.remote.datasource.MainDataSource
 import com.bvc.data.utils.base.BaseRepository
@@ -49,6 +50,14 @@ class MainDataSourceImpl
         ): ResDataList<CategoryResponse>? =
             safeApiCall {
                 mainApi.getMenuCategory(token, storeId)
+            }.body()
+
+        override suspend fun getTableArea(
+            token: String,
+            storeId: String,
+        ): ResDataList<TableAresResponse>? =
+            safeApiCall {
+                mainApi.getTableArea(token, storeId)
             }.body()
 
         override suspend fun getSubCategory(
@@ -117,7 +126,7 @@ class MainDataSourceImpl
             refundRequest: ApproveRequest,
         ): ResData<EmptyResponse>? =
             safeApiCall {
-                mainApi.requestRefund(token, refundRequest)
+                mainApi.requestRefund(token, refundRequest.paymentId, refundRequest)
             }.body()
 
         override suspend fun getTables(
