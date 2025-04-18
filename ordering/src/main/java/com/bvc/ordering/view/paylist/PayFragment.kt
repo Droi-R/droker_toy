@@ -18,6 +18,7 @@ import com.bvc.ordering.databinding.FragmentPayListBinding
 import com.bvc.ordering.ui.VerticalSpaceItemDecoration
 import com.bvc.ordering.view.components.ChangeConsumptionDialog
 import com.bvc.ordering.view.main.MainViewModel
+import com.bvc.ordering.view.materialdetail.MaterialDetailAdapter
 import com.bvc.ordering.view.materials.MaterialsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
