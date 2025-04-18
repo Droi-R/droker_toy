@@ -3,7 +3,7 @@ package com.bvc.domain.utils
 import com.bvc.domain.type.ApiStatus
 
 object Constant {
-    const val BASE_URL = "http://175.45.200.125:3000"
+    const val BASE_URL = "http://droker_toy"
 
     object APICODE {
         const val SUCCESS = "200"
