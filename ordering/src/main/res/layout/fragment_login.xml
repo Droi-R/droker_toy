@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.bvc.ordering.view.splash.login.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_login_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/d_2800"
+            android:layout_marginTop="@dimen/d_6900"
+            android:src="@drawable/ic_logo_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/d_2700"
+            android:layout_marginTop="@dimen/d_4200"
+            android:src="@drawable/ic_ardor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_3600"
+            android:text="@string/login_title"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_32"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_login_logo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login_title_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_1500"
+            android:text="@string/login_subtitle"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_title" />
+
+
+        <!--휴대폰 번호-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_4800"
+            android:text="@string/login_phone_number"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_18"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_title_desc" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_login_phone_number_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_2000"
+            android:text="@string/login_phone_number_desc"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_phone_number" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="@dimen/d_1800"
+            android:id="@+id/cl_login_phone_number"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_phone_number_desc">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginEnd="@dimen/d_700"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/r23_f6f6f6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cl_login_phone_number_send"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/d_2000"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold"
+                    android:afterTextChanged="@{(editable) -> vm.loginPhoneAfterTextChanged(editable)}"
+                    android:maxLines="1"
+                    android:inputType="phone"
+                    android:background="@null"
+                    android:textColorHint="@color/bvc_B2B6C3"
+                    android:hint="@string/login_phone_number_hint"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_login_phone_number_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/r23_666e89"
+                android:onClick="@{() -> vm.onClickSend()}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/d_1500"
+                    android:layout_marginHorizontal="@dimen/d_2100"
+                    android:text="@string/send"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--인증번호-->
+        <androidx.appcompat.widget.AppCompatTextView
+            app:gone_visibility="@{vm.enableVerify}"
+            android:id="@+id/tv_login_verification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_4800"
+            android:text="@string/login_verification_number"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_18"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_login_phone_number" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            app:gone_visibility="@{vm.enableVerify}"
+            android:id="@+id/tv_login_verification_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_2000"
+            android:onClick="@{() -> vm.onClickSend()}"
+            android:text="@string/login_verification_number_desc"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_verification" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:gone_visibility="@{vm.enableVerify}"
+            android:layout_marginTop="@dimen/d_1800"
+            android:id="@+id/cl_login_verification"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_login_verification_desc">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_marginEnd="@dimen/d_700"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/r23_f6f6f6"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cl_login_verification_send"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/d_2000"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold"
+                    android:afterTextChanged="@{(editable) -> vm.loginVerificationAfterTextChanged(editable)}"
+                    android:maxLines="1"
+                    android:inputType="phone"
+                    android:background="@null"
+                    android:textColorHint="@color/bvc_B2B6C3"
+                    android:hint="@string/login_phone_number_hint"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_login_verification_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/r23_666e89"
+                android:onClick="@{() -> vm.onClickVerification()}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/d_1500"
+                    android:layout_marginHorizontal="@dimen/d_2100"
+                    android:text="@string/verification"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

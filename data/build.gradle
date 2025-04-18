@@ -1,0 +1,101 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+android {
+    namespace 'com.droi.data'
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+    buildFeatures {
+        buildConfig true
+    }
+    buildTypes {
+        def SERVER_URL = "SERVER_URL"
+        release {
+            buildConfigField "String", SERVER_URL, '"https://api.github.com/search/"'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField "String", SERVER_URL, '"https://api.github.com/search/"'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+
+//    implementation project(path: ':domain')
+//
+//
+//    implementation 'androidx.core:core-ktx:1.9.0'
+//    implementation 'androidx.appcompat:appcompat:1.5.1'
+//    implementation 'com.google.android.material:material:1.7.0'
+//    testImplementation 'junit:junit:4.13.2'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+//
+//    //gson
+//    implementation 'com.google.code.gson:gson:2.8.9'
+//
+//    //retrofit2
+//    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+//    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+//    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+//    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
+//    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+//
+//    //쿠키
+//    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+//
+//
+//    implementation "com.google.dagger:hilt-android:$hilt_version"
+//    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    implementation project(':domain')
+
+    implementation(Kotlin.STDLIB)
+    implementation(KTX.CORE)
+    implementation(AndroidX.APP_COMPAT)
+    implementation(Google.MATERIAL)
+
+
+    // Retrofit
+    implementation(Retrofit.RETROFIT)
+    implementation(Retrofit.CONVERTER_GSON)
+    implementation(Retrofit.CONVERTER_JAXB)
+
+    //okHttp
+    implementation(OkHttp.OKHTTP)
+    implementation(OkHttp.LOGGING_INTERCEPTOR)
+
+    //coroutines
+    implementation(Coroutines.COROUTINES)
+
+    // dager hilt
+    implementation(DaggerHilt.DAGGER_HILT)
+    kapt(DaggerHilt.DAGGER_HILT_COMPILER)
+
+    //쿠키
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+
+}

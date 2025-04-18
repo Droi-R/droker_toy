@@ -1,0 +1,4 @@
+rootProject.name = "bvc_android"
+include ':ordering'
+include ':domain'
+include ':data'

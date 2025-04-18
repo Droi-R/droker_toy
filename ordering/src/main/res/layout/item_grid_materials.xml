@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/r12_00000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_grid_material_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_1000"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_10"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="메뉴" />
+
+            <com.bvc.ordering.ui.CircularDonutView
+                android:id="@+id/circularDonutView"
+                android:layout_width="@dimen/d_4400"
+                android:layout_height="@dimen/d_4400"
+                android:layout_marginTop="@dimen/d_600"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_grid_material_title" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_grid_material_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_400"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/materials_safe_stock"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_7"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circularDonutView" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_grid_material_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_100"
+                android:layout_marginBottom="@dimen/d_1000"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/materials_safe_stock"
+                android:textColor="@color/bvc_666E89"
+                android:textSize="@dimen/text_size_10"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_grid_material_desc" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

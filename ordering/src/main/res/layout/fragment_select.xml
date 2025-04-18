@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.bvc.ordering.view.splash.select.SelectViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_select_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/d_2800"
+            android:layout_marginTop="@dimen/d_6900"
+            android:src="@drawable/ic_logo_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/d_2700"
+            android:layout_marginTop="@dimen/d_4200"
+            android:src="@drawable/ic_ardor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_select_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_3600"
+            android:text="@string/select_title"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_32"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_select_logo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_select_title_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/d_2900"
+            android:layout_marginTop="@dimen/d_1500"
+            android:text="@string/select_subtitle"
+            android:textColor="@color/bvc_666E89"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_select_store"
+            android:layout_marginBottom="@dimen/d_3700"
+            android:layout_marginTop="@dimen/d_3700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_title_desc"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

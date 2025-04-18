@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.bvc.ordering.view.cart.CartViewModel" />
+    </data>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/d_3000">
+
+            <!-- 상단 가맹점 정보 영역 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_cart_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/d_2900"
+                android:layout_marginTop="@dimen/d_2700"
+                android:background="@drawable/r15_f6f6f6"
+                android:paddingBottom="@dimen/d_2200"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_cart_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/d_1400"
+                    android:layout_marginEnd="@dimen/d_1400"
+                    android:src="@drawable/ic_cart_close"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_cart_affilite_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_2900"
+                    android:layout_marginTop="@dimen/d_2500"
+                    android:text="@{vm.affiliteType}"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_10"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="가맹점" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_cart_affilite_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_2900"
+                    android:layout_marginTop="@dimen/d_500"
+                    android:layout_marginBottom="@dimen/d_700"
+                    android:text="@{vm.affiliteName}"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_18"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_type"
+                    tools:text="이태원 쿠바노스" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_cart_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_2900"
+                    android:layout_marginTop="@dimen/d_2600"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_name">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_cart_menu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu"
+                        android:textColor="@color/bvc_666E89"
+                        android:textSize="@dimen/text_size_10"
+                        android:textStyle="normal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/d_200"
+                        android:layout_marginTop="@dimen/d_700"
+                        android:background="@color/bvc_666E89"
+                        android:visibility="invisible"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_cart_menu"
+                        app:layout_constraintStart_toStartOf="@+id/tv_cart_menu"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_cart_menu" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_cart_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_2900"
+                    android:layout_marginTop="@dimen/d_2600"
+                    app:layout_constraintStart_toEndOf="@+id/cl_cart_menu"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_cart_affilite_name">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_cart_cart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cart"
+                        android:textColor="@color/bvc_666E89"
+                        android:textSize="@dimen/text_size_10"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/d_200"
+                        android:layout_marginTop="@dimen/d_700"
+                        android:background="@color/bvc_666E89"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_cart_cart"
+                        app:layout_constraintStart_toStartOf="@+id/tv_cart_cart"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_cart_cart" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <!-- 장바구니 아이템들 RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_cart_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:padding="@dimen/d_2500"
+                android:paddingHorizontal="@dimen/d_2900" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/d_2900">
+
+                <LinearLayout
+                    android:id="@+id/ll_cart_discount_coupon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/d_750"
+                    android:layout_weight="1"
+                    android:background="@drawable/r20_f6f6f6"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/d_1000"
+                        android:text="@string/cart_discount_coupon"
+                        android:textColor="@color/bvc_666E89"
+                        android:textSize="@dimen/text_size_10"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_cart_point"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_750"
+                    android:layout_marginEnd="@dimen/d_750"
+                    android:layout_weight="1"
+                    android:background="@drawable/r20_f6f6f6"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/d_1000"
+                        android:text="@string/cart_point"
+                        android:textColor="@color/bvc_666E89"
+                        android:textSize="@dimen/text_size_10"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_cart_change_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_750"
+                    android:layout_marginEnd="@dimen/d_750"
+                    android:layout_weight="1"
+                    android:background="@drawable/r20_f6f6f6"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/d_1000"
+                        android:text="@string/cart_price_change"
+                        android:textColor="@color/bvc_666E89"
+                        android:textSize="@dimen/text_size_10"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_cart_split_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_750"
+                    android:layout_weight="1"
+                    android:background="@drawable/r20_f6f6f6"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/d_1000"
+                        android:text="@string/cart_split_payment"
+                        android:textColor="@color/bvc_666E89"
+                        android:textSize="@dimen/text_size_10"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <!-- 결제 정보 -->
+            <include
+                android:id="@+id/ic_cart_summary"
+                layout="@layout/view_cart_summary" />
+
+            <!-- 결제 버튼 -->
+            <LinearLayout
+                android:layout_marginTop="@dimen/d_2600"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/d_2900">
+
+                <LinearLayout
+                    android:id="@+id/ll_cart_cash_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/d_750"
+                    android:layout_weight="1"
+                    android:background="@drawable/r34_f6f6f6"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/d_2000"
+                        android:text="@string/cart_cash_payment"
+                        android:textColor="@color/bvc_666E89"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cart_etc_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_750"
+                    android:layout_marginEnd="@dimen/d_750"
+                    android:layout_weight="1"
+                    android:background="@drawable/r34_f6f6f6"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/d_2000"
+                        android:text="@string/cart_etc_payment"
+                        android:textColor="@color/bvc_666E89"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_cart_card_payment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/d_750"
+                    android:layout_marginEnd="@dimen/d_750"
+                    android:layout_weight="1"
+                    android:background="@drawable/r34_17c2c9"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/d_2000"
+                        android:text="@string/cart_card_payment"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

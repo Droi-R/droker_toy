@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--    <FrameLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="@color/tran">-->
+
+    <!--        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:clipChildren="true"-->
+    <!--            android:clipToPadding="true"-->
+    <!--            android:padding="@dimen/d_1600"-->
+    <!--            android:radius="@dimen/d_2400"-->
+    <!--            app:cardCornerRadius="@dimen/d_2400"-->
+    <!--            app:cardElevation="8dp">-->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/r24_ffffff"
+        android:fillViewport="true"
+        android:padding="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/bvc_666E89"
+                    android:textSize="@dimen/text_size_16"
+                    android:textStyle="bold"
+                    tools:text="샌드위치 쿠바노" />
+
+                <ImageView
+                    android:id="@+id/btnClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_close_small" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/optionContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d_1600"
+                android:orientation="vertical" />
+
+            <RelativeLayout
+                android:id="@+id/btnAddToCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/d_1500"
+                android:layout_marginTop="@dimen/d_3300"
+                android:background="@drawable/r20_17c2c9"
+                android:textColor="@android:color/white">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_add_to_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16"
+                    android:textStyle="bold"
+                    android:layout_marginVertical="@dimen/d_1000"
+                    android:text="10,900원 담기" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <!--        </androidx.cardview.widget.CardView>-->
+    <!--    </FrameLayout>-->
+</layout>
