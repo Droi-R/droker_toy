@@ -9,6 +9,7 @@ import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.calculateVatSummary
 import com.bvc.domain.repository.ProductStoreRepository
+import com.bvc.domain.type.ApiStatus
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
 import com.bvc.domain.type.PaymentChannel
@@ -17,6 +18,7 @@ import com.bvc.domain.type.PaymentStatus
 import com.bvc.domain.type.PaymentType
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
+import com.bvc.domain.utils.Constant
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
 import com.bvc.ordering.ksnet.Telegram
@@ -126,6 +128,11 @@ class CartViewModel
                 },
                 successAction = { response ->
                     log.e("response: $response")
+                    if (response.meta.code == 200) {
+                        Utils.showToast("주문이 완료되었습니다.")
+                    } else {
+                        Utils.showToast("주문에 실패하였습니다.")
+                    }
                     postPayment(response)
                 },
                 errorAction = { code, message ->
@@ -152,23 +159,24 @@ class CartViewModel
                         )
                 },
                 successAction = { response ->
-                    log.e("response: $response")
-                    response.data.vat = "${vatAmount.value}"
-                    response.data.supAmt = "${supplyAmount.value}"
-                    response.data.paymentAmout = "${totalAmount.value}"
-                    _requestTelegram.value =
-                        Pair(
-                            Telegram.makeTelegramIC(
-                                apprCode = "1",
-                                mDeviceNo = "DPT0TEST03",
-                                quota = "00",
-                                totAmt = "${totalAmount.value}",
-                                orgApprNo = "",
-                                orgDate = "",
-                                taxFree = "${taxFreeAmount.value}",
-                            ),
-                            response.data,
-                        )
+                    if (Constant.getStatus(response.meta.code) == ApiStatus.SUCCESS) {
+                        response.data.vat = "${vatAmount.value}"
+                        response.data.supAmt = "${supplyAmount.value}"
+                        response.data.paymentAmout = "${totalAmount.value}"
+                        _requestTelegram.value =
+                            Pair(
+                                Telegram.makeTelegramIC(
+                                    apprCode = "1",
+                                    mDeviceNo = "DPT0TEST03",
+                                    quota = "00",
+                                    totAmt = "${totalAmount.value}",
+                                    orgApprNo = "",
+                                    orgDate = "",
+                                    taxFree = "${taxFreeAmount.value}",
+                                ),
+                                response.data,
+                            )
+                    }
 //            }
                 },
                 errorAction = { code, message ->

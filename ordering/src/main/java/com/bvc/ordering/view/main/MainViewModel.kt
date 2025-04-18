@@ -2,16 +2,22 @@ package com.bvc.ordering.view.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.bvc.domain.log
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.PaymentEntity
 import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.model.TableEntity
+import com.bvc.domain.repository.ProductStoreRepository
+import com.bvc.domain.type.ApiStatus
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
+import com.bvc.domain.utils.Constant
 import com.bvc.ordering.base.BaseViewModel
 import com.bvc.ordering.base.SingleLiveEvent
 import com.bvc.ordering.ksnet.TransactionData
 import com.bvc.ordering.ui.event.Event
+import com.bvc.ordering.util.Utils
+import com.bvc.ordering.view.order.OrderFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -24,6 +30,7 @@ class MainViewModel
     constructor(
         private val preferenceUseCase: PreferenceUseCase,
         private val mainUseCase: MainUseCase,
+        private val productStoreRepository: ProductStoreRepository,
     ) : BaseViewModel() {
         private val _requestTelegram = SingleLiveEvent<Pair<ByteArray, PaymentEntity>>()
         val requestTelegram: LiveData<Pair<ByteArray, PaymentEntity>> get() = _requestTelegram
@@ -33,6 +40,9 @@ class MainViewModel
 
         private val _affiliteName = SingleLiveEvent<String>()
         val affiliteName: LiveData<String> get() = _affiliteName
+
+        private val _captureAfterAction = SingleLiveEvent<String>()
+        val captureAfterAction: LiveData<String> get() = _captureAfterAction
 
         private val _alarmVisibility =
             SingleLiveEvent<Boolean>().apply {
@@ -89,8 +99,8 @@ class MainViewModel
                     }
                 },
                 errorAction = { code, message ->
-                    when (code) {
-                    }
+                    log.e("code: $code, message: $message")
+                    Utils.showToast(message)
                 },
             )
         }
@@ -133,7 +143,7 @@ class MainViewModel
                 request = {
                     val trData = TransactionData()
                     trData.SetData(recvByte)
-                    mainUseCase.postCapture(
+                    mainUseCase.requestCapture(
                         token = preferenceUseCase.getToken(),
                         paymentId = requestTelegram.value?.second?.paymentId ?: throw IllegalStateException("Payment ID is null"),
                         amount =
@@ -149,12 +159,16 @@ class MainViewModel
                     )
                 },
                 successAction = {
-                    _alarmVisibility.value = true
-                    _alarmCount.value = it.data.toString()
+                    if (Constant.getStatus(it.meta.code) == ApiStatus.SUCCESS) {
+                        productStoreRepository.clearCart()
+                        _captureAfterAction.value = OrderFragment::class.java.name
+                    } else {
+                        Utils.showToast(it.meta.message)
+                    }
                 },
                 errorAction = { code, message ->
-                    when (code) {
-                    }
+                    log.e("code: $code, message: $message")
+                    Utils.showToast(message)
                 },
             )
         }

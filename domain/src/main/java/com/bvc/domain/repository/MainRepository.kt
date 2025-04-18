@@ -85,7 +85,7 @@ interface MainRepository {
         paymentType: PaymentType,
     ): ApiData<PaymentEntity>
 
-    suspend fun postCapture(
+    suspend fun requestCapture(
         token: String,
         paymentId: String,
         amount: Double,
@@ -94,7 +94,7 @@ interface MainRepository {
         approvedDate: String,
     ): ApiData<EmptyEntity>
 
-    suspend fun postRefund(
+    suspend fun requestRefund(
         token: String,
         paymentId: String,
         amount: Double,

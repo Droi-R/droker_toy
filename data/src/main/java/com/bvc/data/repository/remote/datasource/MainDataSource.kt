@@ -65,12 +65,12 @@ interface MainDataSource {
         paymentRequest: PaymentRequest,
     ): ResData<PaymentResponse>?
 
-    suspend fun postCapture(
+    suspend fun requestCapture(
         token: String,
         captureRequest: ApproveRequest,
     ): ResData<EmptyResponse>?
 
-    suspend fun postRefund(
+    suspend fun requestRefund(
         token: String,
         refundRequest: ApproveRequest,
     ): ResData<EmptyResponse>?

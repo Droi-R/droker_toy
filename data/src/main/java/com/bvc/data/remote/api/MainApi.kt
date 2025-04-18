@@ -20,6 +20,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -84,14 +85,14 @@ interface MainApi {
         @Body paymentRequest: PaymentRequest,
     ): Response<ResData<PaymentResponse>>
 
-    @POST("payments/capture")
-    suspend fun postCapture(
+    @PATCH("payments/capture")
+    suspend fun requestCapture(
         @Header("Authorization") token: String,
         @Body captureRequest: ApproveRequest,
     ): Response<ResData<EmptyResponse>>
 
-    @POST("payments/refund")
-    suspend fun postRefund(
+    @PATCH("payments/refund")
+    suspend fun requestRefund(
         @Header("Authorization") token: String,
         @Body refundRequest: ApproveRequest,
     ): Response<ResData<EmptyResponse>>

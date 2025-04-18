@@ -270,6 +270,12 @@ class MainActivity : BaseActivity() {
                     }
                 }
             }
+            captureAfterAction.observe(this@MainActivity) {
+                val navHostFragment =
+                    supportFragmentManager.findFragmentById(R.id.main_container_view) as NavHostFragment
+                val navController = navHostFragment.navController
+                navController.navigate(it)
+            }
         }
     }
 
@@ -294,27 +300,7 @@ class MainActivity : BaseActivity() {
                 log.e("data: $data")
                 val recvByte: ByteArray =
                     data.getByteArrayExtra("responseTelegram") ?: byteArrayOf()
-//                KsnetUtil.byteTo20ByteLog(recvByte, "")
                 log.e("Recv Telegram \n ${KsnetUtil.HexDump.dumpHexString(recvByte)}")
-
-//                val trData = TransactionData()
-//                trData.SetData(recvByte)
-//                log.e("trData: $trData")
-
-//                val responseData = KSNETResponseData.from(recvByte)
-//                log.e("responseData: $responseData")
-
-//                val str: String = KsnetUtil.HexDump.dumpHexString(recvByte)
-//                log.e("str : $str")
-//                // 승인번호 승인일자 가져오기
-//                val apprNo = ByteArray(12)
-//                System.arraycopy(recvByte, 94, apprNo, 0, 12)
-//                val apprDate = ByteArray(6)
-//                System.arraycopy(recvByte, 49, apprDate, 0, 6)
-//
-//                log.e("String(apprNo) : ${String(apprNo)}")
-//                log.e("String(apprDate) : ${String(apprDate)}")
-
                 // TODO 여기서 캡쳐 날리자
                 viewModel.postCapture(
                     recvByte,

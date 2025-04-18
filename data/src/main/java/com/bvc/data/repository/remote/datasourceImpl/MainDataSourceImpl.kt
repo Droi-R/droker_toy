@@ -104,20 +104,20 @@ class MainDataSourceImpl
                 mainApi.postPayment(token, paymentRequest)
             }.body()
 
-        override suspend fun postCapture(
+        override suspend fun requestCapture(
             token: String,
             captureRequest: ApproveRequest,
         ): ResData<EmptyResponse>? =
             safeApiCall {
-                mainApi.postCapture(token, captureRequest)
+                mainApi.requestCapture(token, captureRequest)
             }.body()
 
-        override suspend fun postRefund(
+        override suspend fun requestRefund(
             token: String,
             refundRequest: ApproveRequest,
         ): ResData<EmptyResponse>? =
             safeApiCall {
-                mainApi.postRefund(token, refundRequest)
+                mainApi.requestRefund(token, refundRequest)
             }.body()
 
         override suspend fun getTables(

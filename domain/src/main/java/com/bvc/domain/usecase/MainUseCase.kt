@@ -104,14 +104,14 @@ class MainUseCase
             paymentType = paymentType,
         )
 
-        suspend fun postCapture(
+        suspend fun requestCapture(
             token: String,
             paymentId: String,
             amount: Double,
             deviceId: String,
             approvedId: String,
             approvedDate: String,
-        ) = mainRepository.postCapture(
+        ) = mainRepository.requestCapture(
             token = token,
             paymentId = paymentId,
             amount = amount,
@@ -127,7 +127,7 @@ class MainUseCase
             deviceId: String,
             approvedId: String,
             approvedDate: String,
-        ) = mainRepository.postRefund(
+        ) = mainRepository.requestRefund(
             token = token,
             paymentId = paymentId,
             amount = amount,

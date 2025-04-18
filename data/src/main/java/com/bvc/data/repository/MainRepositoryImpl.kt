@@ -172,7 +172,7 @@ class MainRepositoryImpl
                 ),
             )
 
-        override suspend fun postCapture(
+        override suspend fun requestCapture(
             token: String,
             paymentId: String,
             amount: Double,
@@ -181,7 +181,7 @@ class MainRepositoryImpl
             approvedDate: String,
         ): ApiData<EmptyEntity> =
             ResponseMapper.mapEmpty(
-                mainDataSource.postCapture(
+                mainDataSource.requestCapture(
                     token = token,
                     captureRequest =
                         ApproveRequest(
@@ -194,7 +194,7 @@ class MainRepositoryImpl
                 ),
             )
 
-        override suspend fun postRefund(
+        override suspend fun requestRefund(
             token: String,
             paymentId: String,
             amount: Double,
@@ -203,7 +203,7 @@ class MainRepositoryImpl
             approvedDate: String,
         ): ApiData<EmptyEntity> =
             ResponseMapper.mapEmpty(
-                mainDataSource.postRefund(
+                mainDataSource.requestRefund(
                     token = token,
                     refundRequest =
                         ApproveRequest(
