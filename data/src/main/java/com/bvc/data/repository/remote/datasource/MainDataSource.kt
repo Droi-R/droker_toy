@@ -1,8 +1,10 @@
 package com.bvc.data.repository.remote.datasource
 
+import com.bvc.data.remote.model.request.CaptureRequest
 import com.bvc.data.remote.model.request.OrderRequest
 import com.bvc.data.remote.model.request.PaymentRequest
 import com.bvc.data.remote.model.response.CategoryResponse
+import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.MaterialsResponse
 import com.bvc.data.remote.model.response.OrderResponse
@@ -62,6 +64,11 @@ interface MainDataSource {
         token: String,
         paymentRequest: PaymentRequest,
     ): ResData<PaymentResponse>?
+
+    suspend fun postCapture(
+        token: String,
+        captureRequest: CaptureRequest,
+    ): ResData<EmptyResponse>?
 
     suspend fun getTables(
         token: String,

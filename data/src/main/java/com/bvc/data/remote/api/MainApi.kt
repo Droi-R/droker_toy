@@ -14,6 +14,7 @@ import com.bvc.data.remote.model.response.SmartOrderResponse
 import com.bvc.data.remote.model.response.StoreResponse
 import com.bvc.data.remote.model.response.SubCategoryResponse
 import com.bvc.data.remote.model.response.TableResponse
+import com.bvc.domain.model.EmptyEntity
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -81,6 +82,12 @@ interface MainApi {
         @Header("Authorization") token: String,
         @Body paymentRequest: PaymentRequest,
     ): Response<ResData<PaymentResponse>>
+
+    @POST("payments/capture")
+    suspend fun postCapture(
+        @Header("Authorization") token: String,
+        @Body captureRequest: Map<String, String>,
+    ): Response<ResData<EmptyEntity>>
 
     @GET("users/{token}/repos")
     suspend fun getTables(

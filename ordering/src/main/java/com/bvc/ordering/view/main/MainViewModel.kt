@@ -126,4 +126,25 @@ class MainViewModel
                 _productEventFlow.emit(Event(copiedProduct))
             }
         }
+
+        fun requestCapture(
+            apprNo: String,
+            apprDate: String,
+        ) {
+            requestApi(
+                request = {
+                    mainUseCase.requestCapture(
+                        preferenceUseCase.getToken(),
+                    )
+                },
+                successAction = {
+                    _alarmVisibility.value = true
+                    _alarmCount.value = it.data.toString()
+                },
+                errorAction = { code, message ->
+                    when (code) {
+                    }
+                },
+            )
+        }
     }

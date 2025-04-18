@@ -11,8 +11,10 @@ import com.bvc.domain.model.calculateVatSummary
 import com.bvc.domain.repository.ProductStoreRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentChannel
 import com.bvc.domain.type.PaymentMethod
 import com.bvc.domain.type.PaymentStatus
+import com.bvc.domain.type.PaymentType
 import com.bvc.domain.usecase.MainUseCase
 import com.bvc.domain.usecase.PreferenceUseCase
 import com.bvc.ordering.base.BaseViewModel
@@ -141,11 +143,12 @@ class CartViewModel
                             token = preferenceUseCase.getToken(),
                             userId = preferenceUseCase.getUserId(),
                             storeId = "${preferenceUseCase.getStoreId()}",
-                            orderProductIds = listOf(response.data.oid),
+                            orderProductIds = listOf(response.data.orderID),
                             totalPrice = totalAmount.value,
                             paymentMethod = PaymentMethod.CARD,
-                            paymentChannel = "OFFLINE",
+                            paymentChannel = PaymentChannel.KAKAO,
                             paymentStatus = PaymentStatus.READY,
+                            paymentType = PaymentType.PREPAID,
                         )
                 },
                 successAction = { response ->
@@ -167,19 +170,6 @@ class CartViewModel
                 },
                 errorAction = { code, message ->
                     log.e("code: $code, message: $message")
-                    _requestTelegram.value =
-                        Pair(
-                            Telegram.makeTelegramIC(
-                                apprCode = "1",
-                                mDeviceNo = "DPT0TEST03",
-                                quota = "00",
-                                totAmt = "${totalAmount.value}",
-                                orgApprNo = "",
-                                orgDate = "",
-                                taxFree = "${taxFreeAmount.value}",
-                            ),
-                            PaymentEntity.EMPTY,
-                        )
                     Utils.showToast(message)
                 },
             )

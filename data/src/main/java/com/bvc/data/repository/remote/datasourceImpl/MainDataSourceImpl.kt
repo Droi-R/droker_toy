@@ -1,9 +1,11 @@
 package com.bvc.data.repository.remote.datasourceImpl
 
 import com.bvc.data.remote.api.MainApi
+import com.bvc.data.remote.model.request.CaptureRequest
 import com.bvc.data.remote.model.request.OrderRequest
 import com.bvc.data.remote.model.request.PaymentRequest
 import com.bvc.data.remote.model.response.CategoryResponse
+import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.LoginResponse
 import com.bvc.data.remote.model.response.MaterialsResponse
 import com.bvc.data.remote.model.response.OrderResponse
@@ -101,6 +103,15 @@ class MainDataSourceImpl
             safeApiCall {
                 mainApi.postPayment(token, paymentRequest)
             }.body()
+
+        override suspend fun postCapture(
+            token: String,
+            captureRequest: CaptureRequest,
+        ): ResData<EmptyResponse>? {
+            safeApiCall {
+                mainApi.postCapture(token, captureRequest)
+            }.body()
+        }
 
         override suspend fun getTables(
             token: String,

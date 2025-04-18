@@ -15,7 +15,7 @@ class SplashRepositoryImpl
     constructor(
         private val splashDataSource: SplashDataSource,
     ) : SplashRepository {
-        override suspend fun sendSms(phoneNum: String): ApiData<EmptyEntity> = ResponseMapper.mapSendSms(splashDataSource.sendSms(phoneNum))
+        override suspend fun sendSms(phoneNum: String): ApiData<EmptyEntity> = ResponseMapper.mapEmpty(splashDataSource.sendSms(phoneNum))
 
         override suspend fun verifySms(
             phoneNum: String,

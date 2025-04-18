@@ -6,8 +6,8 @@ import com.bvc.domain.type.PaymentStatus
 import com.google.gson.annotations.SerializedName
 
 data class OrderResponse(
-    @SerializedName("oid")
-    val oid: String? = null,
+    @SerializedName("order_id")
+    val orderId: String? = null,
     @SerializedName("order_name")
     val orderName: String? = null,
     @SerializedName("order_items")

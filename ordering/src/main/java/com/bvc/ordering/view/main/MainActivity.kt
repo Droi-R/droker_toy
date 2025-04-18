@@ -309,6 +309,10 @@ class MainActivity : BaseActivity() {
                 log.e("String(apprDate) : ${String(apprDate)}")
 
                 // TODO 여기서 캡쳐 날리자
+                viewModel.reqeustCapture(
+                    apprNo = String(apprNo),
+                    apprDate = String(apprDate),
+                )
 
                 //            val intent: Intent = Intent(this@CardActivity, ResultActivity::class.java)
                 //            intent.putExtra("PayType", "CARD")

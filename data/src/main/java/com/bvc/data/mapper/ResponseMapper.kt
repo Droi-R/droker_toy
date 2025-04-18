@@ -1,6 +1,5 @@
 package com.bvc.data.mapper
 
-import com.bvc.data.mapper.ResponseMapper.toEntity
 import com.bvc.data.remote.model.response.CategoryResponse
 import com.bvc.data.remote.model.response.EmptyResponse
 import com.bvc.data.remote.model.response.GithubResponse
@@ -74,7 +73,7 @@ object ResponseMapper {
             nextCursor = pagination?.nextCursor ?: "",
         )
 
-    fun mapSendSms(response: ResData<EmptyResponse>?): ApiData<EmptyEntity> =
+    fun mapEmpty(response: ResData<EmptyResponse>?): ApiData<EmptyEntity> =
         ApiData(
             meta = mapMeta(response?.meta),
             data =
@@ -362,7 +361,7 @@ object ResponseMapper {
 
     private fun OrderResponse.toEntity(): OrderEntity =
         OrderEntity(
-            oid = oid ?: "",
+            orderID = orderId ?: "",
             orderName = orderName ?: "",
             orderItems = orderItems?.map { it.toEntity() }?.let { ArrayList(it) } ?: arrayListOf(),
             buyerName = buyerName ?: "",

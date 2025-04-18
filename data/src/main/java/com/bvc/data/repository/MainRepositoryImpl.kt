@@ -2,6 +2,7 @@ package com.bvc.data.repository
 
 import com.bvc.data.mapper.ResponseMapper
 import com.bvc.data.mapper.toRequest
+import com.bvc.data.remote.model.request.CaptureRequest
 import com.bvc.data.remote.model.request.OrderInfoRequest
 import com.bvc.data.remote.model.request.OrderRequest
 import com.bvc.data.remote.model.request.PaymentRequest
@@ -9,6 +10,7 @@ import com.bvc.data.repository.remote.datasource.MainDataSource
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
 import com.bvc.domain.model.CategoryEntity
+import com.bvc.domain.model.EmptyEntity
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.OrderEntity
@@ -21,8 +23,10 @@ import com.bvc.domain.model.TableEntity
 import com.bvc.domain.repository.MainRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentChannel
 import com.bvc.domain.type.PaymentMethod
 import com.bvc.domain.type.PaymentStatus
+import com.bvc.domain.type.PaymentType
 import javax.inject.Inject
 
 class MainRepositoryImpl
@@ -148,8 +152,9 @@ class MainRepositoryImpl
             orderProductIds: List<String>,
             totalPrice: Int,
             paymentMethod: PaymentMethod,
-            paymentChannel: String,
+            paymentChannel: PaymentChannel,
             paymentStatus: PaymentStatus,
+            paymentType: PaymentType,
         ): ApiData<PaymentEntity> =
             ResponseMapper.mapPayment(
                 mainDataSource.postPayment(
@@ -162,7 +167,30 @@ class MainRepositoryImpl
                         paymentMethod = paymentMethod,
                         paymentChannel = paymentChannel,
                         paymentStatus = paymentStatus,
+                        paymentType = paymentType,
                     ),
+                ),
+            )
+
+        override suspend fun postCapture(
+            token: String,
+            paymentId: String,
+            amount: Double,
+            deviceId: String,
+            approvedId: String,
+            approvedDate: String,
+        ): ApiData<EmptyEntity> =
+            ResponseMapper.mapEmpty(
+                mainDataSource.postCapture(
+                    token = token,
+                    captureRequest =
+                        CaptureRequest(
+                            paymentId = paymentId,
+                            amount = amount,
+                            deviceId = deviceId,
+                            approvedId = approvedId,
+                            approvedDate = approvedDate,
+                        ),
                 ),
             )
 

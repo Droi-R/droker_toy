@@ -3,6 +3,7 @@ package com.bvc.domain.repository
 import com.bvc.domain.model.ApiData
 import com.bvc.domain.model.ApiDataList
 import com.bvc.domain.model.CategoryEntity
+import com.bvc.domain.model.EmptyEntity
 import com.bvc.domain.model.LoginEntity
 import com.bvc.domain.model.MaterialsEntity
 import com.bvc.domain.model.OrderEntity
@@ -14,8 +15,10 @@ import com.bvc.domain.model.SubCategoryEntity
 import com.bvc.domain.model.TableEntity
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentChannel
 import com.bvc.domain.type.PaymentMethod
 import com.bvc.domain.type.PaymentStatus
+import com.bvc.domain.type.PaymentType
 
 interface MainRepository {
     suspend fun refreshToken(token: String): ApiData<LoginEntity>
@@ -77,9 +80,19 @@ interface MainRepository {
         orderProductIds: List<String>,
         totalPrice: Int,
         paymentMethod: PaymentMethod,
-        paymentChannel: String,
+        paymentChannel: PaymentChannel,
         paymentStatus: PaymentStatus,
+        paymentType: PaymentType,
     ): ApiData<PaymentEntity>
+
+    suspend fun postCapture(
+        token: String,
+        paymentId: String,
+        amount: Double,
+        deviceId: String,
+        approvedId: String,
+        approvedDate: String,
+    ): ApiData<EmptyEntity>
 
     suspend fun getTables(
         token: String,

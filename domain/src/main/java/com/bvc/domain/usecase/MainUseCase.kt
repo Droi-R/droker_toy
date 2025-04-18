@@ -4,8 +4,10 @@ import com.bvc.domain.model.ProductEntity
 import com.bvc.domain.repository.MainRepository
 import com.bvc.domain.type.OrderFrom
 import com.bvc.domain.type.OrderStatus
+import com.bvc.domain.type.PaymentChannel
 import com.bvc.domain.type.PaymentMethod
 import com.bvc.domain.type.PaymentStatus
+import com.bvc.domain.type.PaymentType
 import javax.inject.Inject
 
 class MainUseCase
@@ -87,8 +89,9 @@ class MainUseCase
             orderProductIds: List<String>,
             totalPrice: Int,
             paymentMethod: PaymentMethod,
-            paymentChannel: String,
+            paymentChannel: PaymentChannel,
             paymentStatus: PaymentStatus,
+            paymentType: PaymentType,
         ) = mainRepository.postPayment(
             token = token,
             userId = userId,
@@ -98,6 +101,23 @@ class MainUseCase
             paymentMethod = paymentMethod,
             paymentChannel = paymentChannel,
             paymentStatus = paymentStatus,
+            paymentType = paymentType,
+        )
+
+        suspend fun postCapture(
+            token: String,
+            paymentId: String,
+            amount: Double,
+            deviceId: String,
+            approvedId: String,
+            approvedDate: String,
+        ) = mainRepository.postCapture(
+            token = token,
+            paymentId = paymentId,
+            amount = amount,
+            deviceId = deviceId,
+            approvedId = approvedId,
+            approvedDate = approvedDate,
         )
 
         suspend fun getTables(

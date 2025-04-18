@@ -154,7 +154,7 @@ class TableViewModel
                             orders =
                                 arrayListOf(
                                     OrderEntity(
-                                        oid = "1",
+                                        orderID = "1",
                                         orderName = "테스트 주문",
                                         orderItems =
                                             arrayListOf(
